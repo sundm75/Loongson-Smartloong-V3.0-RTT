@@ -1,5 +1,5 @@
 /*
- * File      : i2cdev.h
+ * File      : hw_i2c.h
  * This file is part of RT-Thread RTOS
  * COPYRIGHT (C) 2006 - 2017, RT-Thread Development Team
  *

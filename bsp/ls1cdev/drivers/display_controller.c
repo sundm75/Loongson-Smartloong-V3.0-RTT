@@ -21,7 +21,7 @@
  * Date           Author       	Notes
  * 2011-08-09     lgnq         first version for LS1B DC
  * 2015-07-06    chinesebear   modified for loongson 1c
- * 2018-01-06    sundm75   modified for smartloong 
+ * 2018-01-06    sundm75       modified for smartloong 
  */
 
 #include <rtthread.h>
