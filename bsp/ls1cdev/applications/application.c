@@ -47,20 +47,11 @@ void rt_init_thread_entry(void *parameter)
 #endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
 
 
-// 网口EMAC初始化
+/*网口EMAC初始化*/
     rt_hw_eth_init();
 
-	rtgui_touch_hw_init("spi10");
-
-#ifdef RT_USING_RTGUI
-		/*运行demo */
-               // application_init();     
-
-		/* 测试触摸屏按钮 及简易计算器*/
-		//ui_button();
-		/*标定*/
-              //calibration();
-#endif
+/*触摸屏使用SPI总线SPI1 CS0  初始化*/
+    rtgui_touch_hw_init("spi10");
 
 }
 
