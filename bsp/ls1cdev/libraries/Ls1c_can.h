@@ -207,7 +207,7 @@ typedef struct
 } CanTxMsg;
 
 unsigned char CAN_Init(CAN_TypeDef* CANx, CAN_InitTypeDef* CAN_InitStruct);
- void CAN_FilterInit(CAN_TypeDef* CANx,  CAN_FilterInitTypeDef* CAN_FilterInitStruct);
+void CAN_FilterInit(CAN_TypeDef* CANx,  CAN_FilterInitTypeDef* CAN_FilterInitStruct);
 unsigned char CAN_Transmit(CAN_TypeDef* CANx, CanTxMsg* TxMessage);
 void CAN_Receive(CAN_TypeDef* CANx,  CanRxMsg* RxMessage);
 
