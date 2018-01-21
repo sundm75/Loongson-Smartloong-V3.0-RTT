@@ -73,8 +73,8 @@
 #define LS1C_REG_BASE_PWM3                  (0xbfe5c030)
 
 //CAN»ùµØÖ·
-#define  LS1B_REG_BASE_CAN0				    (0xbfe50000)
-#define  LS1B_REG_BASE_CAN1					(0xbfe54000)
+#define  LS1C_REG_BASE_CAN0				    (0xbfe50000)
+#define  LS1C_REG_BASE_CAN1					(0xbfe54000)
 
 // ÖÐ¶ÏÅäÖÃ¼Ä´æÆ÷
 #define LS1C_INT0_SR                        (0xbfd01040)
