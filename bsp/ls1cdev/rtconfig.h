@@ -74,6 +74,8 @@
 #define RT_UART_RX_BUFFER_SIZE	64
 // </section>
 
+#define RT_USING_DEVICE_IPC
+
 #define RT_USING_FPU
 
 // <section name="RT_USING_CONSOLE" description="Using console" default="true" >
@@ -242,6 +244,9 @@
 
 #define RT_USING_PIN
 
+#define RT_USING_CAN
+
+#define RT_CAN_USING_HDR 
 
 // </RDTConfigurator>
 

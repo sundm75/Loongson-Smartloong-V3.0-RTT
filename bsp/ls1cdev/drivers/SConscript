@@ -5,6 +5,11 @@ src = Glob('*.c')
 
 CPPPATH = [cwd]
 
+# remove no need file.
+if GetDepend('RT_USING_RTGUI') == False:
+	SrcRemove(src, 'display_controller.c')
+	SrcRemove(src, 'touch.c')
+
 group = DefineGroup('Drivers', src, depend = [''], CPPPATH = CPPPATH)
 
 objs = []

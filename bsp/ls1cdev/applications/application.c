@@ -49,9 +49,10 @@ void rt_init_thread_entry(void *parameter)
 
 /*网口EMAC初始化*/
     rt_hw_eth_init();
-
+#if defined(RT_USING_RTGUI)
 /*触摸屏使用SPI总线SPI1 CS0  初始化*/
     rtgui_touch_hw_init("spi10");
+#endif
 
 }
 
