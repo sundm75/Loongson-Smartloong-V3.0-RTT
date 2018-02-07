@@ -96,6 +96,11 @@ void rt_hw_board_init(void)
 	rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 #endif
 
+#ifdef RT_USING_CAN
+	/* init hardware CAN device */
+	ls1c_bxcan_init();
+#endif
+
 
 #ifdef RT_USING_I2C
 #ifdef RT_USING_I2C0
@@ -177,6 +182,7 @@ void rt_hw_board_init(void)
 #endif
 
 #endif
+
 
 
 	/* init operating system timer */

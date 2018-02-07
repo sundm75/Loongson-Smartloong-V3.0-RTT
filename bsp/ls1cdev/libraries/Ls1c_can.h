@@ -32,9 +32,6 @@
 #define CAN_InitStatus_Failed              ((unsigned char)0x00) /*!< CAN initialization failed */
 #define CAN_InitStatus_Success             ((unsigned char)0x01) /*!< CAN initialization OK */
 
-/* 非应答溢出时间次数 */
-#define INAK_TIMEOUT        ((unsigned long)0x00000FFF)
-
 #define CAN_SJW_1tq                 ((unsigned char)0x00)  /*!< 1 time quantum */
 #define CAN_SJW_2tq                 ((unsigned char)0x01)  /*!< 2 time quantum */
 #define CAN_SJW_3tq                 ((unsigned char)0x02)  /*!< 3 time quantum */
@@ -71,6 +68,11 @@
 #define CAN_RTR_DATA               0
 #define CAN_RTR_Remote            1
 
+#define CAN_MODE_NORMAL              0
+#define CAN_MODE_LISEN               1
+#define CAN_MODE_LOOPBACK            2
+#define CAN_MODE_LOOPBACKANLISEN     3
+
 /*!< CAN 控制状态寄存器 */
 /************************** CAN_MOD 寄存器位定义*******************************/
 #define CAN_Mode_RM                 ((unsigned char)0x01)  /*!< 复位模式 */
@@ -84,7 +86,7 @@
  #define  CAN_CMR_AT                         ((unsigned char)0x02)         /*!< 中止发送 1: 等待发送的信息取消  0: 空缺  */
  #define  CAN_CMR_RRB                        ((unsigned char)0x04)         /*!< 释放接收缓冲器  1:释放  0: 无动作 */
  #define  CAN_CMR_CDO                        ((unsigned char)0x08)         /*!< 清除数据溢出  1:清除  0: 无动作    */
-//#define  CAN_CMR_GTS                        ((unsigned char)0x10)         /*!STD模式< 睡眠: 1:进入睡眠  0: 唤醒  */
+//#define  CAN_CMR_GTS                        ((unsigned char)0x10)        /*!< STD模式< 睡眠: 1:进入睡眠  0: 唤醒  */
  #define  CAN_CMR_SRR                        ((unsigned char)0x10)         /*!< 自接收请求  1:  0:   */
  #define  CAN_CMR_EFF                        ((unsigned char)0x80)         /*!< 扩展模式 1:扩展帧 0: 标准帧  */
 
@@ -120,14 +122,14 @@
  
 typedef enum 
 {
-	CAN1MBaud=0,    // 1 MBit/sec
-	CAN800kBaud,    // 800 kBit/sec
-	CAN500kBaud,    // 500 kBit/sec
-	CAN250kBaud,    // 250 kBit/sec
-	CAN125kBaud,    // 125 kBit/sec
-	CAN100kBaud,    // 100 kBit/sec
-	CAN50kBaud,     // 50 kBit/sec
-	CAN40kBaud,     // 40 kBit/sec
+	LS1C_CAN1MBaud=0,    // 1 MBit/sec
+	LS1C_CAN800kBaud,    // 800 kBit/sec
+	LS1C_CAN500kBaud,    // 500 kBit/sec
+	LS1C_CAN250kBaud,    // 250 kBit/sec
+	LS1C_CAN125kBaud,    // 125 kBit/sec
+	LS1C_CAN100kBaud,    // 100 kBit/sec
+	LS1C_CAN50kBaud,     // 50 kBit/sec
+	LS1C_CAN40kBaud,     // 40 kBit/sec
 }Ls1c_CanBPS_t;
 
 typedef struct
@@ -166,14 +168,19 @@ typedef struct
 
 typedef struct
 {
-  unsigned char  CAN_FilterId0;        /*验收代码0*/
-  unsigned char  CAN_FilterMaskId0;    /*验收屏蔽0*/
-  unsigned char  CAN_FilterId1;        /*验收代码1*/
-  unsigned char  CAN_FilterMaskId1;    /*验收屏蔽1*/
-  unsigned char  CAN_FilterId2;        /*验收代码2*/
-  unsigned char  CAN_FilterMaskId2;    /*验收屏蔽2*/
-  unsigned char  CAN_FilterId3;        /*验收代码3*/
-  unsigned char  CAN_FilterMaskId3;    /*验收屏蔽3*/
+  unsigned char  IDE;        /*0: 使用标准标识符1: 使用扩展标识符*/
+  unsigned char  RTR;    /*0: 数据帧     1: 远程帧*/
+  unsigned char  MODE;        /* 0- 双滤波器模式;1-单滤波器模式*/
+  unsigned long  First_Data;    /*双滤波器模式下信息第一个数据字节*/
+  unsigned long  Data_Mask;    /*双滤波器模式下信息第一个数据字节屏蔽*/
+  unsigned long  ID;        /*验收代码*/
+  /*
+ 双滤波器-  扩展帧: 2个滤波器的前16位,分别放在ID 的前16位和 ID的后16位.
+ 双滤波器-  标准帧: 2个滤波器的11位,分别放在ID 的前16位和 ID的后16位,第1个滤波器同时使用First_Data和Data_Mask
+ 单滤波器-  扩展帧: 使用29位, 放在ID 的后29位.
+ 单滤波器-  标准帧: 使用11位, 放在ID 的后11位.
+  */
+  unsigned long  IDMASK;    /*验收屏蔽*/
 } CAN_FilterInitTypeDef;
 
 typedef struct
@@ -207,9 +214,14 @@ typedef struct
 } CanTxMsg;
 
 unsigned char CAN_Init(CAN_TypeDef* CANx, CAN_InitTypeDef* CAN_InitStruct);
+unsigned char CAN_SetBps(CAN_TypeDef* CANx, Ls1c_CanBPS_t  Bps);
+unsigned char CAN_SetMode(CAN_TypeDef* CANx, unsigned char  mode);
 void CAN_FilterInit(CAN_TypeDef* CANx,  CAN_FilterInitTypeDef* CAN_FilterInitStruct);
 unsigned char CAN_Transmit(CAN_TypeDef* CANx, CanTxMsg* TxMessage);
 void CAN_Receive(CAN_TypeDef* CANx,  CanRxMsg* RxMessage);
+
+unsigned char  set_reset_mode(CAN_TypeDef* CANx);
+unsigned char  set_start(CAN_TypeDef* CANx);
 
 #endif
 
