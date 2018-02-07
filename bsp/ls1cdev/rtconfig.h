@@ -245,6 +245,8 @@
 #define RT_USING_PIN
 
 #define RT_USING_CAN
+#define USING_BXCAN0
+
 
 #define RT_CAN_USING_HDR 
 

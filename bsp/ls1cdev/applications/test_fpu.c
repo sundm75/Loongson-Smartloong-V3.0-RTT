@@ -1,6 +1,6 @@
 ﻿// 硬浮点测试用例的源文件
 
-
+#include <rtthread.h>
 #include "../libraries/ls1c_public.h"
 
 

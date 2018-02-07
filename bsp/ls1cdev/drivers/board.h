@@ -23,6 +23,4 @@ void rt_hw_board_init(void);
 #define RT_HW_HEAP_END	(0x80000000 + 32 * 1024 * 1024)
 #define CPU_HZ			(252 * 1000000)
 
-#define USING_BXCAN0
-
 #endif
