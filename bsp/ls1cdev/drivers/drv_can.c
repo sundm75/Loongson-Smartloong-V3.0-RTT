@@ -435,20 +435,20 @@ void ls1c_can0_irqhandler(int irq, void *param)
        CAN_Receive(CANx, &RxMessage);
        CANx->CMR |= CAN_CMR_RRB; 
        CANx->CMR |= CAN_CMR_CDO; 
-    rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_RX_IND);
-    rt_kprintf("\r\ncan0 int RX happened!\r\n");
+       rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_RX_IND);
+       rt_kprintf("\r\nCan0 int RX happened!\r\n");
     }
     /*发送中断*/
     else if (( status  & CAN_IR_TI) == CAN_IR_TI) 
     {
        rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_TX_DONE | 0 << 8);
-    rt_kprintf("\r\ncan0 int TX happened!\r\n");
+       rt_kprintf("\r\nCan0 int TX happened!\r\n");
     }
     /*数据溢出中断*/
     else if (( status  & CAN_IR_TI) == CAN_IR_DOI) 
     {
        rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_RXOF_IND);
-    rt_kprintf("\r\ncan0 int RX OF happened!\r\n");
+       rt_kprintf("\r\nCan0 int RX OF happened!\r\n");
     }
 }  
 static struct ls1c_bxcan bxcan0data =
@@ -475,20 +475,20 @@ void ls1c_can1_irqhandler(int irq, void *param)
        CAN_Receive(CANx, &RxMessage);
        CANx->CMR |= CAN_CMR_RRB; 
        CANx->CMR |= CAN_CMR_CDO; 
-    rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_RX_IND);
-    rt_kprintf("\r\ncan1 int RX happened!\r\n");
+       rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_RX_IND);
+       rt_kprintf("\r\nCan1 int RX happened!\r\n");
     }
     /*发送中断*/
     else if (( status  & CAN_IR_TI) == CAN_IR_TI) 
     {
        rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_TX_DONE | 0 << 8);
-    rt_kprintf("\r\ncan1 int TX happened!\r\n");
+       rt_kprintf("\r\nCan1 int TX happened!\r\n");
     }
     /*数据溢出中断*/
     else if (( status  & CAN_IR_TI) == CAN_IR_DOI) 
     {
        rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_RXOF_IND);
-    rt_kprintf("\r\ncan1 int RX OF happened!\r\n");
+       rt_kprintf("\r\nCan1 int RX OF happened!\r\n");
     }
 }  
 static struct ls1c_bxcan bxcan1data =
