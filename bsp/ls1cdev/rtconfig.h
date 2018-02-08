@@ -251,8 +251,8 @@
 #define RT_UART_RX_BUFFER_SIZE 64
 #define RT_USING_GMAC_INT_MODE
 #define RT_USING_FPU
-#define RT_USING_SPI1
 #define RT_USING_SPI0
+#define RT_USING_SPI1
 #define RT_USING_I2C1
 #define RT_USING_I2C2
 #define RT_CAN_USING_HDR
