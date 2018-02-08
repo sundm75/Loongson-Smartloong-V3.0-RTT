@@ -1,10 +1,10 @@
 /*
  * File      : test_pwm.c   
-²âÊÔÓ²¼þpwm£¬ ÔÚfinshÖÐÔËÐÐ
-1. test_pwm_normal()    ²úÉúÁ¬ÐøµÄpwm²¨ÐÎ
-2. test_pwm_pulse()  ²âÊÔÓ²¼þpwm
-3. test_pwm_gpio04_gpio06()  ²âÊÔgpio04¸´ÓÃÎªpwm,gpio06×÷ÎªÆÕÍ¨gpioÊ¹ÓÃ
-4. test_pwm_max_period() ²âÊÔpwm×î´óÖÜÆÚ
+æµ‹è¯•ç¡¬ä»¶pwmï¼Œ åœ¨finshä¸­è¿è¡Œ
+1. test_pwm_normal()    äº§ç”Ÿè¿žç»­çš„pwmæ³¢å½¢
+2. test_pwm_pulse()  æµ‹è¯•ç¡¬ä»¶pwm
+3. test_pwm_gpio04_gpio06()  æµ‹è¯•gpio04å¤ç”¨ä¸ºpwm,gpio06ä½œä¸ºæ™®é€šgpioä½¿ç”¨
+4. test_pwm_max_period() æµ‹è¯•pwmæœ€å¤§å‘¨æœŸ
  */
 
 #include "../libraries/ls1c_public.h"
@@ -13,31 +13,31 @@
 #include "../libraries/ls1c_pwm.h"
 
 
-// ²âÊÔÓ²¼þpwm²úÉúÁ¬ÐøµÄpwm²¨ÐÎ
+// æµ‹è¯•ç¡¬ä»¶pwmäº§ç”Ÿè¿žç»­çš„pwmæ³¢å½¢
 void test_pwm_normal(void)
 {
     pwm_info_t pwm_info;
 
-    pwm_info.gpio = LS1C_PWM0_GPIO06;               // pwmÒý½ÅÎ»gpio06
-    pwm_info.mode = PWM_MODE_NORMAL;                // Õý³£Ä£Ê½--Á¬ÐøÊä³öpwm²¨ÐÎ
-    pwm_info.duty = 0.85;                           // pwmÕ¼¿Õ±È
-    pwm_info.period_ns = 5*1000*1000;               // pwmÖÜÆÚ5ms
+    pwm_info.gpio = LS1C_PWM0_GPIO06;               // pwmå¼•è„šä½gpio06
+    pwm_info.mode = PWM_MODE_NORMAL;                // æ­£å¸¸æ¨¡å¼--è¿žç»­è¾“å‡ºpwmæ³¢å½¢
+    pwm_info.duty = 0.85;                           // pwmå ç©ºæ¯”
+    pwm_info.period_ns = 5*1000*1000;               // pwmå‘¨æœŸ5ms
 
-    // pwm³õÊ¼»¯£¬³õÊ¼»¯ºóÁ¢¼´²úÉúpwm²¨ÐÎ
+    // pwmåˆå§‹åŒ–ï¼Œåˆå§‹åŒ–åŽç«‹å³äº§ç”Ÿpwmæ³¢å½¢
     pwm_init(&pwm_info);
 
     while (1)
     {
-        // ÑÓÊ±100ms
+        // å»¶æ—¶100ms
         delay_ms(100);
 
-        // ½ûÖ¹pwm
+        // ç¦æ­¢pwm
         pwm_disable(&pwm_info);
 
-        // ÑÓÊ±100ms
+        // å»¶æ—¶100ms
         delay_ms(100);
 
-        // Ê¹ÄÜpwm
+        // ä½¿èƒ½pwm
         pwm_enable(&pwm_info);
     }
 
@@ -45,28 +45,28 @@ void test_pwm_normal(void)
 }
 
 
-// ²âÊÔÓ²¼þpwm²úÉúpwmÂö³å
+// æµ‹è¯•ç¡¬ä»¶pwmäº§ç”Ÿpwmè„‰å†²
 void test_pwm_pulse(void)
 {
     int i;
     pwm_info_t pwm_info;
 
-    pwm_info.gpio = LS1C_PWM0_GPIO06;               // Êä³öpwm²¨ÐÎµÄÒý½Å
-    pwm_info.mode = PWM_MODE_PULSE;                 // µ¥Âö³åÄ£Ê½£¬Ã¿´Îµ÷ÓÃÖ»·¢ËÍÒ»¸öÂö³å£¬µ÷ÓÃ¼ä¸ô±ØÐë´óÓÚpwmÖÜÆÚ
-    pwm_info.duty = 0.25;                           // pwmÕ¼¿Õ±È
-    pwm_info.period_ns = 1*1000*1000;               // pwmÖÜÆÚ1ms
+    pwm_info.gpio = LS1C_PWM0_GPIO06;               // è¾“å‡ºpwmæ³¢å½¢çš„å¼•è„š
+    pwm_info.mode = PWM_MODE_PULSE;                 // å•è„‰å†²æ¨¡å¼ï¼Œæ¯æ¬¡è°ƒç”¨åªå‘é€ä¸€ä¸ªè„‰å†²ï¼Œè°ƒç”¨é—´éš”å¿…é¡»å¤§äºŽpwmå‘¨æœŸ
+    pwm_info.duty = 0.25;                           // pwmå ç©ºæ¯”
+    pwm_info.period_ns = 1*1000*1000;               // pwmå‘¨æœŸ1ms
 
-    // ÎªÁË±ãÓÚÓÃÊ¾²¨Æ÷¹Û²ì£¬ÕâÀïÑ¡ÔñÃ¿¸ö1s¾Í·¢ËÍ10¸öÂö³å
+    // ä¸ºäº†ä¾¿äºŽç”¨ç¤ºæ³¢å™¨è§‚å¯Ÿï¼Œè¿™é‡Œé€‰æ‹©æ¯ä¸ª1så°±å‘é€10ä¸ªè„‰å†²
     while (1)
     {
-        // ·¢ËÍ10¸öÂö³å
+        // å‘é€10ä¸ªè„‰å†²
         for (i=0; i<10; i++)
         {
             pwm_init(&pwm_info);
             delay_ms(2);
         }
 
-        // ÑÓÊ±10ms
+        // å»¶æ—¶10ms
         delay_ms(10);
     }
 
@@ -75,24 +75,24 @@ void test_pwm_pulse(void)
 
 
 /*
- * ²âÊÔgpio04¸´ÓÃÎªpwm,gpio06×÷ÎªÆÕÍ¨gpioÊ¹ÓÃ
- * PWM0µÄÄ¬ÈÏÒý½ÅÎ»GPIO06£¬µ«Ò²¿ÉÒÔ¸´ÓÃÎªGPIO04
- * µ±gpio06»¹ÊÇ±£³ÖÄ¬ÈÏÎªpwmÊ±£¬¸´ÓÃgpio04Îªpwm0£¬ÄÇÃ´»áÍ¬Ê±ÔÚÁ½¸öÒý½ÅÊä³öÏàÍ¬µÄpwm²¨ÐÎ
- * ±¾º¯ÊýÖ¼ÔÚÖ¤Ã÷¿ÉÒÔÔÚgpio04¸´ÓÃÎªpwm0Ê±£¬»¹¿ÉÒÔ½«(Ä¬ÈÏ×÷Îªpwm0µÄ)gpio06×÷ÎªÆÕÍ¨gpioÊ¹ÓÃ
+ * æµ‹è¯•gpio04å¤ç”¨ä¸ºpwm,gpio06ä½œä¸ºæ™®é€šgpioä½¿ç”¨
+ * PWM0çš„é»˜è®¤å¼•è„šä½GPIO06ï¼Œä½†ä¹Ÿå¯ä»¥å¤ç”¨ä¸ºGPIO04
+ * å½“gpio06è¿˜æ˜¯ä¿æŒé»˜è®¤ä¸ºpwmæ—¶ï¼Œå¤ç”¨gpio04ä¸ºpwm0ï¼Œé‚£ä¹ˆä¼šåŒæ—¶åœ¨ä¸¤ä¸ªå¼•è„šè¾“å‡ºç›¸åŒçš„pwmæ³¢å½¢
+ * æœ¬å‡½æ•°æ—¨åœ¨è¯æ˜Žå¯ä»¥åœ¨gpio04å¤ç”¨ä¸ºpwm0æ—¶ï¼Œè¿˜å¯ä»¥å°†(é»˜è®¤ä½œä¸ºpwm0çš„)gpio06ä½œä¸ºæ™®é€šgpioä½¿ç”¨
  */
 void test_pwm_gpio04_gpio06(void)
 {
     pwm_info_t pwm_info;
     unsigned int gpio = 6;
 
-    // ÔÚgpio04Òý½ÅÊä³öpwm²¨ÐÎ
-    pwm_info.gpio = LS1C_PWM0_GPIO04;           // gpio04Òý½Å×÷ÎªpwmÊ¹ÓÃ
-    pwm_info.mode = PWM_MODE_NORMAL;            // Êä³öÁ¬ÐøµÄpwm²¨ÐÎ
-    pwm_info.duty = 0.25;                       // Õ¼¿Õ±È0.25
-    pwm_info.period_ns = 1*1000*1000;           // pwmÖÜÆÚ1ms
+    // åœ¨gpio04å¼•è„šè¾“å‡ºpwmæ³¢å½¢
+    pwm_info.gpio = LS1C_PWM0_GPIO04;           // gpio04å¼•è„šä½œä¸ºpwmä½¿ç”¨
+    pwm_info.mode = PWM_MODE_NORMAL;            // è¾“å‡ºè¿žç»­çš„pwmæ³¢å½¢
+    pwm_info.duty = 0.25;                       // å ç©ºæ¯”0.25
+    pwm_info.period_ns = 1*1000*1000;           // pwmå‘¨æœŸ1ms
     pwm_init(&pwm_info);
 
-    // gpio06Òý½Å×÷ÎªÆÕÍ¨gpioÊ¹ÓÃ
+    // gpio06å¼•è„šä½œä¸ºæ™®é€šgpioä½¿ç”¨
     gpio_init(gpio, gpio_mode_output);
     gpio_set(gpio, gpio_level_low);
 
@@ -103,19 +103,19 @@ void test_pwm_gpio04_gpio06(void)
 }
 
 
-// ²âÊÔpwm×î´óÖÜÆÚ
+// æµ‹è¯•pwmæœ€å¤§å‘¨æœŸ
 void test_pwm_max_period(void)
 {
     pwm_info_t pwm_info;
 
-    // ÔÚgpio04Òý½ÅÊä³öpwm²¨ÐÎ
-    pwm_info.gpio = LS1C_PWM0_GPIO06;           // gpio06Òý½Å×÷ÎªpwmÊ¹ÓÃ
-    pwm_info.mode = PWM_MODE_NORMAL;            // Êä³öÁ¬ÐøµÄpwm²¨ÐÎ
-    pwm_info.duty = 0.25;                       // Õ¼¿Õ±È0.25
-    pwm_info.period_ns = 130*1000*1000;         // pwmÖÜÆÚ130ms
+    // åœ¨gpio04å¼•è„šè¾“å‡ºpwmæ³¢å½¢
+    pwm_info.gpio = LS1C_PWM0_GPIO06;           // gpio06å¼•è„šä½œä¸ºpwmä½¿ç”¨
+    pwm_info.mode = PWM_MODE_NORMAL;            // è¾“å‡ºè¿žç»­çš„pwmæ³¢å½¢
+    pwm_info.duty = 0.25;                       // å ç©ºæ¯”0.25
+    pwm_info.period_ns = 130*1000*1000;         // pwmå‘¨æœŸ130ms
 
-    // pwmÖÜÆÚ³¬¹ý×î´óÖµÊ±»á³öÏÖ¸¡µãÒì³££¬ÔÝ²»ÖªµÀÎªÊ²Ã´
-//    pwm_info.period_ns = 134*1000*1000;         // pwmÖÜÆÚ134ms£¬³¬¹ýÁË×î´óÖµ£¬»á±»×Ô¶¯ÉèÎª×î´óÖµ
+    // pwmå‘¨æœŸè¶…è¿‡æœ€å¤§å€¼æ—¶ä¼šå‡ºçŽ°æµ®ç‚¹å¼‚å¸¸ï¼Œæš‚ä¸çŸ¥é“ä¸ºä»€ä¹ˆ
+//    pwm_info.period_ns = 134*1000*1000;         // pwmå‘¨æœŸ134msï¼Œè¶…è¿‡äº†æœ€å¤§å€¼ï¼Œä¼šè¢«è‡ªåŠ¨è®¾ä¸ºæœ€å¤§å€¼
 
     pwm_init(&pwm_info);
 

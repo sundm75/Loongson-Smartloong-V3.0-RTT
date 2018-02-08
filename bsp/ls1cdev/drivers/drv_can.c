@@ -56,10 +56,10 @@ static rt_err_t bxmodifyfilter(struct ls1c_bxcan *pbxcan, struct rt_can_filter_i
     CAN_TypeDef* CANx;
     CANx = pbxcan->reg;
     
-    /*pitem->mode     1-—⁄¬Îƒ£ Ω; 0- ¬À≤®∆˜ƒ£ Ω SJA1000÷– π”√“‘œ¬∑Ω Ω*/
-    /*SJA1000÷–AFM    1-µ•¬À≤®∆˜ƒ£ Ω; 0- À´¬À≤®∆˜ƒ£ Ω */
+    /*pitem->mode     1-Êé©Á†ÅÊ®°Âºè; 0- Êª§Ê≥¢Âô®Ê®°Âºè SJA1000‰∏≠‰ΩøÁî®‰ª•‰∏ãÊñπÂºè*/
+    /*SJA1000‰∏≠AFM    1-ÂçïÊª§Ê≥¢Âô®Ê®°Âºè; 0- ÂèåÊª§Ê≥¢Âô®Ê®°Âºè */
 
-    fcase = pitem->mode;/*1-µ•¬À≤®∆˜ƒ£ Ω; 0- À´¬À≤®∆˜ƒ£ Ω*/
+    fcase = pitem->mode;/*1-ÂçïÊª§Ê≥¢Âô®Ê®°Âºè; 0- ÂèåÊª§Ê≥¢Âô®Ê®°Âºè*/
     {
         if (!actived)
         {
@@ -425,26 +425,26 @@ void ls1c_can0_irqhandler(int irq, void *param)
     CAN_TypeDef* CANx;
     unsigned char status;
     CANx =  CAN0;
-    /*∂¡ºƒ¥Ê∆˜«Â≥˝÷–∂œ*/
+    /*ËØªÂØÑÂ≠òÂô®Ê∏ÖÈô§‰∏≠Êñ≠*/
    status = CANx->IR;
    
-    /*Ω” ’÷–∂œ*/
+    /*Êé•Êî∂‰∏≠Êñ≠*/
     if (( status & CAN_IR_RI) == CAN_IR_RI) 
     {
-        /*«Â≥˝RI ÷–∂œ*/
+        /*Ê∏ÖÈô§RI ‰∏≠Êñ≠*/
        CAN_Receive(CANx, &RxMessage);
        CANx->CMR |= CAN_CMR_RRB; 
        CANx->CMR |= CAN_CMR_CDO; 
        rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_RX_IND);
        rt_kprintf("\r\nCan0 int RX happened!\r\n");
     }
-    /*∑¢ÀÕ÷–∂œ*/
+    /*ÂèëÈÄÅ‰∏≠Êñ≠*/
     else if (( status  & CAN_IR_TI) == CAN_IR_TI) 
     {
        rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_TX_DONE | 0 << 8);
        rt_kprintf("\r\nCan0 int TX happened!\r\n");
     }
-    /* ˝æ›“Á≥ˆ÷–∂œ*/
+    /*Êï∞ÊçÆÊ∫¢Âá∫‰∏≠Êñ≠*/
     else if (( status  & CAN_IR_TI) == CAN_IR_DOI) 
     {
        rt_hw_can_isr(&bxcan0, RT_CAN_EVENT_RXOF_IND);
@@ -465,26 +465,26 @@ void ls1c_can1_irqhandler(int irq, void *param)
     CAN_TypeDef* CANx;
     unsigned char status;
     CANx =  CAN1;
-    /*∂¡ºƒ¥Ê∆˜«Â≥˝÷–∂œ*/
+    /*ËØªÂØÑÂ≠òÂô®Ê∏ÖÈô§‰∏≠Êñ≠*/
    status = CANx->IR;
    
-    /*Ω” ’÷–∂œ*/
+    /*Êé•Êî∂‰∏≠Êñ≠*/
     if (( status & CAN_IR_RI) == CAN_IR_RI) 
     {
-        /*«Â≥˝RI ÷–∂œ*/
+        /*Ê∏ÖÈô§RI ‰∏≠Êñ≠*/
        CAN_Receive(CANx, &RxMessage);
        CANx->CMR |= CAN_CMR_RRB; 
        CANx->CMR |= CAN_CMR_CDO; 
        rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_RX_IND);
        rt_kprintf("\r\nCan1 int RX happened!\r\n");
     }
-    /*∑¢ÀÕ÷–∂œ*/
+    /*ÂèëÈÄÅ‰∏≠Êñ≠*/
     else if (( status  & CAN_IR_TI) == CAN_IR_TI) 
     {
        rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_TX_DONE | 0 << 8);
        rt_kprintf("\r\nCan1 int TX happened!\r\n");
     }
-    /* ˝æ›“Á≥ˆ÷–∂œ*/
+    /*Êï∞ÊçÆÊ∫¢Âá∫‰∏≠Êñ≠*/
     else if (( status  & CAN_IR_TI) == CAN_IR_DOI) 
     {
        rt_hw_can_isr(&bxcan1, RT_CAN_EVENT_RXOF_IND);

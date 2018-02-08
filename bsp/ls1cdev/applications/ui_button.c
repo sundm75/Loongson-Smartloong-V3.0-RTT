@@ -1,9 +1,9 @@
 /*
  * File      : ui_button.c
  
-1.ui_button()  ´¥ÃşÆÁ°´Å¥ ¼°¼òÒ×¼ÆËãÆ÷
-2. test_guidemo() ÔËĞĞguiµÄdemo
-3. test_cali()   ÔËĞĞ±ê¶¨ÆÁÄ»³ÌĞò
+1.ui_button()  è§¦æ‘¸å±æŒ‰é’® åŠç®€æ˜“è®¡ç®—å™¨
+2. test_guidemo() è¿è¡Œguiçš„demo
+3. test_cali()   è¿è¡Œæ ‡å®šå±å¹•ç¨‹åº
 *
 */
 #include <rtthread.h>
@@ -36,7 +36,7 @@ static void onbutton_caculator(struct rtgui_object *object, struct rtgui_event *
         extern int calculator(void);
 	rt_kprintf("Oh! Run caculator !\n");
         
-        /* ¼òÒ×¼ÆËãÆ÷ */
+        /* ç®€æ˜“è®¡ç®—å™¨ */
         calculator();
 
 	return;

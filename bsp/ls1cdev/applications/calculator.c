@@ -1,6 +1,6 @@
 /*
  * File      : caculator.c
- 2014-2-22  jiezhi320  ÊµÏÖ¼òÒ×¼ÆËãÆ÷
+ 2014-2-22  jiezhi320  å®ç°ç®€æ˜“è®¡ç®—å™¨
 */
 
 
@@ -31,13 +31,13 @@ typedef enum _OPERATOR
     PER     //%
 } OPERATOR;
 
-static OPERATOR opert;  //ÔËËã·û
+static OPERATOR opert;  //è¿ç®—ç¬¦
 
 #define LEN	38
-static char char_display[LEN]; //ÊäÈë²¶»ñÓÃ
-static char char_res[LEN];     //ÏÔÊ¾ÓÃ
+static char char_display[LEN]; //è¾“å…¥æ•è·ç”¨
+static char char_res[LEN];     //æ˜¾ç¤ºç”¨
 
-static int  step;         //ÊäÈë²½Öè
+static int  step;         //è¾“å…¥æ­¥éª¤
 static int  point_flag;
 
 #define C_NUM		1
@@ -66,28 +66,28 @@ static void char_res_clr(void)
 
 void cal(void)
 {
-	static volatile int/*double*/ f_var1; //µÚÒ»¸ö²Ù×÷Êı
-	static volatile int/*double*/ f_var2; //µÚ¶ş¸ö²Ù×÷Êı
-	static volatile int/*double*/ f_res; //ÔËËã½á¹û	
+	static volatile int/*double*/ f_var1; //ç¬¬ä¸€ä¸ªæ“ä½œæ•°
+	static volatile int/*double*/ f_var2; //ç¬¬äºŒä¸ªæ“ä½œæ•°
+	static volatile int/*double*/ f_res; //è¿ç®—ç»“æœ	
 	char offset_op, offset_num1, offset_num2;
 	char c, buf[120];
 	int i;	
 	
 	if ((strstr(char_display, "+")!= RT_NULL)|| (strstr(char_display, "-")!= RT_NULL)||(strstr(char_display, "*")!= RT_NULL)||\
 		(strstr(char_display, "/")!= RT_NULL)||(strstr(char_display, "%")!= RT_NULL))
-	{//ÓĞ²Ù×÷·û
+	{//æœ‰æ“ä½œç¬¦
 		
 		if ((char_display[LEN-2]>=48)&& (char_display[LEN-2]<=57))
 		{
-		//²Ù×÷ÊıºóÓĞµÚ¶ş¸ö²Ù×÷Êı ¿ª»ú¼ÆËã
-			//¶¨Î»²Ù×÷·ûÎ»ÖÃ
+		//æ“ä½œæ•°åæœ‰ç¬¬äºŒä¸ªæ“ä½œæ•° å¼€æœºè®¡ç®—
+			//å®šä½æ“ä½œç¬¦ä½ç½®
 			if (opert == PLUS)(c='+') ;
 			if (opert == MINUS) (c='-'); 
 			if (opert == MULTI) (c='*'); 
 			if (opert == DIV)(c='/') ;
 			if (opert == PER)(c='%') ;				
 			offset_op = strchr(char_display,c)-char_display;
-			//¶¨Î»µÚÒ»¸ö²Ù×÷Êı¿ªÊ¼Î»ÖÃ
+			//å®šä½ç¬¬ä¸€ä¸ªæ“ä½œæ•°å¼€å§‹ä½ç½®
 			for (i=0; i<offset_op;i++)
 			{
 				if(char_display[i]!=' ')
@@ -96,7 +96,7 @@ void cal(void)
 				}	
 			}
 			offset_num1=i;
-			//¶¨Î»µÚÒ»¸ö²Ù×÷Êı¿ªÊ¼Î»ÖÃ
+			//å®šä½ç¬¬ä¸€ä¸ªæ“ä½œæ•°å¼€å§‹ä½ç½®
 			offset_num2=offset_op+1;
 			
 			if (offset_num1==offset_op)
@@ -124,26 +124,26 @@ void cal(void)
 			rt_kprintf("f_var2=%d\r\n", f_var2);
 			rt_kprintf("f_res=%d\r\n", f_res);
 			
-			//¼ÆËãÍê
+			//è®¡ç®—å®Œ
 			memset(buf,0 ,sizeof(buf));
-			sprintf(buf, "%d", f_res); //½«f_res×ªÎª×Ö·û´® //%f
+			sprintf(buf, "%d", f_res); //å°†f_resè½¬ä¸ºå­—ç¬¦ä¸² //%f
 			
-			i=strlen(buf)+1;//½á¹û¼ÓÉÏ=µÄ³¤¶È
+			i=strlen(buf)+1;//ç»“æœåŠ ä¸Š=çš„é•¿åº¦
 			rt_kprintf("i=%d\r\n", i);
 			memset(char_res,' ' ,sizeof(char_res));
 			memcpy(&char_res[LEN-(LEN-offset_num1-1+i)-1], &char_display[offset_num1], LEN-offset_num1-1);
 			char_res[LEN-i-1]='=';
-			sprintf(&char_res[LEN-i], "%d", f_res); //½«f_res×ªÎª×Ö·û´® //%f
+			sprintf(&char_res[LEN-i], "%d", f_res); //å°†f_resè½¬ä¸ºå­—ç¬¦ä¸² //%f
 			/*
 			if (strstr(&char_res[LEN-8], ".000000")!= RT_NULL)
 			{
 				for (i=LEN-2; i>=7; i--)
-				{//È¥µô¸¡µãÊıºóÄÇĞ©Ã»ÓÃµÄ0ºÍ.
+				{//å»æ‰æµ®ç‚¹æ•°åé‚£äº›æ²¡ç”¨çš„0å’Œ.
 					char_res[i]=char_res[i-7];
 				}
 			}	
 			else
-			{	//¼ÆËãºóÃæÓĞ¼¸¸öÃ»ÓÃµÄ'0'
+			{	//è®¡ç®—åé¢æœ‰å‡ ä¸ªæ²¡ç”¨çš„'0'
 				int j;
 				for (j=LEN-2; j>=LEN-7; j--)
 				{
@@ -152,7 +152,7 @@ void cal(void)
 				}
 				
 				for (i=LEN-2; i>=LEN-2-j; i--)
-				{//È¥µô¸¡µãÊıºóÄÇĞ©Ã»ÓÃµÄ0
+				{//å»æ‰æµ®ç‚¹æ•°åé‚£äº›æ²¡ç”¨çš„0
 					char_res[i]=char_res[i-(LEN-2-j)];
 				}
 			}	
@@ -164,7 +164,7 @@ void cal(void)
 			memset(char_res,0 ,sizeof(char_res));
 			memcpy(char_res, "Hi! Number is not completed!", LEN-1);
 				
-			//¸´Î»±äÁ¿
+			//å¤ä½å˜é‡
 			point_flag =0;
 			rt_memset(char_display, ' ', sizeof(char_display));
 			char_display[LEN-1]=0;
@@ -176,7 +176,7 @@ void cal(void)
 			memset(char_res,0 ,sizeof(char_res));
 			memcpy(char_res, "Funny? No operator!!!", LEN-1);
 			
-			//¸´Î»±äÁ¿
+			//å¤ä½å˜é‡
 			point_flag =0;
 			rt_memset(char_display, ' ', sizeof(char_display));
 			char_display[LEN-1]=0;
@@ -191,12 +191,12 @@ void char_res_append(char c)
 	
 	switch(step)
 	{
-		case 0: //»¹Ã»µÚÒ»¸ö²Ù×÷Êı »òÒÑ¾­ÓĞµÚÒ»¸ö²Ù×÷Êıµ«»¹Ã»²Ù×÷·û
+		case 0: //è¿˜æ²¡ç¬¬ä¸€ä¸ªæ“ä½œæ•° æˆ–å·²ç»æœ‰ç¬¬ä¸€ä¸ªæ“ä½œæ•°ä½†è¿˜æ²¡æ“ä½œç¬¦
 			rt_kprintf("step=%d\r\n", step);
 			
 			if (input_type(c)==C_POINT)
-			{//³õÊ¼Ì¬ ÊäÈë .
-				if (point_flag!=0) break; //²Ù×÷ÊıÖĞÒÑ¾­ÓĞ¸öĞ¡ÊıµãÁË£¬ºöÂÔ
+			{//åˆå§‹æ€ è¾“å…¥ .
+				if (point_flag!=0) break; //æ“ä½œæ•°ä¸­å·²ç»æœ‰ä¸ªå°æ•°ç‚¹äº†ï¼Œå¿½ç•¥
 				for(i=0; i<LEN-2; i++)
 				{
 					char_display[i] = char_display[i+1];
@@ -206,7 +206,7 @@ void char_res_append(char c)
 				rtgui_label_set_text(label_result, char_display);
 			}	
 			else if (input_type(c)==C_NUM)
-			{//³õÊ¼Ì¬ ÊäÈë Êı×Ö
+			{//åˆå§‹æ€ è¾“å…¥ æ•°å­—
 				for(i=0; i<LEN-2; i++)
 				{
 					char_display[i] = char_display[i+1];
@@ -221,7 +221,7 @@ void char_res_append(char c)
 					char_display[i] = char_display[i+1];
 				}
 				char_display[LEN-2] = c;					
-				step =1;//ÒÑ¾­ÓĞµÚÒ»¸ö²Ù×÷ÊıºÍ²Ù×÷·ûÁË
+				step =1;//å·²ç»æœ‰ç¬¬ä¸€ä¸ªæ“ä½œæ•°å’Œæ“ä½œç¬¦äº†
 				point_flag =0;
 				if (c=='+') opert = PLUS;
 				if (c=='-') opert = MINUS;
@@ -232,7 +232,7 @@ void char_res_append(char c)
 			}	
 			
 			break;
-		case 1://ÒÑ¾­ÓĞµÚÒ»¸ö²Ù×÷ÊıºÍ²Ù×÷·ûÁË
+		case 1://å·²ç»æœ‰ç¬¬ä¸€ä¸ªæ“ä½œæ•°å’Œæ“ä½œç¬¦äº†
 			rt_kprintf("step=%d\r\n", step);
 			
 			if (input_type(c)==C_POINT)
@@ -240,7 +240,7 @@ void char_res_append(char c)
 				break;
 			}			
 			else if (input_type(c)==C_OPERT)
-			{//ÒÑ¾­ÓĞ¸ö²Ù×÷·ûÁË£¬ÔÙÀ´Ò»¸ö²Ù×÷·û£¬ÔòÓÃºóÀ´µÄ²Ù×÷·ûÌæ»»Ô­²Ù×÷·û
+			{//å·²ç»æœ‰ä¸ªæ“ä½œç¬¦äº†ï¼Œå†æ¥ä¸€ä¸ªæ“ä½œç¬¦ï¼Œåˆ™ç”¨åæ¥çš„æ“ä½œç¬¦æ›¿æ¢åŸæ“ä½œç¬¦
 				char_display[LEN-2] = c;					
 				if (c=='+') opert = PLUS;
 				if (c=='-') opert = MINUS;
@@ -251,7 +251,7 @@ void char_res_append(char c)
 			}	
 			else
 			{
-				step =2;//×¼±¸ÊäÈë×îºóÒ»¸ö²Ù×÷Êı
+				step =2;//å‡†å¤‡è¾“å…¥æœ€åä¸€ä¸ªæ“ä½œæ•°
 				for(i=0; i<LEN-2; i++)
 				{
 					char_display[i] = char_display[i+1];
@@ -260,12 +260,12 @@ void char_res_append(char c)
 				rtgui_label_set_text(label_result, char_display);						
 			}	
 			break;
-		case 2://×¼±¸ÊäÈë×îºóÒ»¸ö²Ù×÷Êı
+		case 2://å‡†å¤‡è¾“å…¥æœ€åä¸€ä¸ªæ“ä½œæ•°
 			rt_kprintf("step=%d\r\n", step);
 			
 			if (input_type(c)==C_POINT)
-			{//ÊäÈë .
-				if (point_flag!=0) break; //²Ù×÷ÊıÖĞÒÑ¾­ÓĞ¸öĞ¡ÊıµãÁË£¬ºöÂÔ
+			{//è¾“å…¥ .
+				if (point_flag!=0) break; //æ“ä½œæ•°ä¸­å·²ç»æœ‰ä¸ªå°æ•°ç‚¹äº†ï¼Œå¿½ç•¥
 				for(i=0; i<LEN-2; i++)
 				{
 					char_display[i] = char_display[i+1];
@@ -275,7 +275,7 @@ void char_res_append(char c)
 				rtgui_label_set_text(label_result, char_display);
 			}	
 			else if (input_type(c)==C_NUM)
-			{//³õÊ¼Ì¬ ÊäÈë Êı×Ö
+			{//åˆå§‹æ€ è¾“å…¥ æ•°å­—
 				for(i=0; i<LEN-2; i++)
 				{
 					char_display[i] = char_display[i+1];
@@ -283,12 +283,12 @@ void char_res_append(char c)
 				char_display[LEN-2] = c;	
 				rtgui_label_set_text(label_result, char_display);				
 			}	
-			else//°´ÔËËã·û µÈÓÚÊÇÒªÇó¼ÆËã
+			else//æŒ‰è¿ç®—ç¬¦ ç­‰äºæ˜¯è¦æ±‚è®¡ç®—
 			{
 			    cal();
 				rtgui_label_set_text(label_result, char_res);	
 				
-				//¸´Î»±äÁ¿
+				//å¤ä½å˜é‡
 				point_flag =0;
 				rt_memset(char_display, ' ', sizeof(char_display));
 				char_display[LEN-1]=0;
@@ -372,7 +372,7 @@ static void button_equal_onbutton(struct rtgui_object *object, struct rtgui_even
 	cal();
 	rtgui_label_set_text(label_result, char_res);	
 				
-	//¸´Î»±äÁ¿
+	//å¤ä½å˜é‡
 	point_flag =0;
 	rt_memset(char_display, ' ', sizeof(char_display));
 	char_display[LEN-1]=0;

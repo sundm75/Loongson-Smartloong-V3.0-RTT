@@ -4,7 +4,7 @@
 #define __IRQ_H
 
 
-// ³õÊ¼»¯ÖĞ¶Ï
+// åˆå§‹åŒ–ä¸­æ–­
 void irq_init(void);
 
 

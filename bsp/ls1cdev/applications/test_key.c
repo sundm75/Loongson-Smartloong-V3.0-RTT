@@ -1,10 +1,10 @@
 /*
  * File      : test_key.c
-²âÊÔkey½Ó¿ÚÔÚfinshÖĞÔËĞĞ
+æµ‹è¯•keyæ¥å£åœ¨finshä¸­è¿è¡Œ
 1. test_key   
-Ê×ÏÈ³õÊ¼»¯´ò¿ª°´¼üÖĞ¶Ï£¬Æô¶¯Ïß³Ì²»¶Ï¼ì²â±êÖ¾Î»£»
-°´¼ü°´ÏÂ£¬½øÈëÖĞ¶Ï·şÎñ³ÌĞòÖÃÎ»±êÖ¾Î»£»
-Ïß³Ì¼ì²âµ½±êÖ¾Î»ºó²Ù×÷ÉÁµÆÒ»ÏÂ¡£
+é¦–å…ˆåˆå§‹åŒ–æ‰“å¼€æŒ‰é”®ä¸­æ–­ï¼Œå¯åŠ¨çº¿ç¨‹ä¸æ–­æ£€æµ‹æ ‡å¿—ä½ï¼›
+æŒ‰é”®æŒ‰ä¸‹ï¼Œè¿›å…¥ä¸­æ–­æœåŠ¡ç¨‹åºç½®ä½æ ‡å¿—ä½ï¼›
+çº¿ç¨‹æ£€æµ‹åˆ°æ ‡å¿—ä½åæ“ä½œé—ªç¯ä¸€ä¸‹ã€‚
  */
 #include <rtthread.h>  
 
@@ -14,7 +14,7 @@
 #include "ls1c_gpio.h"  
 #include "mipsregs.h"  
 
-// ²âÊÔÓÃµÄÏß³Ì    
+// æµ‹è¯•ç”¨çš„çº¿ç¨‹    
 #define THREAD_TEST_PRIORITY                    (25)    
 #define THREAD_TEST_STACK_SIZE                  (4*1024)        // 4k    
 #define THREAD_TEST_TIMESLICE                   (10)    
@@ -35,26 +35,26 @@ void ls1c_test_key_irqhandler(int irq, void *param)
     key_irq_flag = 1;  
 }  
     
-// ²âÊÔÓÃµÄÏß³ÌµÄÈë¿Ú    
+// æµ‹è¯•ç”¨çš„çº¿ç¨‹çš„å…¥å£    
 void thread_test_entry(void *parameter)    
 {  
     int key_irq = LS1C_GPIO_TO_IRQ(key_gpio);  
   
-    // ³õÊ¼»¯°´¼üÖĞ¶Ï  
+    // åˆå§‹åŒ–æŒ‰é”®ä¸­æ–­  
     gpio_set_irq_type(key_gpio, IRQ_TYPE_EDGE_FALLING);  
     rt_hw_interrupt_install(key_irq, ls1c_test_key_irqhandler, RT_NULL, "Key1");  
     rt_hw_interrupt_umask(key_irq);  
     gpio_init(key_gpio, gpio_mode_input);  
   
-    // ³õÊ¼»¯led  
+    // åˆå§‹åŒ–led  
     gpio_init(led_gpio, gpio_mode_output);
-    gpio_set(led_gpio, gpio_level_high);       // Ö¸Ê¾µÆÄ¬ÈÏÏ¨Ãğ
+    gpio_set(led_gpio, gpio_level_high);       // æŒ‡ç¤ºç¯é»˜è®¤ç†„ç­
       
     while (1)    
     {    
         if (1 == key_irq_flag)  
         {  
-            // ÑÓ³Ù10ms£¬Ïû¶¶  
+            // å»¶è¿Ÿ10msï¼Œæ¶ˆæŠ–  
             rt_thread_delay(RT_TICK_PER_SECOND/10);  
             key_irq_flag = 0;  
 		if (0 == (gpio_get(led_gpio)))
@@ -78,7 +78,7 @@ int test_key(void)
  
   
     
-    // ³õÊ¼»¯²âÊÔÓÃµÄÏß³Ì    
+    // åˆå§‹åŒ–æµ‹è¯•ç”¨çš„çº¿ç¨‹    
     result = rt_thread_init(&thread_test,     
                             "thread_test",    
                             thread_test_entry,    

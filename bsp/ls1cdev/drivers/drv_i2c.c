@@ -19,7 +19,7 @@
  *
  * Change Logs:
  * Date           Author       Notes
- * 2017-11-14     ÇÚÎª±¾       first version
+ * 2017-11-14     å‹¤ä¸ºæœ¬       first version
  */
 
 #include <rtthread.h>
@@ -104,8 +104,8 @@ static const struct rt_i2c_bit_ops bit_ops = {
 
     .udelay     = ls1c_udelay,
 
-    .delay_us   = 20,       // ´ËÖµÎªÖÜÆÚ(us)
-    .timeout    = 10,       // µ¥Î»Îªtick
+    .delay_us   = 20,       // æ­¤å€¼ä¸ºå‘¨æœŸ(us)
+    .timeout    = 10,       // å•ä½ä¸ºtick
 };
 
 

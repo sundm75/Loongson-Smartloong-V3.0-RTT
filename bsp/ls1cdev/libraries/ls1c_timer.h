@@ -1,4 +1,4 @@
-// Ó²¼ş¶¨Ê±Æ÷Í·ÎÄ¼ş
+// ç¡¬ä»¶å®šæ—¶å™¨å¤´æ–‡ä»¶
 
 
 #ifndef __OPENLOONGSON_TIMER_H
@@ -8,59 +8,59 @@
 #include "ls1c_public.h"
 
 
-// Ó²¼ş¶¨Ê±Æ÷
+// ç¡¬ä»¶å®šæ—¶å™¨
 typedef enum
 {
-    TIMER_PWM0,                     // PWM0ÓÃ×÷Ó²¼ş¶¨Ê±Æ÷
-    TIMER_PWM1,                     // PWM1ÓÃ×÷Ó²¼ş¶¨Ê±Æ÷
-    TIMER_PWM2,                     // PWM2ÓÃ×÷Ó²¼ş¶¨Ê±Æ÷
-    TIMER_PWM3                      // PWM3ÓÃ×÷Ó²¼ş¶¨Ê±Æ÷
+    TIMER_PWM0,                     // PWM0ç”¨ä½œç¡¬ä»¶å®šæ—¶å™¨
+    TIMER_PWM1,                     // PWM1ç”¨ä½œç¡¬ä»¶å®šæ—¶å™¨
+    TIMER_PWM2,                     // PWM2ç”¨ä½œç¡¬ä»¶å®šæ—¶å™¨
+    TIMER_PWM3                      // PWM3ç”¨ä½œç¡¬ä»¶å®šæ—¶å™¨
 }ls1c_timer_t;
 
 
-// Ó²¼ş¶¨Ê±Æ÷ĞÅÏ¢
+// ç¡¬ä»¶å®šæ—¶å™¨ä¿¡æ¯
 typedef struct
 {
-    ls1c_timer_t timer;                  // Ó²¼ş¶¨Ê±Æ÷
-    unsigned long time_ns;          // ¶¨Ê±Ê±¼ä
+    ls1c_timer_t timer;                  // ç¡¬ä»¶å®šæ—¶å™¨
+    unsigned long time_ns;          // å®šæ—¶æ—¶é—´
 }timer_info_t;
 
 
 
 /*
- * ³õÊ¼»¯¶¨Ê±Æ÷£¬²¢¿ªÊ¼¶¨Ê±
- * @timer_info ¶¨Ê±Æ÷ºÍ¶¨Ê±Ê±¼äĞÅÏ¢
+ * åˆå§‹åŒ–å®šæ—¶å™¨ï¼Œå¹¶å¼€å§‹å®šæ—¶
+ * @timer_info å®šæ—¶å™¨å’Œå®šæ—¶æ—¶é—´ä¿¡æ¯
  */
 void timer_init(timer_info_t *timer_info);
 
 
 /*
- * ÅĞ¶ÏÖ¸¶¨¶¨Ê±Æ÷ÊÇ·ñ³¬Ê±
- * @timer_info ¶¨Ê±Æ÷
+ * åˆ¤æ–­æŒ‡å®šå®šæ—¶å™¨æ˜¯å¦è¶…æ—¶
+ * @timer_info å®šæ—¶å™¨
  * @ret TRUE or FALSE
  */
 BOOL timer_is_time_out(timer_info_t *timer_info);
 
 
 /*
- * Í£Ö¹¶¨Ê±Æ÷
- * @timer_info ¶¨Ê±Æ÷
+ * åœæ­¢å®šæ—¶å™¨
+ * @timer_info å®šæ—¶å™¨
  */
 void timer_stop(timer_info_t *timer_info);
 
 
 
 /*
- * »ñÈ¡¶¨Ê±Æ÷´Ó³õÊ¼»¯µ½ÏÖÔÚµÄÊ±¼ä(ÊµÏÖ¼ÆÊ±¹¦ÄÜ)£¬µ¥Î»ns
- * @timer_info Ó²¼ş¶¨Ê±Æ÷
- * @ret Ê±¼ä£¬µ¥Î»ns
+ * è·å–å®šæ—¶å™¨ä»åˆå§‹åŒ–åˆ°ç°åœ¨çš„æ—¶é—´(å®ç°è®¡æ—¶åŠŸèƒ½)ï¼Œå•ä½ns
+ * @timer_info ç¡¬ä»¶å®šæ—¶å™¨
+ * @ret æ—¶é—´ï¼Œå•ä½ns
  */
 unsigned long timer_get_time_ns(timer_info_t *timer_info);
 
 
 /*
- * ´òÓ¡timerÏà¹Ø¼Ä´æÆ÷µÄÖµ
- * @timer_info Ó²¼ş¶¨Ê±Æ÷
+ * æ‰“å°timerç›¸å…³å¯„å­˜å™¨çš„å€¼
+ * @timer_info ç¡¬ä»¶å®šæ—¶å™¨
  */
 void timer_print_regs(timer_info_t *timer_info);
 

@@ -1,6 +1,6 @@
 /*************************************************************************
  *
- * Ê±ÖÓÏà¹ØÍ·ÎÄ¼ş
+ * æ—¶é’Ÿç›¸å…³å¤´æ–‡ä»¶
  *
  *************************************************************************/
 
@@ -11,37 +11,37 @@
 
 
 /*
- * »ñÈ¡PLLÆµÂÊ
- * @ret PLLÆµÂÊ
+ * è·å–PLLé¢‘ç‡
+ * @ret PLLé¢‘ç‡
  */
 unsigned long clk_get_pll_rate(void);
 
 
 /*
- * »ñÈ¡CPUÆµÂÊ
- * @ret CPUÆµÂÊ
+ * è·å–CPUé¢‘ç‡
+ * @ret CPUé¢‘ç‡
  */
 unsigned long clk_get_cpu_rate(void);
 
 
 
 /*
- * »ñÈ¡DDRÆµÂÊ
- * @ret DDRÆµÂÊ
+ * è·å–DDRé¢‘ç‡
+ * @ret DDRé¢‘ç‡
  */
 unsigned long clk_get_ddr_rate(void);
 
 
 /*
- * »ñÈ¡APBÆµÂÊ
- * @ret APBÆµÂÊ
+ * è·å–APBé¢‘ç‡
+ * @ret APBé¢‘ç‡
  */
 unsigned long clk_get_apb_rate(void);
 
 
 /*
- * »ñÈ¡DCÆµÂÊ
- * @ret DCÆµÂÊ
+ * è·å–DCé¢‘ç‡
+ * @ret DCé¢‘ç‡
  */
 unsigned long clk_get_dc_rate(void);
 

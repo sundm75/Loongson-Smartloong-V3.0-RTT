@@ -65,12 +65,12 @@ void rt_hw_fpu_init(void)
     rt_uint32_t c0_status = 0;
     rt_uint32_t c1_status = 0;
 
-    // 使能协处理器1--FPU
+    // 浣胯兘鍗忓鐞嗗櫒1--FPU
     c0_status = read_c0_status();
     c0_status |= (ST0_CU1 | ST0_FR);
     write_c0_status(c0_status);
 
-    // 配置FPU
+    // 閰嶇疆FPU
     c1_status = read_c1_status();
     c1_status |= (FPU_CSR_FS | FPU_CSR_FO | FPU_CSR_FN);    // set FS, FO, FN
     c1_status &= ~(FPU_CSR_ALL_E);                          // disable exception

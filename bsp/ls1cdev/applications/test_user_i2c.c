@@ -1,5 +1,5 @@
 /*
-file: test_da3231.c
+file: test_user_i2c.c
 测试祼机i2c2驱动程序ls1c_i2c.c 在finsh 中运行
 1. test_at24(1,17) //使用i2c1 , 写入at24c32(地址0~31)数据(17*i(i=0~31)),再读出并打印
 2. ds3231_getdata(1) //使用i2c1,读出ds3231的日期

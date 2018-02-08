@@ -1,12 +1,12 @@
 /*
  * File      : test_delay.c
-²âÊÔÑÓÊ±º¯Êı£¬ ÔÚfinsh ÖĞÔËĞĞ 
+æµ‹è¯•å»¶æ—¶å‡½æ•°ï¼Œ åœ¨finsh ä¸­è¿è¡Œ 
 1. test_delay_1ms()
 2. test_delay_1us()
 3. test_delay_1s()
-4. print_clk()  ½«µ±Ç°µÄ·ÖÆµµÄËùÓĞÊ±ÖÓ¶¼´òÓ¡³öÀ´
-5. test_rtdelay_1s µ÷ÓÃRT_TICK_PER_SECONDÊµÏÖ1s ÑÓÊ±²âÊÔ
-6. mem_read(***) ¶ÁÈ¡***¼Ä´æÆ÷ÖĞ32Î»Êı¾İ²¢´òÓ¡
+4. print_clk()  å°†å½“å‰çš„åˆ†é¢‘çš„æ‰€æœ‰æ—¶é’Ÿéƒ½æ‰“å°å‡ºæ¥
+5. test_rtdelay_1s è°ƒç”¨RT_TICK_PER_SECONDå®ç°1s å»¶æ—¶æµ‹è¯•
+6. mem_read(***) è¯»å–***å¯„å­˜å™¨ä¸­32ä½æ•°æ®å¹¶æ‰“å°
  */
 
 #include "rtthread.h"
@@ -16,7 +16,7 @@
 
 #define led_gpio 52
 
-// ²âÊÔÑÓÊ±º¯Êıdelay_1ms()
+// æµ‹è¯•å»¶æ—¶å‡½æ•°delay_1ms()
 void test_delay_1ms(void)
 {
     int time = 0;
@@ -24,7 +24,7 @@ void test_delay_1ms(void)
     gpio_init(led_gpio, gpio_mode_output);
     gpio_set(led_gpio, gpio_level_high);
 
-    // ²úÉú²»Í¬¿í¶ÈµÄ¸ßµÍµçÆ½£¬ÓÃÊ¾²¨Æ÷¹Û²ì¸ßµÍµçÆ½¿í¶ÈÊÇ·ñÕıÈ·
+    // äº§ç”Ÿä¸åŒå®½åº¦çš„é«˜ä½ç”µå¹³ï¼Œç”¨ç¤ºæ³¢å™¨è§‚å¯Ÿé«˜ä½ç”µå¹³å®½åº¦æ˜¯å¦æ­£ç¡®
     while (1)
     {
         // 2ms
@@ -59,7 +59,7 @@ void test_delay_1ms(void)
 
 
 
-// ²âÊÔÑÓÊ±º¯Êıdelay_1us()
+// æµ‹è¯•å»¶æ—¶å‡½æ•°delay_1us()
 void test_delay_1us(void)
 {
     int time;
@@ -67,7 +67,7 @@ void test_delay_1us(void)
     gpio_init(led_gpio, gpio_mode_output);
     gpio_set(led_gpio, gpio_level_high);
 
-    // ²úÉú²»Í¬¿í¶ÈµÄ¸ßµÍµçÆ½£¬ÓÃÊ¾²¨Æ÷¹Û²ì¸ßµÍµçÆ½¿í¶ÈÊÇ·ñÕıÈ·
+    // äº§ç”Ÿä¸åŒå®½åº¦çš„é«˜ä½ç”µå¹³ï¼Œç”¨ç¤ºæ³¢å™¨è§‚å¯Ÿé«˜ä½ç”µå¹³å®½åº¦æ˜¯å¦æ­£ç¡®
     while (1)
     {
         // 2us
@@ -108,7 +108,7 @@ void test_delay_1us(void)
 }
 
 
-// ²âÊÔÑÓÊ±º¯Êıdelay_1s()
+// æµ‹è¯•å»¶æ—¶å‡½æ•°delay_1s()
 void test_delay_1s(void)
 {
     int time;

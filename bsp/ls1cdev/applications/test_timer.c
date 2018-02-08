@@ -1,11 +1,11 @@
 /*
  * File      : test_timer.c
- ²âÊÔÓ²¼ş¶¨Ê±Æ÷ı¬ ÔÚfinsh ÖĞÔËĞĞ 
-1.test_timer_poll_time_out()  ²âÊÔÓ²¼ş¶¨Ê±Æ÷µÄ¶¨Ê±¹¦ÄÜ(¶ÁÈ¡ÖĞ¶Ï×´Ì¬Î»µÄ·½Ê½ÅĞ¶ÏÊÇ·ñ³¬Ê±)
+ æµ‹è¯•ç¡¬ä»¶å®šæ—¶å™¨î• åœ¨finsh ä¸­è¿è¡Œ 
+1.test_timer_poll_time_out()  æµ‹è¯•ç¡¬ä»¶å®šæ—¶å™¨çš„å®šæ—¶åŠŸèƒ½(è¯»å–ä¸­æ–­çŠ¶æ€ä½çš„æ–¹å¼åˆ¤æ–­æ˜¯å¦è¶…æ—¶)
 2.test_timer_get_time ()
-* ÓÃÓ²¼ş¶¨Ê±Æ÷¼ÆÊ±
- * ÓÃÓ²¼ş¶¨Ê±Æ÷²âÁ¿ºìÍâ½ÓÊÕÍ·HX1838²úÉúµÄ²¨ĞÎÖĞ¸ßµÍµçÆ½µÄÊ±³¤£¬
- * À´Ê¶±ğºìÍâÒ£¿Ø°åÉÏÊÇÄÇ¸ö°´¼ü±»°´ÏÂ£¬Ñ¡ÔñNEC±àÂë·½Ê½µÄºìÍâÒ£¿ØÆ÷
+* ç”¨ç¡¬ä»¶å®šæ—¶å™¨è®¡æ—¶
+ * ç”¨ç¡¬ä»¶å®šæ—¶å™¨æµ‹é‡çº¢å¤–æ¥æ”¶å¤´HX1838äº§ç”Ÿçš„æ³¢å½¢ä¸­é«˜ä½ç”µå¹³çš„æ—¶é•¿ï¼Œ
+ * æ¥è¯†åˆ«çº¢å¤–é¥æ§æ¿ä¸Šæ˜¯é‚£ä¸ªæŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œé€‰æ‹©NECç¼–ç æ–¹å¼çš„çº¢å¤–é¥æ§å™¨
  */
 
 
@@ -14,24 +14,24 @@
 #include "../libraries/ls1c_delay.h"
 
 
-// Ò»ÌõºìÍâÃüÁîµÄ³¤¶È
-#define IR_MAX_BYTE_NUM                 (4)                             // Ò»ÌõºìÍâÃüÁî°üÀ¨4×Ö½ÚÊı¾İ
-#define IR_MAX_BIT_NUM                  (1 + IR_MAX_BYTE_NUM * 8)       // 1bitµÄÆğÊ¼ĞÅºÅºÍ4¸ö×Ö½Ú
+// ä¸€æ¡çº¢å¤–å‘½ä»¤çš„é•¿åº¦
+#define IR_MAX_BYTE_NUM                 (4)                             // ä¸€æ¡çº¢å¤–å‘½ä»¤åŒ…æ‹¬4å­—èŠ‚æ•°æ®
+#define IR_MAX_BIT_NUM                  (1 + IR_MAX_BYTE_NUM * 8)       // 1bitçš„èµ·å§‹ä¿¡å·å’Œ4ä¸ªå­—èŠ‚
 
-// ºìÍâÃüÁîÖĞÒ»¸öbitÊı¾İµÄ×î´óÊ±³¤
+// çº¢å¤–å‘½ä»¤ä¸­ä¸€ä¸ªbitæ•°æ®çš„æœ€å¤§æ—¶é•¿
 #define IR_ONE_BIT_MAX_TIME             (20*1000*1000)
 
 
-// ºìÍâÃüÁîÖĞÒ»¸öbitµÄĞÅÏ¢
+// çº¢å¤–å‘½ä»¤ä¸­ä¸€ä¸ªbitçš„ä¿¡æ¯
 typedef struct
 {
-    unsigned long low_time_ns;          // µÍµçÆ½Ê±³¤£¬µ¥Î»ns
-    unsigned long high_time_ns;         // ¸ßµçÆ½Ê±³¤£¬µ¥Î»ns
-    unsigned int bit;                   // ±ÈÌØÖµ£¬0»ò1
+    unsigned long low_time_ns;          // ä½ç”µå¹³æ—¶é•¿ï¼Œå•ä½ns
+    unsigned long high_time_ns;         // é«˜ç”µå¹³æ—¶é•¿ï¼Œå•ä½ns
+    unsigned int bit;                   // æ¯”ç‰¹å€¼ï¼Œ0æˆ–1
 }ir_one_bit_t;
 
 
-// ²âÊÔÓ²¼ş¶¨Ê±Æ÷µÄ¶¨Ê±¹¦ÄÜ(¶ÁÈ¡ÖĞ¶Ï×´Ì¬Î»µÄ·½Ê½ÅĞ¶ÏÊÇ·ñ³¬Ê±)
+// æµ‹è¯•ç¡¬ä»¶å®šæ—¶å™¨çš„å®šæ—¶åŠŸèƒ½(è¯»å–ä¸­æ–­çŠ¶æ€ä½çš„æ–¹å¼åˆ¤æ–­æ˜¯å¦è¶…æ—¶)
 void test_timer_poll_time_out(void)
 {
     unsigned int gpio = 6;
@@ -42,18 +42,18 @@ void test_timer_poll_time_out(void)
 
     while (1)
     {
-        // ¶¨Ê±10us
+        // å®šæ—¶10us
         timer_info.timer    = TIMER_PWM0;
         timer_info.time_ns  = 10*1000;
         timer_init(&timer_info);
-        while (! timer_is_time_out(&timer_info))    // µÈ´ı£¬Ö±µ½³¬Ê±
+        while (! timer_is_time_out(&timer_info))    // ç­‰å¾…ï¼Œç›´åˆ°è¶…æ—¶
             ;
-//        timer_print_regs(&timer_info);            // µ÷ÊÔÊ±£¬´òÓ¡¼Ä´æÆ÷ĞÅÏ¢
+//        timer_print_regs(&timer_info);            // è°ƒè¯•æ—¶ï¼Œæ‰“å°å¯„å­˜å™¨ä¿¡æ¯
 //        timer_print_regs(&timer_info);
 //        timer_print_regs(&timer_info);
         gpio_set(gpio, gpio_level_low);
 
-        // ¶¨Ê±10ms
+        // å®šæ—¶10ms
         timer_info.time_ns  = 10*1000*1000;
         timer_init(&timer_info);
         while (! timer_is_time_out(&timer_info))
@@ -65,71 +65,71 @@ void test_timer_poll_time_out(void)
 
 
 /*
- * ÓÃÓ²¼ş¶¨Ê±Æ÷¼ÆÊ±
- * ÓÃÓ²¼ş¶¨Ê±Æ÷²âÁ¿ºìÍâ½ÓÊÕÍ·HX1838²úÉúµÄ²¨ĞÎÖĞ¸ßµÍµçÆ½µÄÊ±³¤£¬
- * À´Ê¶±ğºìÍâÒ£¿Ø°åÉÏÊÇÄÇ¸ö°´¼ü±»°´ÏÂ£¬Ñ¡ÔñNEC±àÂë·½Ê½µÄºìÍâÒ£¿ØÆ÷
+ * ç”¨ç¡¬ä»¶å®šæ—¶å™¨è®¡æ—¶
+ * ç”¨ç¡¬ä»¶å®šæ—¶å™¨æµ‹é‡çº¢å¤–æ¥æ”¶å¤´HX1838äº§ç”Ÿçš„æ³¢å½¢ä¸­é«˜ä½ç”µå¹³çš„æ—¶é•¿ï¼Œ
+ * æ¥è¯†åˆ«çº¢å¤–é¥æ§æ¿ä¸Šæ˜¯é‚£ä¸ªæŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œé€‰æ‹©NECç¼–ç æ–¹å¼çš„çº¢å¤–é¥æ§å™¨
  */
 void test_timer_get_time(void)
 {
-    unsigned int ir_gpio = 47;          // ºìÍâ½ÓÊÕÍ·µÄÊı¾İÒı½Å
-    timer_info_t timer_info = {0};      // Ó²¼ş¶¨Ê±Æ÷ĞÅÏ¢
+    unsigned int ir_gpio = 47;          // çº¢å¤–æ¥æ”¶å¤´çš„æ•°æ®å¼•è„š
+    timer_info_t timer_info = {0};      // ç¡¬ä»¶å®šæ—¶å™¨ä¿¡æ¯
     ir_one_bit_t ir_bits[IR_MAX_BIT_NUM];
     unsigned char ir_bytes[IR_MAX_BYTE_NUM];
     int tmp, i, j;
     unsigned long time_ns = 0;
     gpio_init(ir_gpio, gpio_mode_input);
     
-    timer_info.timer = TIMER_PWM0;              // PWM0ÓÃ×÷Ó²¼ş¶¨Ê±Æ÷
+    timer_info.timer = TIMER_PWM0;              // PWM0ç”¨ä½œç¡¬ä»¶å®šæ—¶å™¨
     timer_info.time_ns = IR_ONE_BIT_MAX_TIME;   // 20ms
 
-    // µÈ´ı£¬Ö±µ½µÍµçÆ½(ÆğÊ¼ĞÅºÅ)³öÏÖ
+    // ç­‰å¾…ï¼Œç›´åˆ°ä½ç”µå¹³(èµ·å§‹ä¿¡å·)å‡ºç°
     while (gpio_get(ir_gpio))
         ;
 
-    // ½ÓÊÕÒ»ÌõÍêÕûµÄºìÍâÃüÁî
+    // æ¥æ”¶ä¸€æ¡å®Œæ•´çš„çº¢å¤–å‘½ä»¤
     for (tmp=0; tmp<IR_MAX_BIT_NUM; tmp++)
     {
-        // ¿ªÊ¼¼ÆÊ±
-        timer_init(&timer_info);                    // ¿ªÊ¼¼ÆÊ±
+        // å¼€å§‹è®¡æ—¶
+        timer_init(&timer_info);                    // å¼€å§‹è®¡æ—¶
 
-        // µÈ´ı£¬Ö±µ½¸ßµçÆ½»ò¶¨Ê±Æ÷³¬Ê±ÎªÖ¹
+        // ç­‰å¾…ï¼Œç›´åˆ°é«˜ç”µå¹³æˆ–å®šæ—¶å™¨è¶…æ—¶ä¸ºæ­¢
         while ((!gpio_get(ir_gpio)) && (!timer_is_time_out(&timer_info)))
             ;
 
-        // »ñÈ¡Ê±¼ä£¬²¢ÖØĞÂ¿ªÊ¼¼ÆÊ±
+        // è·å–æ—¶é—´ï¼Œå¹¶é‡æ–°å¼€å§‹è®¡æ—¶
         time_ns = timer_get_time_ns(&timer_info);
         timer_init(&timer_info);
-        if (IR_ONE_BIT_MAX_TIME == time_ns)     // ÅĞ¶ÏÊÇ·ñ³¬Ê±£¬³¬Ê±ÒâÎ¶×ÅÒ»ÌõºìÍâÃüÁî½ÓÊÕÍê³É
+        if (IR_ONE_BIT_MAX_TIME == time_ns)     // åˆ¤æ–­æ˜¯å¦è¶…æ—¶ï¼Œè¶…æ—¶æ„å‘³ç€ä¸€æ¡çº¢å¤–å‘½ä»¤æ¥æ”¶å®Œæˆ
             break;
         ir_bits[tmp].low_time_ns = time_ns;
 
-        // µÈ´ı£¬Ö±µ½µÍµçÆ½»ò¶¨Ê±Æ÷³¬Ê±ÎªÖ¹
+        // ç­‰å¾…ï¼Œç›´åˆ°ä½ç”µå¹³æˆ–å®šæ—¶å™¨è¶…æ—¶ä¸ºæ­¢
         while ((gpio_get(ir_gpio)) && (!timer_is_time_out(&timer_info)))
             ;
 
-        // »ñÈ¡Ê±¼ä£¬²¢ÖØĞÂ¼ÆÊ±
+        // è·å–æ—¶é—´ï¼Œå¹¶é‡æ–°è®¡æ—¶
         time_ns = timer_get_time_ns(&timer_info);
         timer_init(&timer_info);
-        if (IR_ONE_BIT_MAX_TIME == time_ns)     // ÅĞ¶ÏÊÇ·ñ³¬Ê±
+        if (IR_ONE_BIT_MAX_TIME == time_ns)     // åˆ¤æ–­æ˜¯å¦è¶…æ—¶
             break;
         ir_bits[tmp].high_time_ns = time_ns;
     }
 
-    // ½«¸ßµÍµçÆ½ĞÅÏ¢×ª»»ÎªbitÖµ
+    // å°†é«˜ä½ç”µå¹³ä¿¡æ¯è½¬æ¢ä¸ºbitå€¼
     for (tmp=0; tmp<IR_MAX_BIT_NUM; tmp++)
     {
-        // ¸ù¾İÃ¿¸öbitµÄ¸ßµçÆ½Ê±³¤£¬ÅĞ¶Ï¸ÃbitÊÇ0£¬»¹ÊÇ1
-        if (1*1000*1000 < ir_bits[tmp].high_time_ns)        // >1msÎª1
+        // æ ¹æ®æ¯ä¸ªbitçš„é«˜ç”µå¹³æ—¶é•¿ï¼Œåˆ¤æ–­è¯¥bitæ˜¯0ï¼Œè¿˜æ˜¯1
+        if (1*1000*1000 < ir_bits[tmp].high_time_ns)        // >1msä¸º1
         {
             ir_bits[tmp].bit = 1;
         }
-        else                                                // <1msÎª0
+        else                                                // <1msä¸º0
         {
             ir_bits[tmp].bit = 0;
         }
     }
 
-    // ´òÓ¡ÏêÏ¸µÄºìÍâÃüÁîĞÅÏ¢
+    // æ‰“å°è¯¦ç»†çš„çº¢å¤–å‘½ä»¤ä¿¡æ¯
     myprintf("\n----------------one ir cmd---------------\n");
     for (tmp=0; tmp<IR_MAX_BIT_NUM; tmp++)
     {
@@ -139,7 +139,7 @@ void test_timer_get_time(void)
                   ir_bits[tmp].bit);
     }
 
-    // ½«bitÖµ×éºÏ³ÉºìÍâÃüÁî
+    // å°†bitå€¼ç»„åˆæˆçº¢å¤–å‘½ä»¤
     for (i=0; i<IR_MAX_BYTE_NUM; i++)
     {
         tmp = 0;
@@ -150,7 +150,7 @@ void test_timer_get_time(void)
         ir_bytes[i] = tmp;
     }
 
-    // ¼ì²éÃüÁîÊÇ·ñÕıÈ·£¬ÕıÈ·Ôò´òÓ¡ºìÍâÃüÁî
+    // æ£€æŸ¥å‘½ä»¤æ˜¯å¦æ­£ç¡®ï¼Œæ­£ç¡®åˆ™æ‰“å°çº¢å¤–å‘½ä»¤
     if ((ir_bytes[0] == (unsigned char)(~ir_bytes[1])) 
         && (ir_bytes[2] == (unsigned char)(~ir_bytes[3])))
     {

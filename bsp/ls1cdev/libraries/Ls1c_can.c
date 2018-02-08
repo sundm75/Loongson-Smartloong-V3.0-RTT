@@ -31,10 +31,10 @@ unsigned char  set_reset_mode(CAN_TypeDef* CANx)
   unsigned char status;
   int i;
 
-  /*¼ì²é¸´Î»±êÖ¾*/
+  /*æ£€æŸ¥å¤ä½æ ‡å¿—*/
   status = CANx->MOD;
 
-  /* ¹Ø±ÕÖÐ¶Ï */
+  /* å…³é—­ä¸­æ–­ */
   CANx->IER = 0x00;
   
   for (i = 0; i < 100; i++)
@@ -42,13 +42,13 @@ unsigned char  set_reset_mode(CAN_TypeDef* CANx)
     if((status & CAN_Mode_RM) == CAN_Mode_RM)
         return 1;
   
-    /* ÉèÖÃ¸´Î»*/
+    /* è®¾ç½®å¤ä½*/
     CANx->MOD |=  ((unsigned char)CAN_Mode_RM);
   
-    /*ÑÓÊ±*/
+    /*å»¶æ—¶*/
     delay_us(10);
 
-    /*¼ì²é¸´Î»±êÖ¾*/
+    /*æ£€æŸ¥å¤ä½æ ‡å¿—*/
     status = CANx->MOD;
   }
   rt_kprintf("\r\nSetting SJA1000 into reset mode failed!\r\n");
@@ -60,20 +60,20 @@ static unsigned char  set_normal_mode(CAN_TypeDef* CANx)
   unsigned char status;
   int i;
 
-  /*¼ì²é¸´Î»±êÖ¾*/
+  /*æ£€æŸ¥å¤ä½æ ‡å¿—*/
   status = CANx->MOD;
   
   for (i = 0; i < 100; i++)
   {
     if((status & CAN_Mode_RM) != CAN_Mode_RM)
     {
-      /*¿ªËùÓÐÖÐ¶Ï £¨×ÜÏß´íÎóÖÐ¶Ï²»¿ª£©*/
+      /*å¼€æ‰€æœ‰ä¸­æ–­ ï¼ˆæ€»çº¿é”™è¯¯ä¸­æ–­ä¸å¼€ï¼‰*/
       CANx->IER |= (~(unsigned char)CAN_IR_BEI);	
       return 1;
     }
-    /* ÉèÖÃÕý³£¹¤×÷Ä£Ê½*/
+    /* è®¾ç½®æ­£å¸¸å·¥ä½œæ¨¡å¼*/
     CANx->MOD &= (~(unsigned char) CAN_Mode_RM); 
-    /*ÑÓÊ±*/
+    /*å»¶æ—¶*/
     delay_us(10); 
     status = CANx->MOD;	
   }
@@ -83,11 +83,11 @@ static unsigned char  set_normal_mode(CAN_TypeDef* CANx)
 
 unsigned char  set_start(CAN_TypeDef* CANx)
 {
-  /*¸´Î»TX´íÎó¼ÆÊýÆ÷*/
+  /*å¤ä½TXé”™è¯¯è®¡æ•°å™¨*/
   CANx->TXERR = 0;
-  /*¸´Î»RX´íÎó¼ÆÊýÆ÷*/
+  /*å¤ä½RXé”™è¯¯è®¡æ•°å™¨*/
   CANx->RXERR = 0;
-  /*Ê±ÖÓ·ÖÆµ¼Ä´æÆ÷: PeliCANÄ£Ê½; CBP=1,ÖÐÖ¹ÊäÈë±È½ÏÆ÷, RX0¼¤»î*/
+  /*æ—¶é’Ÿåˆ†é¢‘å¯„å­˜å™¨: PeliCANæ¨¡å¼; CBP=1,ä¸­æ­¢è¾“å…¥æ¯”è¾ƒå™¨, RX0æ¿€æ´»*/
   CANx->CDR = 0xC0;	
  
   return  set_normal_mode(CANx);  
@@ -106,12 +106,12 @@ unsigned char  set_start(CAN_TypeDef* CANx)
     return CAN_InitStatus_Failed;
   }
 
-   /* ½øÈë¸´Î»Ä£Ê½ */
+   /* è¿›å…¥å¤ä½æ¨¡å¼ */
   InitStatus = set_reset_mode(CANx);
   
   if((CAN_InitStruct->CAN_Mode & CAN_Mode_SM) == CAN_Mode_SM) 
   {
-    /* Ë¯ÃßÄ£Ê½ 1: Ë¯Ãß 0: »½ÐÑ*/
+    /* ç¡çœ æ¨¡å¼ 1: ç¡çœ  0: å”¤é†’*/
     CANx->MOD|= (unsigned char)CAN_Mode_SM;    
   }
   else
@@ -121,7 +121,7 @@ unsigned char  set_start(CAN_TypeDef* CANx)
 
  if((CAN_InitStruct->CAN_Mode & CAN_Mode_LOM) == CAN_Mode_LOM) 
   {
-    /*Ö»ÌýÄ£Ê½ 1:Ö»Ìý  0:Õý³£ */
+    /*åªå¬æ¨¡å¼ 1:åªå¬  0:æ­£å¸¸ */
     CANx->MOD|= (unsigned char)CAN_Mode_LOM;    
   }
   else
@@ -131,7 +131,7 @@ unsigned char  set_start(CAN_TypeDef* CANx)
 
   if((CAN_InitStruct->CAN_Mode & CAN_Mode_AFM) == CAN_Mode_AFM) 
   {
-    /*µ¥ÂË²¨Ä£Ê½ 1:µ¥ 0: Ë«*/
+    /*å•æ»¤æ³¢æ¨¡å¼ 1:å• 0: åŒ*/
     CANx->MOD |= (unsigned char)CAN_Mode_AFM;    
   }
   else
@@ -141,7 +141,7 @@ unsigned char  set_start(CAN_TypeDef* CANx)
 
   if((CAN_InitStruct->CAN_Mode & CAN_Mode_STM) == CAN_Mode_STM) 
   {
-    /*×Ô¼ì²âÄ£Ê½ 1:×Ô¼ì²â  0:Õý³£  */
+    /*è‡ªæ£€æµ‹æ¨¡å¼ 1:è‡ªæ£€æµ‹  0:æ­£å¸¸  */
     CANx->MOD |= (unsigned char)CAN_Mode_STM;    
   }
   else
@@ -149,7 +149,7 @@ unsigned char  set_start(CAN_TypeDef* CANx)
      CANx->MOD&=~ (unsigned char)CAN_Mode_STM;
   }
   
-  /* ÅäÖÃÊ±ÖÓÆµÂÊ */
+  /* é…ç½®æ—¶é’Ÿé¢‘çŽ‡ */
   CANx->BTR0 = (( unsigned char )( unsigned char )CAN_InitStruct->CAN_Prescaler -1) | \
                (unsigned char)CAN_InitStruct->CAN_SJW << 6;
   
@@ -157,10 +157,10 @@ unsigned char  set_start(CAN_TypeDef* CANx)
                ((unsigned char)CAN_InitStruct->CAN_BS2 << 4) | \
                ((unsigned char)CAN_InitStruct->CAN_SJW<<7);
 
-   /* ½øÈë¹¤×÷Ä£Ê½ */
+   /* è¿›å…¥å·¥ä½œæ¨¡å¼ */
   set_start(CANx);    
   
-  /* ·µ»Ø³õÊ¼»¯½á¹û */
+  /* è¿”å›žåˆå§‹åŒ–ç»“æžœ */
   return InitStatus;
 }
 
@@ -188,9 +188,9 @@ void CAN_FilterInit(CAN_TypeDef* CANx,    CAN_FilterInitTypeDef * CAN_FilterInit
     datamask = CAN_FilterInitStruct->Data_Mask;
     fcase = CAN_FilterInitStruct->MODE; 
 
-    if(ide == 0)//±ê×¼Ö¡
+    if(ide == 0)//æ ‡å‡†å¸§
     {
-        if(fcase == 0)// 0- Ë«ÂË²¨Æ÷Ä£Ê½
+        if(fcase == 0)// 0- åŒæ»¤æ³¢å™¨æ¨¡å¼
         {
             CAN_FilterId0  = thisid1>>3;
             CAN_FilterMaskId0 = thismask1>>3;
@@ -201,7 +201,7 @@ void CAN_FilterInit(CAN_TypeDef* CANx,    CAN_FilterInitTypeDef * CAN_FilterInit
             CAN_FilterId3  = firstdata & 0x0F | thisid2 <<5 | rtr<<4;
             CAN_FilterMaskId3 = datamask <<4  ;
         }
-        else if(fcase == 1)// 1-µ¥ÂË²¨Æ÷Ä£Ê½
+        else if(fcase == 1)// 1-å•æ»¤æ³¢å™¨æ¨¡å¼
         {
             CAN_FilterId0  = thisid>>3;
             CAN_FilterMaskId0 = thismask>>3;
@@ -214,9 +214,9 @@ void CAN_FilterInit(CAN_TypeDef* CANx,    CAN_FilterInitTypeDef * CAN_FilterInit
             CAN_FilterMaskId3 = 0xFF  ;
         }
     }
-    else if(ide == 1)//À©Õ¹Ö¡
+    else if(ide == 1)//æ‰©å±•å¸§
     {
-        if(fcase == 0)// 0- Ë«ÂË²¨Æ÷Ä£Ê½
+        if(fcase == 0)// 0- åŒæ»¤æ³¢å™¨æ¨¡å¼
         {
             CAN_FilterId0  = thisid1>>8;
             CAN_FilterMaskId0 = thismask1>>8;
@@ -227,7 +227,7 @@ void CAN_FilterInit(CAN_TypeDef* CANx,    CAN_FilterInitTypeDef * CAN_FilterInit
             CAN_FilterId3  = thisid2 ;
             CAN_FilterMaskId3 = thismask2 ;
         }
-        else if(fcase == 1)// 1-µ¥ÂË²¨Æ÷Ä£Ê½
+        else if(fcase == 1)// 1-å•æ»¤æ³¢å™¨æ¨¡å¼
         {
             CAN_FilterId0  = thisid>>21;
             CAN_FilterMaskId0 = thismask>>21;
@@ -241,17 +241,17 @@ void CAN_FilterInit(CAN_TypeDef* CANx,    CAN_FilterInitTypeDef * CAN_FilterInit
         }
     }
 
-    /* ½øÈë¸´Î»Ä£Ê½ */
+    /* è¿›å…¥å¤ä½æ¨¡å¼ */
     set_reset_mode(CANx);
   
-    if(fcase == 1)// 1-µ¥ÂË²¨Æ÷Ä£Ê½
+    if(fcase == 1)// 1-å•æ»¤æ³¢å™¨æ¨¡å¼
     {
-        /*µ¥ÂË²¨Ä£Ê½ */
+        /*å•æ»¤æ³¢æ¨¡å¼ */
         CANx->MOD |= (unsigned char)CAN_Mode_AFM;
     }
-    else if(fcase == 1)// 0- Ë«ÂË²¨Æ÷Ä£Ê½
+    else if(fcase == 1)// 0- åŒæ»¤æ³¢å™¨æ¨¡å¼
     {
-        /*Ë«ÂË²¨Ä£Ê½ */
+        /*åŒæ»¤æ³¢æ¨¡å¼ */
         CANx->MOD &=(~ (unsigned char) CAN_Mode_AFM);
     }
 
@@ -263,7 +263,7 @@ void CAN_FilterInit(CAN_TypeDef* CANx,    CAN_FilterInitTypeDef * CAN_FilterInit
     CANx->BUF[0] = CAN_FilterMaskId1;
     CANx->BUF[1] = CAN_FilterMaskId2;
     CANx->BUF[2] = CAN_FilterMaskId3;
-   /* ½øÈë¹¤×÷Ä£Ê½ */
+   /* è¿›å…¥å·¥ä½œæ¨¡å¼ */
     set_start(CANx);
 }
 
@@ -272,13 +272,13 @@ unsigned char CAN_SetBps(CAN_TypeDef* CANx, Ls1c_CanBPS_t  Bps)
     unsigned char InitStatus = CAN_InitStatus_Failed;
     unsigned char  CAN_Prescaler, CAN_BS1, CAN_BS2, CAN_SJW; 
     CAN_SJW = CAN_SJW_1tq;
-   /* ½øÈë¸´Î»Ä£Ê½ */
+   /* è¿›å…¥å¤ä½æ¨¡å¼ */
   InitStatus = set_reset_mode(CANx);
   if( InitStatus == CAN_InitStatus_Failed)
   	return CAN_InitStatus_Failed;
 
     /* BaudRate= f(APB)/((1+BS1+BS2)(SJW*2*Prescaler))=126000000/[(1+7+2)*1*2*63]=100000=100K*/
-    /* BPS     PRE   BS1   BS2   ×îµÍ40K
+    /* BPS     PRE   BS1   BS2   æœ€ä½Ž40K
        1M      9       4       2   
        800K    8       7       2   
        500K    9       11      2   
@@ -336,7 +336,7 @@ unsigned char CAN_SetBps(CAN_TypeDef* CANx, Ls1c_CanBPS_t  Bps)
             CAN_BS2 = CAN_BS2_2tq;
         break;
     }
-  /* ÅäÖÃÊ±ÖÓÆµÂÊ */
+  /* é…ç½®æ—¶é’Ÿé¢‘çŽ‡ */
   CANx->BTR0 = (( unsigned char )CAN_Prescaler -1) | \
                (unsigned char)CAN_SJW << 6;
   
@@ -344,9 +344,9 @@ unsigned char CAN_SetBps(CAN_TypeDef* CANx, Ls1c_CanBPS_t  Bps)
                ((unsigned char)CAN_BS2 << 4) | \
                ((unsigned char)CAN_SJW<<7);
 
-   /* ½øÈë¹¤×÷Ä£Ê½ */
+   /* è¿›å…¥å·¥ä½œæ¨¡å¼ */
   set_start(CANx);    
-  /* ·µ»Ø³õÊ¼»¯½á¹û */
+  /* è¿”å›žåˆå§‹åŒ–ç»“æžœ */
   return CAN_InitStatus_Failed;
 }
 
@@ -357,34 +357,34 @@ unsigned char CAN_SetMode(CAN_TypeDef* CANx, unsigned char  mode)
   unsigned long wait_ack = 0x00000000;
   CAN_InitTypeDef        CAN_InitStructure;
 
-   /* ½øÈë¸´Î»Ä£Ê½ */
+   /* è¿›å…¥å¤ä½æ¨¡å¼ */
   InitStatus = set_reset_mode(CANx);
   if( InitStatus == CAN_InitStatus_Failed)
   	return CAN_InitStatus_Failed;
 
   switch( mode )
   {
-    case 0://Õý³£
+    case 0://æ­£å¸¸
         CANx->MOD &= ~(unsigned char)CAN_Mode_STM;  
         CANx->MOD &= ~(unsigned char)CAN_Mode_LOM;  
       break;
-    case 1://Ö»Ìý
+    case 1://åªå¬
         CANx->MOD &= ~(unsigned char)CAN_Mode_STM;  
         CANx->MOD |= (unsigned char)CAN_Mode_LOM;  
       break;
-    case 2://»Ø»·
+    case 2://å›žçŽ¯
         CANx->MOD |= (unsigned char)CAN_Mode_STM;  
         CANx->MOD &= ~(unsigned char)CAN_Mode_LOM;  
       break;
-    case 3://Ö»Ìý»Ø»·
+    case 3://åªå¬å›žçŽ¯
         CANx->MOD |= (unsigned char)CAN_Mode_STM;  
         CANx->MOD |= (unsigned char)CAN_Mode_LOM;  
       break;
   }
-   /* ½øÈë¹¤×÷Ä£Ê½ */
+   /* è¿›å…¥å·¥ä½œæ¨¡å¼ */
   set_start(CANx);    
   
-  /* ·µ»Ø³õÊ¼»¯½á¹û */
+  /* è¿”å›žåˆå§‹åŒ–ç»“æžœ */
   return CAN_InitStatus_Failed;
  }
 
@@ -424,16 +424,16 @@ unsigned char  CAN_Transmit(CAN_TypeDef* CANx, CanTxMsg* TxMessage)
 
 void CAN_Receive(CAN_TypeDef* CANx,  CanRxMsg* RxMessage)
 {
-  /* »ñÈ¡ IDE */
+  /* èŽ·å– IDE */
   RxMessage->IDE = (CANx->IDE_RTR_DLC  & 0x80)>>7;
-  /* »ñÈ¡ RTR */
+  /* èŽ·å– RTR */
   RxMessage->RTR = (CANx->IDE_RTR_DLC  & 0x40)>>4;
-  /* »ñÈ¡ DLC */
+  /* èŽ·å– DLC */
   RxMessage->DLC= (CANx->IDE_RTR_DLC  & 0x0F);
   if (RxMessage->IDE == CAN_Id_Standard)
   {
     RxMessage->StdId = CANx->ID[0]<<3 |CANx->ID[1]>>5 ;
-    /* »ñÈ¡Êý¾Ý */
+    /* èŽ·å–æ•°æ® */
     RxMessage->Data[0] = (unsigned char)CANx->ID[2];
     RxMessage->Data[1] = (unsigned char)CANx->ID[3];
     RxMessage->Data[2] = (unsigned char)CANx->BUF[0];
@@ -446,7 +446,7 @@ void CAN_Receive(CAN_TypeDef* CANx,  CanRxMsg* RxMessage)
   else  if (RxMessage->IDE == CAN_Id_Extended)
   {
     RxMessage->ExtId= CANx->ID[0]<<21 |CANx->ID[1]<<13|CANx->ID[2]<<5|CANx->ID[3]>>3 ;
-    /* »ñÈ¡Êý¾Ý */
+    /* èŽ·å–æ•°æ® */
     RxMessage->Data[0] = (unsigned char)CANx->BUF[0];
     RxMessage->Data[1] = (unsigned char)CANx->BUF[1];
     RxMessage->Data[2] = (unsigned char)CANx->BUF[2];

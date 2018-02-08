@@ -1,8 +1,8 @@
 /*
  * File      : test_spi.c
- ²â¿ØSPI·¢ËÍ£¬ ÔÚfinshÖĞÔËĞĞ
-1. test_spi01()   SPI0 CS1 ·¢ËÍ16¸ö×Ö½Ú
-2. test_spi10()   SPI1 CS0 ·¢ËÍ16¸ö×Ö½Ú
+ æµ‹æ§SPIå‘é€ï¼Œ åœ¨finshä¸­è¿è¡Œ
+1. test_spi01()   SPI0 CS1 å‘é€16ä¸ªå­—èŠ‚
+2. test_spi10()   SPI1 CS0 å‘é€16ä¸ªå­—èŠ‚
 
  */
  #include <rtthread.h>

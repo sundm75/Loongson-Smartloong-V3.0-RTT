@@ -1,8 +1,8 @@
 /*
- * File      : test_at24c32.c
-²âÊÔÓ²¼şi2c2Çı¶¯£¬ ÔÚfinsh ÖĞÔËĞĞ test_at24c32()
-1. Ã¿ÔËĞĞÒ»´Î,¶Á³öµØÖ·1µÄÊı¾İ,´òÓ¡ AT24c32_I2C_BUS_NAME¶¨ÒåËùÊ¹ÓÃµÄi2c×ÜÏß
-2. ¸ÃÊı¾İ+1 ºó£¬ÔÙĞ´ÈëµØÖ·1µÄ¼Ä´æÆ÷
+ * File      : test_rtt_i2c.c
+æµ‹è¯•rtt ç¡¬ä»¶i2c2é©±åŠ¨ï¼Œ åœ¨finsh ä¸­è¿è¡Œ test_at24c32()
+1. æ¯è¿è¡Œä¸€æ¬¡,è¯»å‡ºåœ°å€1çš„æ•°æ®,æ‰“å° AT24c32_I2C_BUS_NAMEå®šä¹‰æ‰€ä½¿ç”¨çš„i2cæ€»çº¿
+2. è¯¥æ•°æ®+1 åï¼Œå†å†™å…¥åœ°å€1çš„å¯„å­˜å™¨
  */
 
 #include <rtthread.h>
@@ -10,14 +10,14 @@
 #include "../drivers/drv_i2c.h"
 
 
-#define AT24c32_I2C_BUS_NAME                ("i2c2")        // ×¢ÒâÓëi2c bus³õÊ¼»¯º¯ÊıÖĞµÄbus name±£³ÖÒ»ÖÂ
+#define AT24c32_I2C_BUS_NAME                ("i2c2")        // æ³¨æ„ä¸i2c busåˆå§‹åŒ–å‡½æ•°ä¸­çš„bus nameä¿æŒä¸€è‡´
 struct rt_i2c_bus_device *at24c32_i2c_bus = RT_NULL;
-int at24c32_addr = 0xA0 >> 1;               // µØÖ·Ç°7Î»
+int at24c32_addr = 0xA0 >> 1;               // åœ°å€å‰7ä½
 
 
 /*
- * ´ÓÖ¸¶¨µØÖ·¶Á³öÒ»¸ö×Ö½Ú
- * @read_addr µØÖ·
+ * ä»æŒ‡å®šåœ°å€è¯»å‡ºä¸€ä¸ªå­—èŠ‚
+ * @read_addr åœ°å€
  */
 unsigned char at24c32_read_byte(unsigned char read_addr)
 {
@@ -44,9 +44,9 @@ unsigned char at24c32_read_byte(unsigned char read_addr)
 
 
 /*
- * ÔÚÖ¸¶¨µØÖ·Ğ´ÈëÒ»¸ö×Ö½ÚµÄÊı¾İ
- * @write_addr µØÖ·
- * @data ´ıĞ´ÈëµÄÊı¾İ
+ * åœ¨æŒ‡å®šåœ°å€å†™å…¥ä¸€ä¸ªå­—èŠ‚çš„æ•°æ®
+ * @write_addr åœ°å€
+ * @data å¾…å†™å…¥çš„æ•°æ®
  */
 void at24c32_write_byte(unsigned char write_addr, unsigned char data)
 {
@@ -68,13 +68,13 @@ void at24c32_write_byte(unsigned char write_addr, unsigned char data)
 }
 
 
-// ²âÊÔÓÃµÄÏß³ÌµÄÈë¿Ú  
+// æµ‹è¯•ç”¨çš„çº¿ç¨‹çš„å…¥å£  
 void test_at24c32(void )  
 {
-    unsigned char read_addr = 1;    // µØÖ·
-    unsigned char count = 0;        // ÓÃÓÚ¼ÆÊıµÄ±äÁ¿
+    unsigned char read_addr = 1;    // åœ°å€
+    unsigned char count = 0;        // ç”¨äºè®¡æ•°çš„å˜é‡
 
-    // findÉè±¸
+    // findè®¾å¤‡
     at24c32_i2c_bus = (struct rt_i2c_bus_device *)rt_device_find(AT24c32_I2C_BUS_NAME);
     if (RT_NULL == at24c32_i2c_bus)
     {
@@ -82,16 +82,16 @@ void test_at24c32(void )
         return ;
     }
 
-    // ¶Á
+    // è¯»
     count = at24c32_read_byte(read_addr);
     rt_kprintf("[%s] last's count=%u\n", __FUNCTION__, count);
 
-    // ¼ÓÒ»£¬È»ºóĞ´
+    // åŠ ä¸€ï¼Œç„¶åå†™
     count++;
     at24c32_write_byte(read_addr, count);
-    rt_thread_delay(6);     // Ò»¶¨ÒªÑÓÊ±5msÒÔÉÏ
+    rt_thread_delay(6);     // ä¸€å®šè¦å»¶æ—¶5msä»¥ä¸Š
 
-    // ¶Á
+    // è¯»
     count = at24c32_read_byte(read_addr);
     rt_kprintf("[%s] current count=%d\n", __FUNCTION__, count);
     

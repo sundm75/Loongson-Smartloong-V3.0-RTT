@@ -1,12 +1,12 @@
 /*
  * File      : test_gpio.c
-²âÊÔgpio½Ó¿ÚÔÚfinshÖĞÔËĞĞ
+æµ‹è¯•gpioæ¥å£åœ¨finshä¸­è¿è¡Œ
 1. test_output()
 2. test_delay_1us()
 3. test_delay_1s()
-4. print_clk()  ½«µ±Ç°µÄ·ÖÆµµÄËùÓĞÊ±ÖÓ¶¼´òÓ¡³öÀ´
-5. test_rtdelay_1s µ÷ÓÃRT_TICK_PER_SECONDÊµÏÖ1s ÑÓÊ±²âÊÔ
-6. mem_read(***) ¶ÁÈ¡***¼Ä´æÆ÷ÖĞ32Î»Êı¾İ²¢´òÓ¡
+4. print_clk()  å°†å½“å‰çš„åˆ†é¢‘çš„æ‰€æœ‰æ—¶é’Ÿéƒ½æ‰“å°å‡ºæ¥
+5. test_rtdelay_1s è°ƒç”¨RT_TICK_PER_SECONDå®ç°1s å»¶æ—¶æµ‹è¯•
+6. mem_read(***) è¯»å–***å¯„å­˜å™¨ä¸­32ä½æ•°æ®å¹¶æ‰“å°
  */
 
 
@@ -19,19 +19,19 @@
 
 
 /*
- * ²âÊÔ¿âÖĞgpio×÷ÎªÊä³öÊ±µÄÏà¹Ø½Ó¿Ú
- * ledÉÁË¸10´Î
+ * æµ‹è¯•åº“ä¸­gpioä½œä¸ºè¾“å‡ºæ—¶çš„ç›¸å…³æ¥å£
+ * ledé—ªçƒ10æ¬¡
  */
 void test_output(void)
 {
     int i;
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     rt_kprintf("Init gpio! \n");
     gpio_init(led_gpio, gpio_mode_output);
-    gpio_set(led_gpio, gpio_level_high);       // Ö¸Ê¾µÆÄ¬ÈÏÏ¨Ãğ
+    gpio_set(led_gpio, gpio_level_high);       // æŒ‡ç¤ºç¯é»˜è®¤ç†„ç­
 
-    // Êä³ö10¸ö¾ØĞÎ²¨£¬Èç¹ûgpio50ÉÏÓĞled£¬Ôò¿ÉÒÔ¿´¼ûledÉÁË¸10´Î
+    // è¾“å‡º10ä¸ªçŸ©å½¢æ³¢ï¼Œå¦‚æœgpio50ä¸Šæœ‰ledï¼Œåˆ™å¯ä»¥çœ‹è§ledé—ªçƒ10æ¬¡
     for (i=0; i<10; i++)
     {
         gpio_set(led_gpio, gpio_level_low);
@@ -47,36 +47,36 @@ void test_output(void)
 
 
 /*
- * ²âÊÔ¿âÖĞgpio×÷ÎªÊäÈëÊ±µÄÏà¹Ø½Ó¿Ú
- * °´¼ü°´ÏÂÊ±£¬Ö¸Ê¾µÆµãÁÁ£¬·ñÔò£¬Ï¨Ãğ
+ * æµ‹è¯•åº“ä¸­gpioä½œä¸ºè¾“å…¥æ—¶çš„ç›¸å…³æ¥å£
+ * æŒ‰é”®æŒ‰ä¸‹æ—¶ï¼ŒæŒ‡ç¤ºç¯ç‚¹äº®ï¼Œå¦åˆ™ï¼Œç†„ç­
  */
 void test_input(void)
 {
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     gpio_init(led_gpio, gpio_mode_output);
     gpio_init(key_gpio, gpio_mode_input);
-    gpio_set(led_gpio, gpio_level_high);        // Ö¸Ê¾µÆÄ¬ÈÏÏ¨Ãğ
+    gpio_set(led_gpio, gpio_level_high);        // æŒ‡ç¤ºç¯é»˜è®¤ç†„ç­
 
     while (1)
     {
         if (gpio_level_low != gpio_get(key_gpio))
-            continue;       // °´¼üÃ»ÓĞ°´ÏÂ
+            continue;       // æŒ‰é”®æ²¡æœ‰æŒ‰ä¸‹
 
-        // ÑÓÊ±(Èí¼şÏû¶¶)ºóÔÙ´ÎÈ·ÈÏ°´¼üÊÇ·ñ°´ÏÂ
+        // å»¶æ—¶(è½¯ä»¶æ¶ˆæŠ–)åå†æ¬¡ç¡®è®¤æŒ‰é”®æ˜¯å¦æŒ‰ä¸‹
         delay_ms(10);
         if (gpio_level_low != gpio_get(key_gpio))
-            continue;       // °´¼üÃ»ÓĞ°´ÏÂ
+            continue;       // æŒ‰é”®æ²¡æœ‰æŒ‰ä¸‹
 
-        // µãÁÁÖ¸Ê¾µÆ
+        // ç‚¹äº®æŒ‡ç¤ºç¯
         gpio_set(led_gpio, gpio_level_low);
 
-        // µÈ´ıÊÍ·Å°´¼ü
+        // ç­‰å¾…é‡Šæ”¾æŒ‰é”®
         while (gpio_level_high != gpio_get(key_gpio))
             ;
         delay_ms(10);
 
-        // Ï¨ÃğÖ¸Ê¾µÆ
+        // ç†„ç­æŒ‡ç¤ºç¯
         gpio_set(led_gpio, gpio_level_high);
     }
 }

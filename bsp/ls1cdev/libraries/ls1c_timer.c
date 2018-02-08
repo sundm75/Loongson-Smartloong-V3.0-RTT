@@ -1,4 +1,4 @@
-// Ó²¼ş¶¨Ê±Æ÷Ô´Âë
+// ç¡¬ä»¶å®šæ—¶å™¨æºç 
 
 
 #include "ls1c_public.h"
@@ -9,15 +9,15 @@
 #include "ls1c_timer.h"
 
 
-// ¶¨Ê±Æ÷ÖĞ¼ÆÊıÆ÷(CNTR¡¢HRCºÍLRC)µÄ×î´óÖµ
+// å®šæ—¶å™¨ä¸­è®¡æ•°å™¨(CNTRã€HRCå’ŒLRC)çš„æœ€å¤§å€¼
 #define TIMER_COUNTER_MAX               (0xffffff)
 
 
 
 /*
- * »ñÈ¡Ö¸¶¨¶¨Ê±Æ÷µÄ¼Ä´æÆ÷»ùµØÖ·
- * @timer Ó²¼ş¶¨Ê±Æ÷
- * @ret »ùµØÖ·
+ * è·å–æŒ‡å®šå®šæ—¶å™¨çš„å¯„å­˜å™¨åŸºåœ°å€
+ * @timer ç¡¬ä»¶å®šæ—¶å™¨
+ * @ret åŸºåœ°å€
  */
 unsigned int timer_get_reg_base(ls1c_timer_t timer)
 {
@@ -47,33 +47,33 @@ unsigned int timer_get_reg_base(ls1c_timer_t timer)
 
 
 /*
- * ³õÊ¼»¯¶¨Ê±Æ÷£¬²¢¿ªÊ¼¶¨Ê±
- * @timer_info ¶¨Ê±Æ÷ºÍ¶¨Ê±Ê±¼äĞÅÏ¢
+ * åˆå§‹åŒ–å®šæ—¶å™¨ï¼Œå¹¶å¼€å§‹å®šæ—¶
+ * @timer_info å®šæ—¶å™¨å’Œå®šæ—¶æ—¶é—´ä¿¡æ¯
  */
 void timer_init(timer_info_t *timer_info)
 {
-    unsigned int timer_reg_base = 0;        // ¼Ä´æÆ÷»ùµØÖ·
-    unsigned long timer_clk = 0;            // Ó²¼ş¶¨Ê±Æ÷µÄÊ±ÖÓ
+    unsigned int timer_reg_base = 0;        // å¯„å­˜å™¨åŸºåœ°å€
+    unsigned long timer_clk = 0;            // ç¡¬ä»¶å®šæ—¶å™¨çš„æ—¶é’Ÿ
     unsigned long tmp;
-    unsigned int ctrl = 0;                  // ¿ØÖÆ¼Ä´æÆ÷ÖĞµÄ¿ØÖÆĞÅÏ¢
+    unsigned int ctrl = 0;                  // æ§åˆ¶å¯„å­˜å™¨ä¸­çš„æ§åˆ¶ä¿¡æ¯
     
-    // ÅĞ¶ÏÈë²Î
+    // åˆ¤æ–­å…¥å‚
     if (NULL == timer_info)
     {
         return ;
     }
 
     /*
-     * °Ñ¶¨Ê±Ê±¼ä»»ËãÎª¼ÆÊıÆ÷µÄÖµ
-     * ¼ÆÊıÆ÷Öµ = ¶¨Ê±Æ÷µÄÊ±ÖÓ * ¶¨Ê±Ê±¼ä(µ¥Î»ns) / 1000000000
-     * ÁúĞ¾1cµÄ¶¨Ê±Æ÷Ê±ÖÓÎªAPBÊ±ÖÓ£¬´ïµ½126Mhz£¬
-     * Îª±ÜÃâ¼ÆËã¹ı³Ì·¢ÉúÒç³ö£¬ÕâÀï²ÉÓÃÊÖ¶¯ÓÅ»¯ÉÏÃæµÄ¼ÆËãÊ½£¬Ò²¿ÉÒÔ²ÉÓÃ¸¡µãÔËËã
+     * æŠŠå®šæ—¶æ—¶é—´æ¢ç®—ä¸ºè®¡æ•°å™¨çš„å€¼
+     * è®¡æ•°å™¨å€¼ = å®šæ—¶å™¨çš„æ—¶é’Ÿ * å®šæ—¶æ—¶é—´(å•ä½ns) / 1000000000
+     * é¾™èŠ¯1cçš„å®šæ—¶å™¨æ—¶é’Ÿä¸ºAPBæ—¶é’Ÿï¼Œè¾¾åˆ°126Mhzï¼Œ
+     * ä¸ºé¿å…è®¡ç®—è¿‡ç¨‹å‘ç”Ÿæº¢å‡ºï¼Œè¿™é‡Œé‡‡ç”¨æ‰‹åŠ¨ä¼˜åŒ–ä¸Šé¢çš„è®¡ç®—å¼ï¼Œä¹Ÿå¯ä»¥é‡‡ç”¨æµ®ç‚¹è¿ç®—
      */
     timer_clk = clk_get_apb_rate();
-    tmp = (timer_clk / 1000000) * (timer_info->time_ns / 1000);     // ½«1000000000²ğ·ÖÎª1000000ºÍ1000
+    tmp = (timer_clk / 1000000) * (timer_info->time_ns / 1000);     // å°†1000000000æ‹†åˆ†ä¸º1000000å’Œ1000
     tmp = MIN(tmp, TIMER_COUNTER_MAX);
 
-    // ¿ØÖÆ¼Ä´æÆ÷ĞÅÏ¢
+    // æ§åˆ¶å¯„å­˜å™¨ä¿¡æ¯
     ctrl = (1 << LS1C_PWM_INT_LRC_EN)
            | (0 << LS1C_PWM_INT_HRC_EN)
            | (0 << LS1C_PWM_CNTR_RST)
@@ -83,8 +83,8 @@ void timer_init(timer_info_t *timer_info)
            | (1 << LS1C_PWM_OE)
            | (1 << LS1C_PWM_CNT_EN);
 
-    // ÉèÖÃ¸÷¸ö¼Ä´æÆ÷
-    timer_reg_base = timer_get_reg_base(timer_info->timer);     // »ñÈ¡¼Ä´æÆ÷»ùµØÖ·
+    // è®¾ç½®å„ä¸ªå¯„å­˜å™¨
+    timer_reg_base = timer_get_reg_base(timer_info->timer);     // è·å–å¯„å­˜å™¨åŸºåœ°å€
     reg_write_32(0,                     (volatile unsigned int *)(timer_reg_base + LS1C_PWM_HRC));
     reg_write_32(tmp--,                 (volatile unsigned int *)(timer_reg_base + LS1C_PWM_LRC));
     reg_write_32(0,                     (volatile unsigned int *)(timer_reg_base + LS1C_PWM_CNTR));
@@ -95,26 +95,26 @@ void timer_init(timer_info_t *timer_info)
 
 
 /*
- * ÅĞ¶ÏÖ¸¶¨¶¨Ê±Æ÷ÊÇ·ñ³¬Ê±(ÊµÏÖ¶¨Ê±)
- * @timer_info ¶¨Ê±Æ÷
+ * åˆ¤æ–­æŒ‡å®šå®šæ—¶å™¨æ˜¯å¦è¶…æ—¶(å®ç°å®šæ—¶)
+ * @timer_info å®šæ—¶å™¨
  * @ret TRUE or FALSE
  */
 BOOL timer_is_time_out(timer_info_t *timer_info)
 {
-    unsigned int timer_reg_base = 0;        // ¼Ä´æÆ÷»ùµØÖ·
-    unsigned int ctrl;                      // ¿ØÖÆ¼Ä´æÆ÷µÄÖµ
+    unsigned int timer_reg_base = 0;        // å¯„å­˜å™¨åŸºåœ°å€
+    unsigned int ctrl;                      // æ§åˆ¶å¯„å­˜å™¨çš„å€¼
     
-    // ÅĞ¶ÏÈë²Î
+    // åˆ¤æ–­å…¥å‚
     if (NULL == timer_info)
     {
         return FALSE;
     }
 
-    // ¶ÁÈ¡¿ØÖÆ¼Ä´æÆ÷
+    // è¯»å–æ§åˆ¶å¯„å­˜å™¨
     timer_reg_base = timer_get_reg_base(timer_info->timer);
     ctrl = reg_read_32((volatile unsigned int *)(timer_reg_base + LS1C_PWM_CTRL));
 
-    // ÅĞ¶ÏÖĞ¶Ï×´Ì¬Î»
+    // åˆ¤æ–­ä¸­æ–­çŠ¶æ€ä½
     if (ctrl & (1 << LS1C_PWM_INT_SR))
     {
         return TRUE;
@@ -128,14 +128,14 @@ BOOL timer_is_time_out(timer_info_t *timer_info)
 
 
 /*
- * Í£Ö¹¶¨Ê±Æ÷
- * @timer_info ¶¨Ê±Æ÷
+ * åœæ­¢å®šæ—¶å™¨
+ * @timer_info å®šæ—¶å™¨
  */
 void timer_stop(timer_info_t *timer_info)
 {
     unsigned int timer_reg_base = 0;
     
-    // ÅĞ¶ÏÈë²Î
+    // åˆ¤æ–­å…¥å‚
     if (NULL == timer_info)
     {
         return ;
@@ -150,25 +150,25 @@ void timer_stop(timer_info_t *timer_info)
 
 
 /*
- * »ñÈ¡¶¨Ê±Æ÷´Ó³õÊ¼»¯µ½ÏÖÔÚµÄÊ±¼ä(ÊµÏÖ¼ÆÊ±¹¦ÄÜ)£¬µ¥Î»ns
- * @timer_info Ó²¼ş¶¨Ê±Æ÷
- * @ret Ê±¼ä£¬µ¥Î»ns
+ * è·å–å®šæ—¶å™¨ä»åˆå§‹åŒ–åˆ°ç°åœ¨çš„æ—¶é—´(å®ç°è®¡æ—¶åŠŸèƒ½)ï¼Œå•ä½ns
+ * @timer_info ç¡¬ä»¶å®šæ—¶å™¨
+ * @ret æ—¶é—´ï¼Œå•ä½ns
  */
 unsigned long timer_get_time_ns(timer_info_t *timer_info)
 {
     unsigned int timer_reg_base = 0;
-    unsigned int cntr = 0;                  // ¼Ä´æÆ÷CNTRµÄÖµ
-    unsigned long time_ns = 0;              // Ê±¼ä£¬µ¥Î»ns
-    unsigned long timer_clk = 0;            // ¶¨Ê±Æ÷Ê±ÖÓ
+    unsigned int cntr = 0;                  // å¯„å­˜å™¨CNTRçš„å€¼
+    unsigned long time_ns = 0;              // æ—¶é—´ï¼Œå•ä½ns
+    unsigned long timer_clk = 0;            // å®šæ—¶å™¨æ—¶é’Ÿ
 
-    // ¶ÁÈ¡¼Ä´æÆ÷CNTRµÄÖµ
+    // è¯»å–å¯„å­˜å™¨CNTRçš„å€¼
     timer_reg_base = timer_get_reg_base(timer_info->timer);
     cntr = reg_read_32((volatile unsigned int *)(timer_reg_base + LS1C_PWM_CNTR));
 
     /*
-     * ½«CNTRÖµ»»ËãÎªÊ±¼ä£¬µ¥Î»us
-     * Ê±¼ä = (¼ÆÊıÆ÷ÖµCNTR * 1000000000) / ¶¨Ê±Æ÷Ê±ÖÓÆµÂÊ
-     * Îª±ÜÃâ²úÉúÒç³ö£¬ÊÖ¶¯ÓÅ»¯ÉÏÊ½Îª Ê±¼ä = (¼ÆÊıÆ÷ÖµCNTR * 1000) / (¶¨Ê±Æ÷Ê±ÖÓÆµÂÊ / 1000000)
+     * å°†CNTRå€¼æ¢ç®—ä¸ºæ—¶é—´ï¼Œå•ä½us
+     * æ—¶é—´ = (è®¡æ•°å™¨å€¼CNTR * 1000000000) / å®šæ—¶å™¨æ—¶é’Ÿé¢‘ç‡
+     * ä¸ºé¿å…äº§ç”Ÿæº¢å‡ºï¼Œæ‰‹åŠ¨ä¼˜åŒ–ä¸Šå¼ä¸º æ—¶é—´ = (è®¡æ•°å™¨å€¼CNTR * 1000) / (å®šæ—¶å™¨æ—¶é’Ÿé¢‘ç‡ / 1000000)
      */
     timer_clk = clk_get_apb_rate();
     time_ns = (cntr * 1000 ) / (timer_clk /1000000);
@@ -180,8 +180,8 @@ unsigned long timer_get_time_ns(timer_info_t *timer_info)
 
 
 /*
- * ´òÓ¡timerÏà¹Ø¼Ä´æÆ÷µÄÖµ
- * @timer_info Ó²¼ş¶¨Ê±Æ÷
+ * æ‰“å°timerç›¸å…³å¯„å­˜å™¨çš„å€¼
+ * @timer_info ç¡¬ä»¶å®šæ—¶å™¨
  */
 void timer_print_regs(timer_info_t *timer_info)
 {
