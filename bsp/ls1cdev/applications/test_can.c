@@ -1,10 +1,10 @@
 /*
  * File      : test_can.c
-æµ‹è¯•ç¡¬ä»¶can0é©±åŠ¨ï¼Œ åœ¨finsh ä¸­è¿è¡Œ 
-1.test_cansend()  æµ‹è¯•è£¸æœºåº“ç¨‹åºï¼Œ    åˆå§‹åŒ–CANå£ï¼ˆ250Kï¼‰åï¼Œä»¥é€Ÿç‡100K, å‘é€æ ‡å‡†æ•°æ®å¸§ï¼ˆ1-8 å…±8ä¸ªæ•°æ®ï¼‰å’Œæ‰©å±•æ•°æ®å¸§ï¼ˆ1-8 å…±8ä¸ªæ•°æ®)
-2. candump() æ‰“å°å‡ºå½“å‰CANå¯„å­˜å™¨å€¼
-3. test_rtt_can()  æµ‹è¯•RTT çš„CANé©±åŠ¨ï¼Œå…ˆåˆå§‹åŒ–CAN,åå‘é€ä¸€ä¸ªå¸§ï¼Œåå¼€å¯æ¥æ”¶çº¿ç¨‹ï¼Œæ¯æ¥æ”¶ä¸€ä¸ªå¸§å°±æ‰“å°å‡ºæ¥ã€‚
-4. test_rtt_send(1)  æµ‹è¯•å‘é€æ•°æ®,ä¸€å…±8ä¸ª
+²âÊÔÓ²¼şcan0Çı¶¯£¬ ÔÚfinsh ÖĞÔËĞĞ 
+1.test_cansend()  ²âÊÔÂã»ú¿â³ÌĞò£¬    ³õÊ¼»¯CAN¿Ú£¨250K£©ºó£¬ÒÔËÙÂÊ100K, ·¢ËÍ±ê×¼Êı¾İÖ¡£¨1-8 ¹²8¸öÊı¾İ£©ºÍÀ©Õ¹Êı¾İÖ¡£¨1-8 ¹²8¸öÊı¾İ)
+2. candump() ´òÓ¡³öµ±Ç°CAN¼Ä´æÆ÷Öµ
+3. test_rtt_can()  ²âÊÔRTT µÄCANÇı¶¯£¬ÏÈ³õÊ¼»¯CAN,ºó·¢ËÍÒ»¸öÖ¡£¬ºó¿ªÆô½ÓÊÕÏß³Ì£¬Ã¿½ÓÊÕÒ»¸öÖ¡¾Í´òÓ¡³öÀ´¡£
+4. test_rtt_send(1)  ²âÊÔ·¢ËÍÊı¾İ,Ò»¹²8¸ö
  */
 
 #include <rtthread.h>
@@ -56,15 +56,15 @@ void candump(void)
     rt_kprintf("\ncan0->RMCR = 0x%02x  \r\n",temp); 
     rt_kprintf("\r\n  data =  ",temp); 
     for(i=0;i<8;i++)
-    	{
-		temp = CANx->BUF[i];
-		rt_kprintf(" 0x%02x  \r\n",temp); 
-    	}
-	
-   /* è¿›å…¥å¤ä½æ¨¡å¼ */
+    {
+        temp = CANx->BUF[i];
+        rt_kprintf(" 0x%02x  \r\n",temp); 
+    }
+    
+   /* ½øÈë¸´Î»Ä£Ê½ */
   set_reset_mode(CANx);
 
-    rt_kprintf("\r\n ID:");
+    rt_kprintf("\r\n ÑéÊÕ´úÂë:");
     temp =  CANx->IDE_RTR_DLC;
     rt_kprintf("  0x%02x ",temp); 
     temp =  CANx->ID[0];
@@ -74,7 +74,7 @@ void candump(void)
     temp =  CANx->ID[2];
     rt_kprintf("  0x%02x ",temp); 
 
-    rt_kprintf("\r\n ID Mask:");
+    rt_kprintf("\r\n ÑéÊÕÆÁ±Î:");
     temp =  CANx->ID[3];
     rt_kprintf("  0x%02x ",temp); 
     temp =  CANx->BUF[0];
@@ -84,8 +84,8 @@ void candump(void)
     temp =  CANx->BUF[2];
     rt_kprintf("  0x%02x ",temp); 
 
-   /* è¿›å…¥å·¥ä½œæ¨¡å¼ */
-  set_start(CANx);    
+    /* ½øÈë¹¤×÷Ä£Ê½ */
+    set_start(CANx);    
 }
 
 
@@ -95,13 +95,13 @@ void ls1c_can0_irqhandlertest(int irq, void *param)
     int i;
     unsigned char status;
     CANx =  CAN0;
-    /*è¯»å¯„å­˜å™¨æ¸…é™¤ä¸­æ–­*/
+    /*¶Á¼Ä´æÆ÷Çå³ıÖĞ¶Ï*/
    status = CANx->IR;
    rt_kprintf("\r\ncan0 int happened!\r\n");
-    /*æ¥æ”¶ä¸­æ–­*/
+    /*½ÓÊÕÖĞ¶Ï*/
     if (( status & CAN_IR_RI) == CAN_IR_RI) 
     {
-        /*æ¸…é™¤RI ä¸­æ–­*/
+        /*Çå³ıRI ÖĞ¶Ï*/
        CAN_Receive(CANx, &RxMessage);
        CANx->CMR |= CAN_CMR_RRB; 
        CANx->CMR |= CAN_CMR_CDO; 
@@ -130,12 +130,12 @@ void ls1c_can0_irqhandlertest(int irq, void *param)
        }
        rt_kprintf("\r\n");
     }
-    /*å‘é€ä¸­æ–­*/
+    /*·¢ËÍÖĞ¶Ï*/
     else if (( status  & CAN_IR_TI) == CAN_IR_TI) 
     {
        rt_kprintf("\r\ncan0 send success! \r\n");
     }
-    /*æ•°æ®æº¢å‡ºä¸­æ–­*/
+    /*Êı¾İÒç³öÖĞ¶Ï*/
     else if (( status  & CAN_IR_TI) == CAN_IR_DOI) 
     {
        rt_kprintf("\r\ncan0 data over flow! \r\n");
@@ -167,7 +167,7 @@ void Can_Config(CAN_TypeDef* CANx, Ls1c_CanBPS_t bps)
     CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
 
     /* BaudRate= f(APB)/((1+BS1+BS2)(SJW*2*Prescaler))=126000000/[(1+7+2)*1*2*63]=100000=100K*/
-    /* BPS     PRE   BS1   BS2   æœ€ä½40K
+    /* BPS     PRE   BS1   BS2   ×îµÍ40K
        1M      9       4       2   
        800K    8       7       2   
        500K    9       11      2   
@@ -225,11 +225,11 @@ void Can_Config(CAN_TypeDef* CANx, Ls1c_CanBPS_t bps)
             CAN_InitStructure.CAN_BS2 = CAN_BS2_2tq;
         break;
     }
-    initresult = CAN_Init(CANx, &CAN_InitStructure);// é…ç½®æˆ100K
+    initresult = CAN_Init(CANx, &CAN_InitStructure);// ÅäÖÃ³É100K
 	
     if( (CAN_TypeDef* )LS1C_REG_BASE_CAN0 == CANx)
     {
-       /* åˆå§‹åŒ–CAN0æ¥æ”¶ä¸­æ–­*/
+       /* ³õÊ¼»¯CAN0½ÓÊÕÖĞ¶Ï*/
       rt_hw_interrupt_install(LS1C_CAN0_IRQ, ls1c_can0_irqhandlertest, RT_NULL, "can0");  
       rt_hw_interrupt_umask(LS1C_CAN0_IRQ); 
      }
@@ -245,19 +245,19 @@ void test_cansend(void)
     CAN_SetBps(CAN0, LS1C_CAN250kBaud);
 
     CAN_FilterInitTypeDef canfilter;
-    canfilter.IDE = 1;   /*0: ä½¿ç”¨æ ‡å‡†æ ‡è¯†ç¬¦1: ä½¿ç”¨æ‰©å±•æ ‡è¯†ç¬¦*/
-    canfilter.RTR = 1;  /*0: æ•°æ®å¸§     1: è¿œç¨‹å¸§*/
-    canfilter.MODE = 0; /* 0- åŒæ»¤æ³¢å™¨æ¨¡å¼;1-å•æ»¤æ³¢å™¨æ¨¡å¼*/
-    canfilter.First_Data= 0x5A; /*åŒæ»¤æ³¢å™¨æ¨¡å¼ä¸‹ä¿¡æ¯ç¬¬ä¸€ä¸ªæ•°æ®å­—èŠ‚*/
-    canfilter.Data_Mask = 0x00;/*åŒæ»¤æ³¢å™¨æ¨¡å¼ä¸‹ä¿¡æ¯ç¬¬ä¸€ä¸ªæ•°æ®å­—èŠ‚å±è”½*/
+    canfilter.IDE = 1;   /*0: Ê¹ÓÃ±ê×¼±êÊ¶·û1: Ê¹ÓÃÀ©Õ¹±êÊ¶·û*/
+    canfilter.RTR = 1;  /*0: Êı¾İÖ¡     1: Ô¶³ÌÖ¡*/
+    canfilter.MODE = 0; /* 0- Ë«ÂË²¨Æ÷Ä£Ê½;1-µ¥ÂË²¨Æ÷Ä£Ê½*/
+    canfilter.First_Data= 0x5A; /*Ë«ÂË²¨Æ÷Ä£Ê½ÏÂĞÅÏ¢µÚÒ»¸öÊı¾İ×Ö½Ú*/
+    canfilter.Data_Mask = 0x00;/*Ë«ÂË²¨Æ÷Ä£Ê½ÏÂĞÅÏ¢µÚÒ»¸öÊı¾İ×Ö½ÚÆÁ±Î*/
     canfilter.ID = 0x00010002;
-/*éªŒæ”¶ä»£ç    åŒæ»¤æ³¢å™¨-  æ‰©å±•å¸§id1  =  x<<13  (x=1 )=0x4000  id2 =  x<<13  ( x=2)  =0x2000 13-29ä½*/
-/*éªŒæ”¶ä»£ç    åŒæ»¤æ³¢å™¨-  æ ‡å‡†å¸§id 1 =  1  (data=0x5A)   id2 = 2   */	
-/*éªŒæ”¶ä»£ç    å•æ»¤æ³¢å™¨-  æ‰©å±•å¸§id  = 0x00010002    */	
-/*éªŒæ”¶ä»£ç    å•æ»¤æ³¢å™¨-  æ ‡å‡†å¸§id = 0x02  */	
-/*rtr ä½æµ‹è¯•æ— å½±å“ï¼Œä¸æ‰‹å†Œä¸åŒ */	
+/*ÑéÊÕ´úÂë   Ë«ÂË²¨Æ÷-  À©Õ¹Ö¡id1  =  x<<13  (x=1 )=0x4000  id2 =  x<<13  ( x=2)  =0x2000 13-29Î»*/
+/*ÑéÊÕ´úÂë   Ë«ÂË²¨Æ÷-  ±ê×¼Ö¡id 1 =  1  (data=0x5A)   id2 = 2   */	
+/*ÑéÊÕ´úÂë   µ¥ÂË²¨Æ÷-  À©Õ¹Ö¡id  = 0x00010002    */	
+/*ÑéÊÕ´úÂë   µ¥ÂË²¨Æ÷-  ±ê×¼Ö¡id = 0x02  */	
+/*rtr Î»²âÊÔÎŞÓ°Ïì£¬ÓëÊÖ²á²»Í¬ */	
 
-    canfilter.IDMASK = 0x0; /*éªŒæ”¶å±è”½*/
+    canfilter.IDMASK = 0x0; /*ÑéÊÕÆÁ±Î*/
     CAN_FilterInit(CAN0, &canfilter); 
 
     int i;
@@ -291,25 +291,25 @@ void test_cansend(void)
 
 void can_config(void)
 {
-	rt_uint8_t buf[8] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07};
-	rt_int8_t i;
+    rt_uint8_t buf[8] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07};
+    rt_int8_t i;
        struct rt_can_device *can;
        rt_device_t can_dev ;
-	   
-	rt_kprintf("Can test thread start...\n");
-	
+    
+    rt_kprintf("Can test thread start...\n");
+    
       can_dev = rt_device_find("bxcan0");
       can = (struct rt_can_device *)can_dev;
 
       can->hdr == RT_NULL;
       
-      /*é…ç½®å‘é€å’Œæ¥æ”¶ç¼“å†²é‚®ç®±å’Œé€šé“ä¸ªæ•°*/
+      /*ÅäÖÃ·¢ËÍºÍ½ÓÊÕ»º³åÓÊÏäºÍÍ¨µÀ¸öÊı*/
       can->config.sndboxnumber = 1;
       can->config.msgboxsz = 1;
       can->config.maxhdr = 1;
       rt_device_open(can_dev, (RT_DEVICE_OFLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_INT_TX));
 
-      /*é…ç½®æ¨¡å¼å’Œé€Ÿç‡*/
+      /*ÅäÖÃÄ£Ê½ºÍËÙÂÊ*/
       struct can_configure config;
       config.baud_rate = 250000;
       config.mode = RT_CAN_MODE_LOOPBACK;
@@ -319,7 +319,7 @@ void can_config(void)
 
       //rt_device_control(can_dev, RT_CAN_CMD_SET_BAUD, (void*)250000);
 
-      /*é…ç½®æ»¤æ³¢å™¨*/
+      /*ÅäÖÃÂË²¨Æ÷*/
       struct  rt_can_filter_config filter_config;
       struct  rt_can_filter_item filter_item;
       filter_item.ide = 1;
@@ -328,14 +328,14 @@ void can_config(void)
       filter_item.mask = 0xFFFFFFFF;
       filter_item.mode = 1;
       filter_item.hdr = 1;
-	  	
+    
       filter_config.count = 1;
       filter_config.actived = 1;
       filter_config.items = &filter_item;
       can->hdr[0].connected = 1;
       rt_device_control(can_dev, RT_CAN_CMD_SET_FILTER, &filter_config);
 
-      /*å‘é€æ•°æ®*/
+      /*·¢ËÍÊı¾İ*/
       struct rt_can_msg pmsg[1];
       pmsg[0].id = 0x01;
       pmsg[0].ide = 1;
@@ -354,7 +354,7 @@ void can_config(void)
 
 }
 
-/*æµ‹è¯•å‘é€æ•°æ®*/
+/*²âÊÔ·¢ËÍÊı¾İ*/
 void test_rtt_send(int num)
 {
     rt_device_t can_dev = rt_device_find("bxcan0");
@@ -374,7 +374,7 @@ void test_rtt_send(int num)
       rt_device_write(can_dev, 0,&pmsg[0], 1*sizeof(struct rt_can_msg));
 }
 
-/*æµ‹è¯•æ¥æ”¶æ•°æ®çº¿ç¨‹*/
+/*²âÊÔ½ÓÊÕÊı¾İÏß³Ì*/
 void test_rev_thread(void *parameter)
 {
     rt_device_t can_dev = rt_device_find("bxcan0");
@@ -433,15 +433,15 @@ void test_rev_thread(void *parameter)
 
 void test_rtt_canrev(void)
 {
-	rt_thread_t tid;
+    rt_thread_t tid;
 
-	/* create initialization thread */
-	tid = rt_thread_create("can_rev",
-							test_rev_thread, RT_NULL,
-							4096, RT_THREAD_PRIORITY_MAX/3, 20);
-	if (tid != RT_NULL)
-		rt_thread_startup(tid);
-	rt_kprintf("\r\nTest CAN  Receive Thread Start========================================\r\n");
+    /* create initialization thread */
+    tid = rt_thread_create("can_rev",
+                            test_rev_thread, RT_NULL,
+                            4096, RT_THREAD_PRIORITY_MAX/3, 20);
+    if (tid != RT_NULL)
+        rt_thread_startup(tid);
+    rt_kprintf("\r\nTest CAN  Receive Thread Start========================================\r\n");
 }
   
 #include  <finsh.h> 
