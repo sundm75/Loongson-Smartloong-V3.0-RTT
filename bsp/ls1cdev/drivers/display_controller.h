@@ -20,7 +20,7 @@
 #include <rtthread.h>
 #include "ls1c.h"
 
-#define DC_BASE					0xBC301240  //Display Controller
+#define DC_BASE                 0xBC301240  //Display Controller
 
 /* Frame Buffer registers */
 #define DC_FB_CONFIG			__REG32(DC_BASE + 0x000)
@@ -51,9 +51,9 @@
 
 struct vga_struct
 {
-	long pclk;
-	int hr,hss,hse,hfl;
-	int vr,vss,vse,vfl;
+    long pclk;
+    int hr,hss,hse,hfl;
+    int vr,vss,vse,vfl;
 };
 
 #endif

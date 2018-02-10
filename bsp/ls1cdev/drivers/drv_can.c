@@ -120,6 +120,7 @@ static rt_err_t setfilter(struct ls1c_bxcan *pbxcan, struct rt_can_filter_config
     }
     return RT_EOK;
 }
+
 static void bxcan0_filter_init(struct rt_can_device *can)
 {
         struct ls1c_bxcan *pbxcan;
@@ -249,7 +250,6 @@ static void bxcan1_hw_init(void)
     pin_set_remap(57, PIN_REMAP_DEFAULT);
 }
 #endif
-
 
 static rt_err_t configure(struct rt_can_device *can, struct can_configure *cfg)
 {

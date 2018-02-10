@@ -18,13 +18,16 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * Change Logs:
- * Date           Author       	Notes
+ * Date           Author           Notes
  * 2018-01-04     Sundm75        the first version
  */
 
 #include <rtthread.h>
 #include <rtdevice.h>
 #include "ls1c_i2c.h"  
+#include "../libraries/ls1c_pin.h"
+
+#ifdef RT_USING_I2C
 
 struct ls1c_i2c_bus
 {
@@ -37,31 +40,31 @@ rt_size_t rt_i2c_master_xfer(struct rt_i2c_bus_device *bus,
                           rt_uint32_t               num)
 {
     struct ls1c_i2c_bus * i2c_bus = (struct ls1c_i2c_bus *)bus;
-	ls1c_i2c_info_t i2c_info;  
+    ls1c_i2c_info_t i2c_info;  
     struct rt_i2c_msg *msg;
     int i;
     rt_int32_t ret = RT_EOK;
     i2c_info.clock = 50000;       // 50kb/s  
-	i2c_info.I2Cx  = i2c_bus->u32Module;
-	i2c_init(&i2c_info);
-	
+    i2c_info.I2Cx  = i2c_bus->u32Module;
+    i2c_init(&i2c_info);
+    
     for (i = 0; i < num; i++)
     {
         msg = &msgs[i];
         if (msg->flags == RT_I2C_RD)
         {
-			i2c_send_start_and_addr(&i2c_info, msg->addr, LS1C_I2C_DIRECTION_READ);  
-			i2c_receive_ack(&i2c_info); 
-			i2c_receive_data(&i2c_info, (rt_uint8_t *)msg->buf, msg->len);  
-			i2c_send_stop(&i2c_info);   
-		 }
+            i2c_send_start_and_addr(&i2c_info, msg->addr, LS1C_I2C_DIRECTION_READ);  
+            i2c_receive_ack(&i2c_info); 
+            i2c_receive_data(&i2c_info, (rt_uint8_t *)msg->buf, msg->len);  
+            i2c_send_stop(&i2c_info);   
+         }
         else if(msg->flags == RT_I2C_WR)
         {
-			i2c_send_start_and_addr(&i2c_info, msg->addr, LS1C_I2C_DIRECTION_WRITE);  
-			i2c_receive_ack(&i2c_info);  
-			i2c_send_data(&i2c_info, (rt_uint8_t *)msg->buf, msg->len);  
-			i2c_send_stop(&i2c_info);  
-		}
+            i2c_send_start_and_addr(&i2c_info, msg->addr, LS1C_I2C_DIRECTION_WRITE);  
+            i2c_receive_ack(&i2c_info);  
+            i2c_send_data(&i2c_info, (rt_uint8_t *)msg->buf, msg->len);  
+            i2c_send_stop(&i2c_info);  
+        }
         ret++;
     }
     return ret;
@@ -119,9 +122,31 @@ static struct ls1c_i2c_bus ls1c_i2c_bus_2 =
 };
 #endif
 
-int rt_i2c_init(void)
+int ls1c_hw_i2c_init(void)
 {
     struct ls1c_i2c_bus* ls1c_i2c;
+
+#ifdef RT_USING_I2C0
+/*
+    pin_set_purpose(2, PIN_PURPOSE_OTHER);
+    pin_set_purpose(3, PIN_PURPOSE_OTHER);
+    pin_set_remap(2, PIN_REMAP_SECOND);
+    pin_set_remap(3, PIN_REMAP_SECOND);
+    */
+#endif
+#ifdef RT_USING_I2C1
+    pin_set_purpose(2, PIN_PURPOSE_OTHER);
+    pin_set_purpose(3, PIN_PURPOSE_OTHER);
+    pin_set_remap(2, PIN_REMAP_SECOND);
+    pin_set_remap(3, PIN_REMAP_SECOND);
+#endif
+#ifdef RT_USING_I2C2
+    pin_set_purpose(51, PIN_PURPOSE_OTHER);
+    pin_set_purpose(50, PIN_PURPOSE_OTHER);
+    pin_set_remap(51, PIN_REMAP_FOURTH);
+    pin_set_remap(50, PIN_REMAP_FOURTH);
+#endif
+
 
 #ifdef RT_USING_I2C0
     ls1c_i2c = &ls1c_i2c_bus_0;
@@ -145,3 +170,7 @@ int rt_i2c_init(void)
 
     return RT_EOK;
 }
+
+INIT_BOARD_EXPORT(ls1c_hw_i2c_init);
+
+#endif
