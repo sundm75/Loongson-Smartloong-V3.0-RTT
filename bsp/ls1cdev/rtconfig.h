@@ -38,7 +38,6 @@
 #define RT_USING_SMALL_MEM
 /* RT_USING_SLAB is not set */
 /* RT_USING_MEMHEAP_AS_HEAP is not set */
-/* RT_USING_MEMTRACE is not set */
 #define RT_USING_HEAP
 
 /* Kernel Device Object */
@@ -101,7 +100,6 @@
 /* RT_USING_DFS_ROMFS is not set */
 /* RT_USING_DFS_RAMFS is not set */
 /* RT_USING_DFS_UFFS is not set */
-/* RT_USING_DFS_JFFS2 is not set */
 /* RT_USING_DFS_NFS is not set */
 
 /* Device Drivers */
@@ -110,7 +108,6 @@
 #define RT_USING_SERIAL
 #define RT_USING_CAN
 /* RT_USING_HWTIMER is not set */
-/* RT_USING_CPUTIME is not set */
 #define RT_USING_I2C
 #define RT_USING_I2C_BITOPS
 #define RT_USING_PIN
@@ -149,19 +146,19 @@
 #define RT_LWIP_ICMP
 /* RT_LWIP_SNMP is not set */
 #define RT_LWIP_DNS
-#define RT_LWIP_DHCP
-#define IP_SOF_BROADCAST 1
-#define IP_SOF_BROADCAST_RECV 1
+/* RT_LWIP_DHCP is not set */
 
 /* Static IPv4 Address */
 
-#define RT_LWIP_IPADDR "192.168.1.254"
-#define RT_LWIP_GWADDR "192.168.1.1"
+#define RT_LWIP_IPADDR "193.169.2.254"
+#define RT_LWIP_GWADDR "193.169.2.1"
 #define RT_LWIP_MSKADDR "255.255.255.0"
 #define RT_LWIP_UDP
 #define RT_LWIP_TCP
 /* RT_LWIP_RAW is not set */
 /* RT_LWIP_PPP is not set */
+/* RT_LWIP_PPPOE is not set */
+/* RT_LWIP_PPPOS is not set */
 #define RT_MEMP_NUM_NETCONN 8
 #define RT_LWIP_PBUF_NUM 4
 #define RT_LWIP_RAW_PCB_NUM 4
@@ -186,7 +183,6 @@
 /* Modbus master and slave stack */
 
 /* RT_USING_MODBUS is not set */
-/* LWIP_USING_DHCPD is not set */
 /* RT_USING_NETUTILS is not set */
 
 /* RT-Thread UI Engine */
