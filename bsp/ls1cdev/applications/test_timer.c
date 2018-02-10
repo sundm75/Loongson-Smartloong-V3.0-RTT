@@ -62,8 +62,6 @@ void test_timer_poll_time_out(void)
     }
 }
 
-
-
 /*
  * 用硬件定时器计时
  * 用硬件定时器测量红外接收头HX1838产生的波形中高低电平的时长，
@@ -164,4 +162,3 @@ void test_timer_get_time(void)
 
     return ;
 }
-

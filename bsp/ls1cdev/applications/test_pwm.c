@@ -128,7 +128,3 @@ FINSH_FUNCTION_EXPORT(test_pwm_normal, test_pwm_normal e.g.test_pwm_normal());
 FINSH_FUNCTION_EXPORT(test_pwm_pulse, test_pwm_pulse e.g.test_pwm_pulse());
 FINSH_FUNCTION_EXPORT(test_pwm_gpio04_gpio06, test_pwm_gpio04_gpio06 e.g.test_pwm_gpio04_gpio06());
 FINSH_FUNCTION_EXPORT(test_pwm_max_period, test_pwm_max_period e.g.test_pwm_max_period());
-
-
-
-

@@ -24,10 +24,10 @@ unsigned char at24c32_read_byte(unsigned char read_addr)
     struct rt_i2c_msg msgs[2];
     unsigned char data;
     unsigned char reg_addr[2];
-	
-	reg_addr[0] = 0;
-	reg_addr[1] = read_addr;
-	
+    
+    reg_addr[0] = 0;
+    reg_addr[1] = read_addr;
+    
     msgs[0].addr    = at24c32_addr;
     msgs[0].flags   = RT_I2C_WR;
     msgs[0].buf     = reg_addr;
@@ -53,9 +53,9 @@ void at24c32_write_byte(unsigned char write_addr, unsigned char data)
     struct rt_i2c_msg msg[1] = {0};
     unsigned char buf[3] = {0};
     unsigned char reg_addr[2];
-	
-	buf[0] = 0;
-	buf[1] = write_addr;
+    
+    buf[0] = 0;
+    buf[1] = write_addr;
     buf[2] = data;
     
     msg[0].addr    = at24c32_addr;

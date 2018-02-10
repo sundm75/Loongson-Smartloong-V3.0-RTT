@@ -38,7 +38,7 @@ void test_output(void)
         delay_ms(500);
         gpio_set(led_gpio, gpio_level_high);
         delay_ms(500);
-	rt_kprintf("current time: %d \n", i);
+    rt_kprintf("current time: %d \n", i);
     }
     
     return ;
@@ -84,7 +84,3 @@ void test_input(void)
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_output, test_output  e.g.test_output());
 FINSH_FUNCTION_EXPORT(test_input, test_input  e.g.test_input());
-
-
-
-

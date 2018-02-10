@@ -57,10 +57,10 @@ void thread_test_entry(void *parameter)
             // 延迟10ms，消抖  
             rt_thread_delay(RT_TICK_PER_SECOND/10);  
             key_irq_flag = 0;  
-		if (0 == (gpio_get(led_gpio)))
-			 gpio_set(led_gpio, gpio_level_high); 
-		else
-			 gpio_set(led_gpio, gpio_level_low); 
+        if (0 == (gpio_get(led_gpio)))
+            gpio_set(led_gpio, gpio_level_high); 
+        else
+            gpio_set(led_gpio, gpio_level_low); 
 
             rt_kprintf("[%s] Key1 press\n", __FUNCTION__);  
         }  
@@ -100,4 +100,3 @@ int test_key(void)
 }  
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_key, test_key  e.g.test_key());
-

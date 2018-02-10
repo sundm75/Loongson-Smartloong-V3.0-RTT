@@ -25,7 +25,6 @@ void test_delay_1ms(void)
     gpio_set(led_gpio, gpio_level_high);
 
     // 产生不同宽度的高低电平，用示波器观察高低电平宽度是否正确
-    while (1)
     {
         // 2ms
         time = 2/2;
@@ -62,13 +61,13 @@ void test_delay_1ms(void)
 // 测试延时函数delay_1us()
 void test_delay_1us(void)
 {
-    int time;
+    int time,i;
 
     gpio_init(led_gpio, gpio_mode_output);
     gpio_set(led_gpio, gpio_level_high);
 
     // 产生不同宽度的高低电平，用示波器观察高低电平宽度是否正确
-    while (1)
+    for(i = 0; i<100; i++)
     {
         // 2us
         time = 2/2;
@@ -116,7 +115,6 @@ void test_delay_1s(void)
     gpio_init(led_gpio, gpio_mode_output);
     gpio_set(led_gpio, gpio_level_high);
 
-    while (1)
     {
         // 2s
         time = 2/2;
@@ -125,8 +123,25 @@ void test_delay_1s(void)
         delay_s(time);
         gpio_set(led_gpio, gpio_level_high);
 
-        // 10s
-        time = 10/2;
+        time = 2/2;
+        delay_s(time);
+        gpio_set(led_gpio, gpio_level_low);
+        delay_s(time);
+        gpio_set(led_gpio, gpio_level_high);
+
+        time = 2/2;
+        delay_s(time);
+        gpio_set(led_gpio, gpio_level_low);
+        delay_s(time);
+        gpio_set(led_gpio, gpio_level_high);
+
+        time = 2/2;
+        delay_s(time);
+        gpio_set(led_gpio, gpio_level_low);
+        delay_s(time);
+        gpio_set(led_gpio, gpio_level_high);
+
+        time = 2/2;
         delay_s(time);
         gpio_set(led_gpio, gpio_level_low);
         delay_s(time);
@@ -136,11 +151,11 @@ void test_delay_1s(void)
 
 void print_clk(void)
 {
-	rt_kprintf("current pll: %d \n", clk_get_pll_rate());
-	rt_kprintf("current cpu_rate: %d \n", clk_get_cpu_rate());
-	rt_kprintf("current addr_rate: %d \n", clk_get_ddr_rate());
-	rt_kprintf("current apb_rate: %d \n", clk_get_apb_rate());
-	rt_kprintf("current dc_rate: %d \n", clk_get_dc_rate());
+    rt_kprintf("current pll: %d \n", clk_get_pll_rate());
+    rt_kprintf("current cpu_rate: %d \n", clk_get_cpu_rate());
+    rt_kprintf("current addr_rate: %d \n", clk_get_ddr_rate());
+    rt_kprintf("current apb_rate: %d \n", clk_get_apb_rate());
+    rt_kprintf("current dc_rate: %d \n", clk_get_dc_rate());
 }
 
 void test_rtdelay_1s(void)
@@ -176,7 +191,3 @@ FINSH_FUNCTION_EXPORT(test_delay_1s, test_delay_1s  e.g.test_delay_1s());
 FINSH_FUNCTION_EXPORT(test_rtdelay_1s, test_rtdelay_1s  e.g.test_rtdelay_1s());
 FINSH_FUNCTION_EXPORT(print_clk, print_clk  e.g.print_clk());
 FINSH_FUNCTION_EXPORT(mem_read, lcd test e.g. mem_read(0xbfe78030));
-
-
-
-

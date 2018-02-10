@@ -12,26 +12,20 @@
  * 2010-06-25          Bernard        first version
  * 2011-08-08          lgnq           modified for Loongson LS1B
  * 2015-07-06          chinesebear    modified for Loongson LS1C
- * 2018-02-08          sundm75    modified for Loongson LS1C SmartLoongV3
  */
 
 #include <rtthread.h>
 #include "net/synopGMAC.h"
 #include <lwip/api.h>
 
+
 void rt_init_thread_entry(void *parameter)
 {
+#ifdef RT_USING_COMPONENTS_INIT
     /* initialization RT-Thread Components */
     rt_components_init();
-
+#endif
 #if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
-
-    /* initialize the device file system */
-    dfs_init();
-
-    /* initialize the elm chan FatFS file system*/
-    elm_init();
-    
     /* mount sd card fat partition 1 as root directory */
     if( dfs_mount("sd0", "/", "elm", 0, 0) == 0)
     {
@@ -43,13 +37,15 @@ void rt_init_thread_entry(void *parameter)
     }
 #endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
 
-/*ÁΩëÂè£EMACÂàùÂßãÂåñ*/
+
+/*Õ¯ø⁄EMAC≥ı ºªØ*/
     rt_hw_eth_init();
+
 #if defined(RT_USING_RTGUI)
-/*Ëß¶Êë∏Â±è‰ΩøÁî®SPIÊÄªÁ∫øSPI1 CS0  ÂàùÂßãÂåñ*/
+/*¥•√˛∆¡ π”√SPI◊‹œﬂSPI1 CS0  ≥ı ºªØ*/
     rtgui_touch_hw_init("spi10");
 #endif
-
+rt_kprintf("œµÕ≥≥ı ºªØÕÍ≥…£°\n");
 }
 
 int rt_application_init(void)
@@ -58,8 +54,8 @@ int rt_application_init(void)
 
     /* create initialization thread */
     tid = rt_thread_create("init",
-            rt_init_thread_entry, RT_NULL,
-            4096, RT_THREAD_PRIORITY_MAX/3, 20);
+                            rt_init_thread_entry, RT_NULL,
+                            4096, RT_THREAD_PRIORITY_MAX/3, 20);
     if (tid != RT_NULL)
         rt_thread_startup(tid);
 
