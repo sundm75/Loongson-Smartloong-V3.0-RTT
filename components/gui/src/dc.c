@@ -313,7 +313,6 @@ void rtgui_dc_draw_text(struct rtgui_dc *dc, const char *text, struct rtgui_rect
 {
     rt_uint32_t len;
     struct rtgui_font *font;
-    struct rtgui_rect text_rect;
 
     RT_ASSERT(dc != RT_NULL);
 
@@ -324,12 +323,11 @@ void rtgui_dc_draw_text(struct rtgui_dc *dc, const char *text, struct rtgui_rect
         font = rtgui_font_default();
     }
 
-    /* text align */
-    rtgui_font_get_metrics(font, text, &text_rect);
-    rtgui_rect_moveto_align(rect, &text_rect, RTGUI_DC_TEXTALIGN(dc));
-
     len = strlen((const char *)text);
-    rtgui_font_draw(font, dc, text, len, &text_rect);
+    if (len == 0)
+        return;
+
+    rtgui_font_draw(font, dc, text, len, rect);
 }
 RTM_EXPORT(rtgui_dc_draw_text);
 
@@ -349,7 +347,7 @@ void rtgui_dc_draw_text_stroke(struct rtgui_dc *dc, const char *text, struct rtg
         for (y = -1; y < 2; y++)
         {
             r = *rect;
-            rtgui_rect_moveto(&r, x, y);
+            rtgui_rect_move(&r, x, y);
             rtgui_dc_draw_text(dc, text, &r);
         }
     }
@@ -1691,6 +1689,13 @@ void rtgui_dc_get_rect(struct rtgui_dc *dc, rtgui_rect_t *rect)
         dc_hw = (struct rtgui_dc_hw *) dc;
         owner = dc_hw->owner;
         rtgui_widget_get_rect(owner, rect);
+
+        if (owner->extent.x1 + rect->x2 > dc_hw->hw_driver->width)
+            rect->x2 = dc_hw->hw_driver->width - owner->extent.x1;
+
+        if (owner->extent.y1 + rect->y2 > dc_hw->hw_driver->height)
+            rect->y2 = dc_hw->hw_driver->height - owner->extent.y1;
+
         break;
     }
     case RTGUI_DC_BUFFER:
@@ -1781,7 +1786,7 @@ void rtgui_dc_rect_to_device(struct rtgui_dc *dc, struct rtgui_rect *rect)
         /* get owner */
         owner = RTGUI_CONTAINER_OF(dc, struct rtgui_widget, dc_type);
 
-        rtgui_rect_moveto(rect, owner->extent.x1, owner->extent.y1);
+        rtgui_rect_move(rect, owner->extent.x1, owner->extent.y1);
         break;
     }
     case RTGUI_DC_HW:
@@ -1791,7 +1796,7 @@ void rtgui_dc_rect_to_device(struct rtgui_dc *dc, struct rtgui_rect *rect)
 
         dc_hw = (struct rtgui_dc_hw *) dc;
         owner = dc_hw->owner;
-        rtgui_rect_moveto(rect, owner->extent.x1, owner->extent.y1);
+        rtgui_rect_move(rect, owner->extent.x1, owner->extent.y1);
         break;
     }
 
@@ -1808,7 +1813,7 @@ extern void rtgui_mouse_hide_cursor(void);
 struct rtgui_dc *rtgui_dc_begin_drawing(rtgui_widget_t *owner)
 {
     struct rtgui_dc *dc;
-    struct rtgui_widget *widget;
+    struct rtgui_widget *widget, *parent;
     struct rtgui_win *win;
 
     RT_ASSERT(owner != RT_NULL);
@@ -1817,9 +1822,16 @@ struct rtgui_dc *rtgui_dc_begin_drawing(rtgui_widget_t *owner)
     if (win == RT_NULL)
         return RT_NULL;
 
+    parent = (struct rtgui_widget *)win;
+
     if (!(win->flag & RTGUI_WIN_FLAG_ACTIVATE) &&
             (win->outer_clip.extents.x1 == win->outer_clip.extents.x2 ||
              win->outer_clip.extents.y1 == win->outer_clip.extents.y2))
+        return RT_NULL;
+
+    if (!(win->flag & RTGUI_WIN_FLAG_ACTIVATE) &&
+            (parent->clip.extents.x1 == parent->clip.extents.x2 ||
+             parent->clip.extents.y1 == parent->clip.extents.y2))
         return RT_NULL;
 
     /* increase drawing count */
@@ -1920,7 +1932,7 @@ void rtgui_dc_end_drawing(struct rtgui_dc *dc, rt_bool_t update)
             RTGUI_OBJECT(win)->event_handler(RTGUI_OBJECT(win), (struct rtgui_event *)&ewin_update);
         }
 
-        if (rtgui_graphic_driver_is_vmode() == RT_FALSE && update)
+        if (rtgui_graphic_driver_is_vmode() == RT_FALSE && win->update == 0 && update)
         {
 #ifdef RTGUI_USING_MOUSE_CURSOR
             rt_mutex_release(&cursor_mutex);

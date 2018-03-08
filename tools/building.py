@@ -140,6 +140,10 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
         env['LIBLINKSUFFIX']   = '.lib'
         env['LIBDIRPREFIX'] = '--userlibpath '
 
+    if rtconfig.PLATFORM == 'gcc':
+        if env['LINKFLAGS'].find('nano.specs'):
+            env.AppendUnique(CPPDEFINES = ['_REENT_SMALL'])
+
     # patch for win32 spawn
     if env['PLATFORM'] == 'win32':
         win32_spawn = Win32Spawn()
@@ -284,6 +288,16 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
             from menuconfig import menuconfig
             menuconfig(Rtt_Root)
             exit(0)
+
+    AddOption('--useconfig',
+                dest = 'useconfig',
+                type='string',
+                help = 'make rtconfig.h from config file.')
+    configfn = GetOption('useconfig')
+    if configfn:
+        from menuconfig import mk_rtconfig
+        mk_rtconfig(configfn)
+        exit(0)
 
     # add comstr option
     AddOption('--verbose',

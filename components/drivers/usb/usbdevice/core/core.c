@@ -1845,7 +1845,7 @@ static rt_err_t rt_usbd_ep_assign(udevice_t device, uep_t ep)
     while(device->dcd->ep_pool[i].addr != 0xFF)
     {
         if(device->dcd->ep_pool[i].status == ID_UNASSIGNED && 
-            ep->ep_desc->bmAttributes == device->dcd->ep_pool[i].type)
+            ep->ep_desc->bmAttributes == device->dcd->ep_pool[i].type && (EP_ADDRESS(ep) & 0x80) == device->dcd->ep_pool[i].dir)
         {
             EP_ADDRESS(ep) |= device->dcd->ep_pool[i].addr;
             ep->id = &device->dcd->ep_pool[i];
@@ -2144,8 +2144,9 @@ static void rt_usbd_thread_entry(void* parameter)
             break;
         case USB_MSG_RESET:            
             RT_DEBUG_LOG(RT_DEBUG_USB, ("reset %d\n", device->state));
-            if (device->state == USB_STATE_ADDRESS)
+            if (device->state == USB_STATE_ADDRESS || device->state == USB_STATE_CONFIGURED)
                 _stop_notify(device);
+            device->state = USB_STATE_NOTATTACHED;
             break;
         case USB_MSG_PLUG_IN:
             device->state = USB_STATE_ATTACHED;
