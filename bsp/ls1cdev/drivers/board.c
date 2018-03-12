@@ -82,7 +82,7 @@ void rt_hw_fpu_init(void)
  */
 void rt_hw_board_init(void)
 {
-#ifdef RT_USING_UART
+#ifdef RT_USING_SERIAL
     /* init hardware UART device */
     rt_hw_uart_init();
 #endif

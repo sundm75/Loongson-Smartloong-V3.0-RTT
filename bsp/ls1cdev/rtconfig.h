@@ -38,6 +38,7 @@
 #define RT_USING_SMALL_MEM
 /* RT_USING_SLAB is not set */
 /* RT_USING_MEMHEAP_AS_HEAP is not set */
+/* RT_USING_MEMTRACE is not set */
 #define RT_USING_HEAP
 
 /* Kernel Device Object */
@@ -61,7 +62,9 @@
 /* Command shell */
 
 #define RT_USING_FINSH
+#define FINSH_THREAD_NAME "tshell"
 #define FINSH_USING_HISTORY
+#define FINSH_HISTORY_LINES 5
 #define FINSH_USING_SYMTAB
 #define FINSH_USING_DESCRIPTION
 #define FINSH_THREAD_PRIORITY 20
@@ -100,6 +103,7 @@
 /* RT_USING_DFS_ROMFS is not set */
 /* RT_USING_DFS_RAMFS is not set */
 /* RT_USING_DFS_UFFS is not set */
+/* RT_USING_DFS_JFFS2 is not set */
 /* RT_USING_DFS_NFS is not set */
 
 /* Device Drivers */
@@ -107,7 +111,9 @@
 #define RT_USING_DEVICE_IPC
 #define RT_USING_SERIAL
 #define RT_USING_CAN
+#define RT_CAN_USING_HDR
 /* RT_USING_HWTIMER is not set */
+/* RT_USING_CPUTIME is not set */
 #define RT_USING_I2C
 #define RT_USING_I2C_BITOPS
 #define RT_USING_PIN
@@ -116,6 +122,7 @@
 /* RT_USING_RTC is not set */
 /* RT_USING_SDIO is not set */
 #define RT_USING_SPI
+/* RT_USING_SPI_MSD is not set */
 /* RT_USING_SFUD is not set */
 /* RT_USING_W25QXX is not set */
 /* RT_USING_GD is not set */
@@ -134,6 +141,7 @@
 #define RT_USING_LIBC
 #define RT_USING_PTHREADS
 /* RT_USING_POSIX is not set */
+/* HAVE_SYS_SIGNALS is not set */
 
 /* Network stack */
 
@@ -157,8 +165,6 @@
 #define RT_LWIP_TCP
 /* RT_LWIP_RAW is not set */
 /* RT_LWIP_PPP is not set */
-/* RT_LWIP_PPPOE is not set */
-/* RT_LWIP_PPPOS is not set */
 #define RT_MEMP_NUM_NETCONN 8
 #define RT_LWIP_PBUF_NUM 4
 #define RT_LWIP_RAW_PCB_NUM 4
@@ -179,15 +185,13 @@
 #define LWIP_SO_RCVTIMEO 1
 #define LWIP_SO_SNDTIMEO 1
 #define LWIP_SO_RCVBUF 1
+/* RT_LWIP_NETIF_LOOPBACK is not set */
+#define LWIP_NETIF_LOOPBACK 0
 
 /* Modbus master and slave stack */
 
 /* RT_USING_MODBUS is not set */
-/* RT_USING_NETUTILS is not set */
-
-/* RT-Thread UI Engine */
-
-/* RT_USING_GUIENGINE is not set */
+/* LWIP_USING_DHCPD is not set */
 
 /* VBUS(Virtual Software BUS) */
 
@@ -242,7 +246,6 @@
 /* example package: hello */
 
 /* PKG_USING_HELLO is not set */
-#define RT_USING_UART
 #define RT_USING_UART2
 #define RT_UART_RX_BUFFER_SIZE 64
 #define RT_USING_GMAC_INT_MODE
@@ -251,9 +254,9 @@
 #define RT_USING_SPI1
 #define RT_USING_I2C1
 #define RT_USING_I2C2
-#define RT_CAN_USING_HDR
 #define USING_BXCAN0
 #define USING_BXCAN1
+
 // <section name="RT_USING_RTGUI" description="RTGUI, a graphic user interface" default="true" >
  #define RT_USING_RTGUI
 // <integer name="RTGUI_NAME_MAX" description="Maximal size of RTGUI object name length" default="16" />
@@ -283,4 +286,5 @@
 // <bool name="RTGUI_IMAGE_BMP" description="Using bmp image in RTGUI" default="true" />
 #define RTGUI_IMAGE_BMP
 // </section>
+
 #endif
