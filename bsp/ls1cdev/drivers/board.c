@@ -15,7 +15,6 @@
  */
 
 #include <rtthread.h>
-#include <drivers/spi.h>
 #include <rthw.h>
 
 #include "board.h"
