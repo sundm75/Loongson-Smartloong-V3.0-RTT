@@ -9,6 +9,10 @@ if GetDepend('RT_USING_RTGUI') == False:
 	SrcRemove(src, 'calculator.c')
 	SrcRemove(src, 'ui_button.c')
 
+if GetDepend('RT_USING_USER_MAIN') == True:
+	SrcRemove(src, 'application.c')
+	SrcRemove(src, 'startup.c')
+	
 group = DefineGroup('Applications', src, depend = [''], CPPPATH = CPPPATH)
 
 Return('group')

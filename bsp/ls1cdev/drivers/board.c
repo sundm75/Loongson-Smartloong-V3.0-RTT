@@ -18,13 +18,30 @@
 #include <rthw.h>
 
 #include "board.h"
-#include "uart.h"
+#include "drv_uart.h"
 #include "ls1c.h"
 
 /**
  * @addtogroup Loongson LS1B
  */
- 
+ #define A_K0BASE		0x80000000
+
+/**
+ * @addtogroup Loongson LS1B
+ */
+
+/*@{*/
+
+extern unsigned char __bss_end;
+
+extern int rt_application_init(void);
+
+extern void tlb_refill_exception(void);
+extern void general_exception(void);
+extern void irq_exception(void);
+extern void rt_hw_cache_init(void);
+extern void invalidate_writeback_dcache_all(void);
+extern void invalidate_icache_all(void);
 /*@{*/
 
 /**
@@ -81,6 +98,23 @@ void rt_hw_fpu_init(void)
  */
 void rt_hw_board_init(void)
 {
+    /* init cache */
+    rt_hw_cache_init();
+    /* init hardware interrupt */
+    rt_hw_interrupt_init();
+
+    /* copy vector */
+    rt_memcpy((void *)A_K0BASE, tlb_refill_exception, 0x80);
+    rt_memcpy((void *)(A_K0BASE + 0x180), general_exception, 0x80);
+    rt_memcpy((void *)(A_K0BASE + 0x200), irq_exception, 0x80);
+
+    invalidate_writeback_dcache_all();
+    invalidate_icache_all();
+
+#ifdef RT_USING_HEAP
+    rt_system_heap_init((void*)&__bss_end, (void*)RT_HW_HEAP_END);
+#endif
+
 #ifdef RT_USING_SERIAL
     /* init hardware UART device */
     rt_hw_uart_init();

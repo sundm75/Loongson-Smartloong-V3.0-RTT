@@ -17,25 +17,7 @@
 #include <rthw.h>
 #include <rtthread.h>
 
-#include "board.h"
-#define A_K0BASE		0x80000000
 
-/**
- * @addtogroup Loongson LS1B
- */
-
-/*@{*/
-
-extern unsigned char __bss_end;
-
-extern int rt_application_init(void);
-
-extern void tlb_refill_exception(void);
-extern void general_exception(void);
-extern void irq_exception(void);
-extern void rt_hw_cache_init(void);
-extern void invalidate_writeback_dcache_all(void);
-extern void invalidate_icache_all(void);
 
 /**
  * This function will startup RT-Thread RTOS.
@@ -45,28 +27,12 @@ void rtthread_startup(void)
     /* disable interrupt first */
     rt_hw_interrupt_disable();
 
-    /* init cache */
-    rt_hw_cache_init();
-    /* init hardware interrupt */
-    rt_hw_interrupt_init();
-
-    /* copy vector */
-    rt_memcpy((void *)A_K0BASE, tlb_refill_exception, 0x80);
-    rt_memcpy((void *)(A_K0BASE + 0x180), general_exception, 0x80);
-    rt_memcpy((void *)(A_K0BASE + 0x200), irq_exception, 0x80);
-
-    invalidate_writeback_dcache_all();
-    invalidate_icache_all();
-
     /* init board */
     rt_hw_board_init();
 
     /* show version */
     rt_show_version();
 
-#ifdef RT_USING_HEAP
-    rt_system_heap_init((void*)&__bss_end, (void*)RT_HW_HEAP_END);
-#endif
 
     /* init scheduler system */
     rt_system_scheduler_init();
