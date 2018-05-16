@@ -26,5 +26,26 @@
 
 int main(int argc, char** argv)
 {   
+	#if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
+		/* mount sd card fat partition 1 as root directory */
+		if( dfs_mount("sd0", "/", "elm", 0, 0) == 0)
+		{
+			rt_kprintf("File System initialized!\n");
+		}
+		else
+		{
+			rt_kprintf("File System initialzation failed!\n");
+		}
+	#endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
+
+
+	/*网口EMAC初始化*/
+		rt_hw_eth_init();
+
+	#if defined(RT_USING_RTGUI)
+	/*触摸屏使用SPI总线SPI1 CS0  初始化*/
+		rtgui_touch_hw_init("spi10");
+	#endif
+	rt_kprintf("系统初始化完成！\n");
     return 0;
 }
