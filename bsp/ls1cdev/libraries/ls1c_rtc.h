@@ -49,4 +49,7 @@ typedef struct
 int  RTC_SetTime(RTC_TypeDef *hrtc, RTC_TimeTypeDef *sTime);
 int  RTC_GetTime(RTC_TypeDef *hrtc, RTC_TimeTypeDef *sTime);
 
+unsigned char RTC_IsLeapYear(unsigned int nYear);
+unsigned char RTC_WeekDayNum(unsigned long nYear, unsigned char nMonth, unsigned char nDay);
+
 #endif
