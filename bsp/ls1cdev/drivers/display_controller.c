@@ -171,7 +171,7 @@ static rt_err_t rt_dc_init(rt_device_t dev)
     DC_FB_BUFFER_STRIDE = (FB_XSIZE*4+255)&(~255);
 #elif defined(CONFIG_VIDEO_16BPP)// 使用这个选项
     DC_FB_CONFIG = 0x00100103;
-    DC_FB_BUFFER_STRIDE = (FB_XSIZE*2+255)&(~255);
+    DC_FB_BUFFER_STRIDE = (FB_XSIZE*2+0x7f)&(~0x7f);
 #elif defined(CONFIG_VIDEO_15BPP)
     DC_FB_CONFIG = 0x00100102;
     DC_FB_BUFFER_STRIDE =  (FB_XSIZE*2+255)&(~255);
