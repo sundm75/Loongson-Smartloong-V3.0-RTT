@@ -39,9 +39,6 @@ int main(int argc, char** argv)
 	#endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
 
 
-	/*网口EMAC初始化*/
-		rt_hw_eth_init();
-
 	#if defined(RT_USING_RTGUI)
 	/*触摸屏使用SPI总线SPI1 CS0  初始化*/
 		rtgui_touch_hw_init("spi10");
