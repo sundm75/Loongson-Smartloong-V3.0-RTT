@@ -33,19 +33,15 @@
 //#define RT_RTC_DEBUG
 
 #if defined(RT_USING_RTC)
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
 #ifdef RT_RTC_DEBUG
 #define rtc_debug(format,args...) 			rt_kprintf(format, ##args)
 #else
 #define rtc_debug(format,args...)
 #endif
 
-/* Private variables ---------------------------------------------------------*/
 static struct rt_device rtc;
 
-RTC_TypeDef * RTC_Handler;  //RTC¾ä±ú
+RTC_TypeDef * RTC_Handler;  
 
 static time_t get_timestamp(void) 
 {
@@ -85,17 +81,12 @@ static int set_timestamp(time_t timestamp)
     return RT_EOK;
 }
 
-
-//RTC³õÊ¼»¯
 rt_uint8_t RTC_Init(void)
 {      
     RTC_Handler = RTC; 
     return 0;
 }
 
-
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
 static rt_err_t rt_rtc_open(rt_device_t dev, rt_uint16_t oflag)
 {
     if (dev->rx_indicate != RT_NULL)
@@ -116,26 +107,14 @@ static rt_size_t rt_rtc_read(
     return 0;
 }
 
-/***************************************************************************//**
- * @brief
- *  Configure RTC device
+ /**
+ * This function configure RTC device.
  *
- * @details
+ * @param dev, pointer to device descriptor.
+ * @param cmd, RTC control command.
  *
- * @note
- *
- * @param[in] dev
- *  Pointer to device descriptor
- *
- * @param[in] cmd
- *  RTC control command
- *
- * @param[in] args
- *  Arguments
- *
- * @return
- *  Error code
- ******************************************************************************/
+ * @return the error code.
+ */
 static rt_err_t rt_rtc_control(rt_device_t dev, int cmd, void *args)
 {
     rt_err_t result;
@@ -152,9 +131,6 @@ static rt_err_t rt_rtc_control(rt_device_t dev, int cmd, void *args)
     {
         result = set_timestamp(*(rt_uint32_t *)args);
         rtc_debug("RTC: set rtc_time %x\n", *(rt_uint32_t *)args);
-
-        /* Reset counter */
-
     }
     break;
     }
@@ -162,28 +138,15 @@ static rt_err_t rt_rtc_control(rt_device_t dev, int cmd, void *args)
     return result;
 }
 
-
-
-/***************************************************************************//**
- * @brief
- *  Register RTC device
+ /**
+ * This function register RTC device.
  *
- * @details
+ * @param device, pointer to device descriptor.
+ * @param name, device name.
+ * @param flag, configuration flags.
  *
- * @note
- *
- * @param[in] device
- *  Pointer to device descriptor
- *
- * @param[in] name
- *  Device name
- *
- * @param[in] flag
- *  Configuration flags
- *
- * @return
- *  Error code
- ******************************************************************************/
+ * @return the error code.
+ */
 rt_err_t rt_hw_rtc_register(
     rt_device_t     device,
     const char      *name,
@@ -206,15 +169,13 @@ rt_err_t rt_hw_rtc_register(
     return rt_device_register(device, name, RT_DEVICE_FLAG_RDWR | flag);
 }
 
-
-/***************************************************************************//**
- * @brief
- *  Initialize all RTC module related hardware and register RTC device to kernel
+ /**
+ * This function initialize RTC module related hardware and register RTC device to kernel.
  *
- * @details
+ * @param none.
  *
- * @note
- ******************************************************************************/
+ * @return the error code.
+ */
 int  rt_hw_rtc_init(void)
 {
     RTC_Init();
@@ -225,8 +186,6 @@ int  rt_hw_rtc_init(void)
 INIT_BOARD_EXPORT(rt_hw_rtc_init);
 #endif
 
-/***************************************************************************//**
- * @}
- ******************************************************************************/
+
 
 
