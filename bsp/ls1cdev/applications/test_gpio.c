@@ -84,3 +84,8 @@ void test_input(void)
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_output, test_output  e.g.test_output());
 FINSH_FUNCTION_EXPORT(test_input, test_input  e.g.test_input());
+
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_output, gpio output  sample);
+MSH_CMD_EXPORT(test_input, gpio input sample);
+

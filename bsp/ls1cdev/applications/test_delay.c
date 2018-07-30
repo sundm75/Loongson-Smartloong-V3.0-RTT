@@ -190,4 +190,5 @@ FINSH_FUNCTION_EXPORT(test_delay_1us, test_delay_1us  e.g.test_delay_1us());
 FINSH_FUNCTION_EXPORT(test_delay_1s, test_delay_1s  e.g.test_delay_1s());
 FINSH_FUNCTION_EXPORT(test_rtdelay_1s, test_rtdelay_1s  e.g.test_rtdelay_1s());
 FINSH_FUNCTION_EXPORT(print_clk, print_clk  e.g.print_clk());
-FINSH_FUNCTION_EXPORT(mem_read, lcd test e.g. mem_read(0xbfe78030));
+FINSH_FUNCTION_EXPORT(mem_read, mem read e.g. mem_read(0xbfe78030));
+

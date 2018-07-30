@@ -355,7 +355,7 @@ void can_config(void)
 }
 
 /*测试发送数据*/
-void test_rtt_send(int num)
+void test_rtt_cansnd(int num)
 {
     rt_device_t can_dev = rt_device_find("bxcan0");
        int i;
@@ -446,8 +446,11 @@ void test_rtt_canrev(void)
   
 #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_cansend, test_cansend  e.g.test_cansend());
-FINSH_FUNCTION_EXPORT(test_rtt_send, test_rtt_send  e.g.test_rtt_send(1));
+FINSH_FUNCTION_EXPORT(test_rtt_cansnd, test_rtt_cansnd  e.g.test_rtt_cansnd(1));
 FINSH_FUNCTION_EXPORT(test_rtt_canrev, test_rtt_canrev  e.g.test_rtt_canrev());
 FINSH_FUNCTION_EXPORT(candump, candump  e.g.candump());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_cansend, can send  sample);
+
 
 
