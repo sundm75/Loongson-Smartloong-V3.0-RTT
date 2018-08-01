@@ -1,6 +1,7 @@
 // 硬浮点测试用例的源文件
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include "../libraries/ls1c_public.h"
 
 
@@ -101,6 +102,8 @@ void test_fpu(void)
 
 #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_fpu, test_fpu  e.g.test_fpu());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_fpu, test_fpu);
 
 
 

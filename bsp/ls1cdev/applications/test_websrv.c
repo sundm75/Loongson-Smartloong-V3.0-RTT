@@ -97,7 +97,7 @@ void test_websrv(void)
 	if (tid != RT_NULL) rt_thread_startup(tid);
 }
 
-
+ #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_websrv, startup a simple web server e.g.test_websrv()); 
-
+/* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_websrv, startup a simple web server test);

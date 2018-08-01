@@ -17,6 +17,7 @@ file: test_pin.c
 */
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include "ls1c.h"
 #include <drivers/pin.h>
 #include "ls1c_public.h"
@@ -192,5 +193,15 @@ void test_uart(rt_uint8_t uart_num)
     break;
     }
 }  
+
+void test_uart_msh(int argc, char** argv)
+{
+    unsigned int num;
+	num = strtoul(argv[1], NULL, 0);
+	test_uart(num);
+}
+
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_uart , test_uart 0-12 e.g.test_uart(0));
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_uart_msh, test_uart_msh 0);

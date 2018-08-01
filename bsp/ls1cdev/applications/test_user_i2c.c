@@ -8,6 +8,7 @@ file: test_user_i2c.c
 5. ds3231_settime(1,140000)  //使用i2c1,写入ds3231的时间(14：00：00)
  */
 #include <rtthread.h>  
+#include <stdlib.h>  
 #include "ls1c.h"  
 #include "ls1c_public.h"  
 #include "ls1c_i2c.h"  
@@ -274,9 +275,54 @@ void ds3231_settime(rt_int8_t ic_no , rt_uint32_t time)
 
 }
 
+void test_at24_msh(int argc, char** argv)
+{
+    unsigned int num1,num2;
+	num1 = strtoul(argv[1], NULL, 0);
+	num2 = strtoul(argv[2], NULL, 0);
+	test_at24(num1, num2);
+}
+void ds3231_getdata_msh(int argc, char** argv)
+{
+    unsigned int num1,num2;
+	num1 = strtoul(argv[1], NULL, 0);
+	ds3231_getdata(num1);
+}
+void ds3231_gettime_msh(int argc, char** argv)
+{
+    unsigned int num1,num2;
+	num1 = strtoul(argv[1], NULL, 0);
+	ds3231_gettime(num1);
+}
+void ds3231_setdata_msh(int argc, char** argv)
+{
+    unsigned int num1,num2;
+	num1 = strtoul(argv[1], NULL, 0);
+	num2 = strtoul(argv[2], NULL, 0);
+	ds3231_setdata(num1, num2);
+}
+void ds3231_settime_msh(int argc, char** argv)
+{
+    unsigned int num1,num2;
+	num1 = strtoul(argv[1], NULL, 0);
+	num2 = strtoul(argv[2], NULL, 0);
+	ds3231_settime(num1, num2);
+}
+
+
+
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_at24 , test_at24  e.g.test_at24(1,17));
 FINSH_FUNCTION_EXPORT(ds3231_getdata , ds3231_getdata  e.g.ds3231_getdata(1));
 FINSH_FUNCTION_EXPORT(ds3231_gettime , ds3231_gettime  e.g.ds3231_gettime(1));
 FINSH_FUNCTION_EXPORT(ds3231_setdata , ds3231_setdata  e.g.ds3231_setdata(1,180101));
 FINSH_FUNCTION_EXPORT(ds3231_settime , ds3231_settime  e.g.ds3231_settime(1,140000));
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_at24_msh, test_at24_msh 1 17);
+MSH_CMD_EXPORT(ds3231_getdata_msh, ds3231_getdata_msh 1);
+MSH_CMD_EXPORT(ds3231_gettime_msh, ds3231_gettime_msh 1);
+MSH_CMD_EXPORT(ds3231_setdata_msh, ds3231_setdata_msh 1 180101);
+MSH_CMD_EXPORT(ds3231_settime_msh, ds3231_settime_msh 1 140000);
+
+
+

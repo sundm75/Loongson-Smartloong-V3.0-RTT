@@ -7,6 +7,7 @@
 线程检测到标志位后操作闪灯一下。
  */
 #include <rtthread.h>  
+#include <stdlib.h>  
 
 #include "ls1c.h"  
 #include "ls1c_timer.h"  
@@ -100,3 +101,5 @@ int test_key(void)
 }  
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_key, test_key  e.g.test_key());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_key, test_key);

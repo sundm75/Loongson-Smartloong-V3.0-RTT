@@ -1,6 +1,7 @@
 // 测试滴答定时器的源文件
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include "../libraries/ls1c_public.h"
 #include "../libraries/ls1c_delay.h"
 
@@ -23,3 +24,5 @@ void test_sys_tick(void)
 }
 #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_sys_tick, test_sys_tick  e.g.test_sys_tick());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_sys_tick, test_sys_tick);

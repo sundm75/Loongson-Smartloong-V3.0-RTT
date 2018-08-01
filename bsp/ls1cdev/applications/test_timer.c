@@ -162,3 +162,4 @@ void test_timer_get_time(void)
 
     return ;
 }
+

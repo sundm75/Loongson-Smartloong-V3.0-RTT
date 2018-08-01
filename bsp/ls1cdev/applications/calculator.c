@@ -815,4 +815,6 @@ int calculator(void)
 #ifdef RT_USING_FINSH
 #include <finsh.h>
 FINSH_FUNCTION_EXPORT(calculator,calculator  test ) ;
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(calculator, calculator  test);
 #endif

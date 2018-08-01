@@ -10,6 +10,7 @@
 #include <rtthread.h>
 #include <ipc/completion.h>
 #include <drivers/can.h>
+#include <stdlib.h>  
 #include "ls1c.h"
 
 #include "ls1c_public.h"
@@ -373,6 +374,30 @@ void test_rtt_cansnd(int num)
       }
       rt_device_write(can_dev, 0,&pmsg[0], 1*sizeof(struct rt_can_msg));
 }
+/*测试发送数据*/
+void test_rtt_cansnd_msh(int argc, char** argv)
+{
+    unsigned int num;
+	if (argc > 1)
+    rt_kprintf("argv[1]: %s\n", argv[1]);
+	num = strtoul(argv[1], NULL, 0);
+	
+	rt_device_t can_dev = rt_device_find("bxcan0");
+       int i;
+      struct rt_can_msg pmsg[1];
+      pmsg[0].id = 0x01;
+      pmsg[0].ide = 1;
+      pmsg[0].rtr = 0;
+      pmsg[0].len = 8;
+      pmsg[0].priv= 0;
+      pmsg[0].hdr = 1;
+      pmsg[0].hdr = 1;
+      for(i=0;i<8;i++)
+      {
+                pmsg[0].data[i] = i+num;
+      }
+      rt_device_write(can_dev, 0,&pmsg[0], 1*sizeof(struct rt_can_msg));
+}
 
 /*测试接收数据线程*/
 void test_rev_thread(void *parameter)
@@ -451,6 +476,6 @@ FINSH_FUNCTION_EXPORT(test_rtt_canrev, test_rtt_canrev  e.g.test_rtt_canrev());
 FINSH_FUNCTION_EXPORT(candump, candump  e.g.candump());
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_cansend, can send  sample);
-
-
-
+MSH_CMD_EXPORT(candump, can candump);
+MSH_CMD_EXPORT(test_rtt_canrev, can rev test);
+MSH_CMD_EXPORT(test_rtt_cansnd_msh, test_rtt_cansnd_msh 1)

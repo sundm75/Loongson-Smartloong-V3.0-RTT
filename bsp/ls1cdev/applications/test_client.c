@@ -2697,8 +2697,12 @@ void test_client(void)
          rt_thread_startup(thread);
    }
 }
+#include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_client, tcp client connect to 193.169.2.215:9000 e.g.test_client())
 FINSH_FUNCTION_EXPORT(test_sendhit, send hit on network e.g.test_sendhit())
 FINSH_FUNCTION_EXPORT(test_sendblock, send lock on network e.g.test_sendblock())
-
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_client, tcp client connect);
+MSH_CMD_EXPORT(test_sendhit, send hit on network);
+MSH_CMD_EXPORT(test_sendblock, send lock on network);
 

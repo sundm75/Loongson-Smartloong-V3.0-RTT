@@ -6,6 +6,7 @@
  */
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include <drivers/i2c.h>
 #include "../drivers/drv_i2c.h"
 
@@ -100,3 +101,5 @@ void test_at24c32(void )
 
  #include  <finsh.h>
  FINSH_FUNCTION_EXPORT(test_at24c32, test_at24c32  e.g.test_at24c32());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_at24c32, test_at24c32);

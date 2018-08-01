@@ -1,5 +1,6 @@
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include "../libraries/ls1c_public.h"
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"
@@ -134,5 +135,7 @@ void test_driver(void)
     return ;
 }
 
- #include  <finsh.h> 
+#include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_driver, test_driver  e.g.test_driver());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_driver, test_driver);

@@ -7,6 +7,7 @@
  */
  #include <rtthread.h>
 #include <drivers/spi.h>
+#include <stdlib.h>  
 #include "ls1c_spi.h"
 #include "drv_spi.h"
 void test_spi01(void)
@@ -110,5 +111,8 @@ void test_spi10(void)
 
 
   #include  <finsh.h>
- FINSH_FUNCTION_EXPORT(test_spi01, test_spi01 e.g.test_spi01());
+FINSH_FUNCTION_EXPORT(test_spi01, test_spi01 e.g.test_spi01());
 FINSH_FUNCTION_EXPORT(test_spi10, test_spi10  e.g.test_spi10());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_spi01, test_spi01);
+MSH_CMD_EXPORT(test_spi10, test_spi10);

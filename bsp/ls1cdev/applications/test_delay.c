@@ -11,6 +11,7 @@
 
 #include "rtthread.h"
 #include "ls1c.h"
+#include <stdlib.h>  
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"
 
@@ -181,6 +182,12 @@ void mem_read(rt_uint32_t ram_addr)
     rt_kprintf("\r\n 0x%x = 0x%x   \r\n", ram_addr, __REG32(ram_addr));
 }
 
+void mem_read_msh(int argc, char** argv)
+{
+    rt_uint32_t ram_addr;
+	ram_addr = strtoul(argv[1], NULL, 0);
+	rt_kprintf("\r\n 0x%x = 0x%x   \r\n", ram_addr, __REG32(ram_addr));
+}
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
@@ -191,4 +198,14 @@ FINSH_FUNCTION_EXPORT(test_delay_1s, test_delay_1s  e.g.test_delay_1s());
 FINSH_FUNCTION_EXPORT(test_rtdelay_1s, test_rtdelay_1s  e.g.test_rtdelay_1s());
 FINSH_FUNCTION_EXPORT(print_clk, print_clk  e.g.print_clk());
 FINSH_FUNCTION_EXPORT(mem_read, mem read e.g. mem_read(0xbfe78030));
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_delay_1ms, test_delay_1ms );
+MSH_CMD_EXPORT(test_delay_1us, test_delay_1us  );
+MSH_CMD_EXPORT(test_delay_1s, test_delay_1s  );
+MSH_CMD_EXPORT(test_rtdelay_1s, test_rtdelay_1s  );
+MSH_CMD_EXPORT(print_clk, print_clk );
+MSH_CMD_EXPORT(mem_read_msh, mem_read_msh   0xbfe78030);
+
+
+
 

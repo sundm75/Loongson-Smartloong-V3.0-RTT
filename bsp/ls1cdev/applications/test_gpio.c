@@ -11,6 +11,7 @@
 
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include "../libraries/ls1c_public.h"
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"

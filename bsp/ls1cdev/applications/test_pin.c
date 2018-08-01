@@ -5,6 +5,7 @@ file: test_pin.c
  */
 
 #include <rtthread.h>
+#include <stdlib.h>  
 #include <drivers/pin.h>
 #include "../drivers/drv_gpio.h"
 void test_pin(rt_uint8_t pin_led )  
@@ -26,3 +27,5 @@ void test_pin(rt_uint8_t pin_led )
 }  
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_pin , test_pin led-gpio52 e.g.test_pin(52));
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_pin, test_pin 52);

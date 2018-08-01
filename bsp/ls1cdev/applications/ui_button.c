@@ -119,3 +119,7 @@ int test_guidemo(void)
 FINSH_FUNCTION_EXPORT(ui_button, ui_button  e.g.ui_button());
 FINSH_FUNCTION_EXPORT(test_cali, test_cali  e.g.test_cali());
 FINSH_FUNCTION_EXPORT(test_guidemo, test_guidemo  e.g.test_guidemo());
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(ui_button, ui_button);
+MSH_CMD_EXPORT(test_cali, test_cali);
+MSH_CMD_EXPORT(test_guidemo, test_guidemo);
