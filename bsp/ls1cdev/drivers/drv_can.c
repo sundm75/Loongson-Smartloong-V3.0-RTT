@@ -29,7 +29,6 @@
 
 #include <drv_can.h>
 
-
 #include "ls1c.h"
 #include "../libraries/ls1c_public.h"
 #include "../libraries/ls1c_regs.h"

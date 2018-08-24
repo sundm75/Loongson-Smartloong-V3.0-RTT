@@ -52,6 +52,8 @@ void pin_set_remap(unsigned int gpio, pin_remap_t remap)
 		reg_clr_one_bit(reg, pin);		
 	}		
 
+    if (remap == PIN_REMAP_DEFAULT) return;
+
     switch (port)
     {
         case 0:

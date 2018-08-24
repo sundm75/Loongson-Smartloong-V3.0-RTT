@@ -43,6 +43,6 @@ int main(int argc, char** argv)
 	/*触摸屏使用SPI总线SPI1 CS0  初始化*/
 		rtgui_touch_hw_init("spi10");
 	#endif
-	rt_kprintf("系统初始化完成！\n");
+	rt_kprintf("Loongson系统初始化完成！\n");
     return 0;
 }
