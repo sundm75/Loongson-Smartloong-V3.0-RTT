@@ -17,7 +17,7 @@
 #include "../common/stackframe.h"
 #include "sdram_cfg.h"
 #include "cache.h"
-#include "rtconfig.h"
+#include "../../../bsp/ls1cdev/rtconfig.h"
 
 #define SR_BOOT_EXC_VEC		0x00400000
 
