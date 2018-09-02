@@ -25,7 +25,13 @@ Export('rtconfig')
 
 # prepare building environment
 objs = PrepareBuilding(env, RTT_ROOT)
-    
+
+if GetDepend('RT_USING_SELF_BOOT'):
+    rtconfig.LFLAGS += " -Ttext 0x80010000"
+else:
+	rtconfig.LFLAGS += " -Ttext 0x80200000"    
+env.Replace(LINKFLAGS = rtconfig.LFLAGS)
+
 #if GetDepend('RT_USING_RTGUI'):
     #objs = objs + SConscript(RTT_ROOT + '/examples/gui/SConscript', variant_dir='build/examples/gui', duplicate=0)
     
