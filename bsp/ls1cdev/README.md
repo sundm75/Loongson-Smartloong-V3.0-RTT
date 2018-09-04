@@ -27,7 +27,7 @@ Windows平台推荐使用[env工具][1]。龙芯1C的LS232处理器核是一款M
 
     set RTT_EXEC_PATH=D:\mgc\embedded\codebench\bin
 
-编译前，先运行以下命令更新package list 和 下载必要的包（使用git联网下载），否则编译不通过
+编译前，先运行以下命令更新package list 和 下载必要的包（使用git联网下载），否则编译不通过 
 
     pkgs --upgrade
     pkgs --update
