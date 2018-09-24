@@ -131,7 +131,7 @@ static void uart_irq_handler(int vector, void *param)
 
 }
 
-static const struct rt_uart_ops stm32_uart_ops =
+static const struct rt_uart_ops ls1c_uart_ops =
 {
     ls1c_uart_configure,
     ls1c_uart_control,
@@ -146,6 +146,15 @@ struct rt_uart_ls1c uart2 =
     LS1C_UART2_IRQ,
 };
 struct rt_serial_device serial2;
+#endif /* RT_USING_UART2 */
+
+#if defined(RT_USING_UART1)
+struct rt_uart_ls1c uart1 =
+{
+    LS1C_UART1,
+    LS1C_UART1_IRQ,
+};
+struct rt_serial_device serial1;
 #endif /* RT_USING_UART1 */
 
 void rt_hw_uart_init(void)
@@ -156,7 +165,7 @@ void rt_hw_uart_init(void)
 #ifdef RT_USING_UART2
     uart = &uart2;
 
-    serial2.ops    = &stm32_uart_ops;
+    serial2.ops    = &ls1c_uart_ops;
     serial2.config = config;
 
     pin_set_purpose(36, PIN_PURPOSE_OTHER);
@@ -166,12 +175,34 @@ void rt_hw_uart_init(void)
 
     rt_hw_interrupt_install(uart->IRQ, uart_irq_handler, &serial2, "UART2");
 
-    /* register UART1 device */
+    /* register UART2 device */
     rt_hw_serial_register(&serial2,
                           "uart2",
                           //RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_DMA_RX,
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,
                           uart);
+#endif /* RT_USING_UART2 */
+
+#ifdef RT_USING_UART1
+    uart = &uart1;
+
+    serial1.ops    = &ls1c_uart_ops;
+    serial1.config = config;
+
+    pin_set_purpose(36, PIN_PURPOSE_OTHER);
+    pin_set_purpose(37, PIN_PURPOSE_OTHER);
+    pin_set_remap(36, PIN_REMAP_SECOND);
+    pin_set_remap(37, PIN_REMAP_SECOND);
+
+    rt_hw_interrupt_install(uart->IRQ, uart_irq_handler, &serial1, "UART1");
+
+    /* register UART1 device */
+    rt_hw_serial_register(&serial1,
+                          "uart1",
+                          //RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_DMA_RX,
+                          RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,
+                          uart);
 #endif /* RT_USING_UART1 */
+
 }
 
