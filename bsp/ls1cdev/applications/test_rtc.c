@@ -1,8 +1,8 @@
 /*
 file: test_rtc.c
 测试rtc驱动， 在finsh 中运行
-1. test_rtc(0)   配置时间为2018.1.1 01:01:01
-2. test_rtc(1)   显示当前时间
+1. test_rtc_set()   配置时间为2018.1.1 01:01:01
+2. test_rtc_get()   显示当前时间
  */
 
 #include <rtthread.h>
@@ -10,87 +10,33 @@ file: test_rtc.c
 #include "ls1c_regs.h"
 #include "ls1c_rtc.h"
 
-void test_rtc(int flag)  
+RTC_TypeDef *RTC_Handler = RTC; 
+
+void test_rtc_set(void)  
 {
-	rt_device_t rtc_device;//rtc设备
-
-	time_t timestamp;
-	struct tm *p_tm;
-	/* 设置时间为2018.1.1 01:01:01*/
-	struct tm tm_new ;
-	tm_new.tm_year = 118;
-	tm_new.tm_mon = 1 - 1;
-	tm_new.tm_mday= 1;
-	tm_new.tm_hour= 1;
-	tm_new.tm_min= 1;
-	tm_new.tm_sec= 1;
-	timestamp = mktime(&tm_new); 
+	RTC_TimeTypeDef rtcDate; 
+	rtcDate.Date = 1;
+	rtcDate.Hours = 1;
+	rtcDate.Minutes = 1;
+	rtcDate.Month = 1;
+	rtcDate.Seconds = 1;
+	rtcDate.Year = 18;
 	
-  	rtc_device = rt_device_find("rtc");
-  
-	if (rtc_device != RT_NULL)    
-	{
-	rt_device_init(rtc_device);	
-	if(!flag)
-		{
-
-			rt_device_control(rtc_device,RT_DEVICE_CTRL_RTC_SET_TIME,  &timestamp);
-		}
-	else
-		{
-			rt_device_control(rtc_device,RT_DEVICE_CTRL_RTC_GET_TIME, &timestamp);
-			p_tm = localtime(&timestamp);
-				rt_kprintf("\r\nrtc time is %d.%d.%d - %d:%d:%d",p_tm->tm_year+1900, p_tm->tm_mon+1, p_tm->tm_mday, p_tm->tm_hour, p_tm->tm_min, p_tm->tm_sec);		
-		}
-	}
+	RTC_SetTime(RTC_Handler, &rtcDate);
 }  
 
-void test_rtc_msh(int flag)  
+void test_rtc_get(void)  
 {
-	rt_device_t rtc_device;//rtc设备
-
-	time_t timestamp;
-	struct tm *p_tm;
-	/* 设置时间为2018.1.1 01:01:01*/
-	struct tm tm_new ;
-	tm_new.tm_year = 118;
-	tm_new.tm_mon = 1 - 1;
-	tm_new.tm_mday= 1;
-	tm_new.tm_hour= 1;
-	tm_new.tm_min= 1;
-	tm_new.tm_sec= 1;
-	timestamp = mktime(&tm_new); 
-	
-  	rtc_device = rt_device_find("rtc");
-  
-	if (rtc_device != RT_NULL)    
-	{
-	rt_device_init(rtc_device);	
-	if(!flag)
-		{
-
-			rt_device_control(rtc_device,RT_DEVICE_CTRL_RTC_SET_TIME,  &timestamp);
-		}
-	else
-		{
-			rt_device_control(rtc_device,RT_DEVICE_CTRL_RTC_GET_TIME, &timestamp);
-			p_tm = localtime(&timestamp);
-				rt_kprintf("\r\nrtc time is %d.%d.%d - %d:%d:%d",p_tm->tm_year+1900, p_tm->tm_mon+1, p_tm->tm_mday, p_tm->tm_hour, p_tm->tm_min, p_tm->tm_sec);		
-		}
-	}
+	RTC_TimeTypeDef rtcDate; 
+	RTC_GetTime(RTC_Handler, &rtcDate); 
+	rt_kprintf("\r\nrtc time is %d.%d.%d - %d:%d:%d\r\n",rtcDate.Year, rtcDate.Month, rtcDate.Date,rtcDate.Hours, rtcDate.Minutes, rtcDate.Seconds);		
 } 
 
-FINSH_FUNCTION_EXPORT(test_rtc , test_rtc  e.g.test_rtc(1));
-
-void test_mphaldelay(void)
-
-{
-  rt_kprintf("\r\nstart");
-   mp_hal_delay_ms(1000);
-  rt_kprintf("\r\nend");
-}
- #include  <finsh.h> 
-FINSH_FUNCTION_EXPORT(test_mphaldelay , test_mphaldelay  e.g.test_mphaldelay());
+#include  <finsh.h> 
+FINSH_FUNCTION_EXPORT(test_rtc_set , test_rtc_set  e.g.test_rtc_set());
+FINSH_FUNCTION_EXPORT(test_rtc_get , test_rtc_get  e.g.test_rtc_get());
 /* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(test_mphaldelay, test_mphaldelay);
+MSH_CMD_EXPORT(test_rtc_set, set time );
+MSH_CMD_EXPORT(test_rtc_get, get time);
+
 

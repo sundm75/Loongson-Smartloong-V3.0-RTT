@@ -89,6 +89,66 @@ void test_at24(rt_int8_t ic_no, rt_int8_t num )
     rt_kprintf("\n\r");
 }
 
+// 测试at24C02   I2C总线E2PROM  2KBit  每页8字节  一共256页 ，写的时候注意地址范围是0-255
+void test_at2402(rt_int8_t ic_no, rt_int8_t num )    
+{  
+    int i;
+    ls1c_i2c_info_t i2c_info;  
+    int slave_addr = 0xA0 >> 1;    
+    unsigned char send_buff[64] = {0};  
+    unsigned char recv_buff[64] = {0};  
+      
+    i2c_info.clock = 50*1000;       // 50kb/s  
+    switch( ic_no)
+        {
+        case 0:
+        i2c_info.I2Cx = LS1C_I2C_0;
+      break;
+      case 1:
+          i2c_info.I2Cx = LS1C_I2C_1;
+      break;
+      case 2:
+          i2c_info.I2Cx = LS1C_I2C_2;
+      break;
+      default:
+          i2c_info.I2Cx = LS1C_I2C_2;
+      break;
+}
+    i2c_init(&i2c_info);  
+      
+    send_buff[0] = 0x00;
+    for(i=0;i<8;i++)
+    {
+        send_buff[i+1] = i*num;
+    }
+    
+    // 发送器件地址和要写入的地址、数据
+    i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_WRITE);  
+    i2c_receive_ack(&i2c_info);  
+    i2c_send_data(&i2c_info, send_buff, 9);  
+    rt_thread_delay(1);  
+    i2c_send_stop(&i2c_info);  
+
+    // 发送读指令  的地址
+    i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_WRITE);  
+    i2c_receive_ack(&i2c_info);  
+    i2c_send_data(&i2c_info, send_buff, 1);  
+    i2c_send_stop(&i2c_info);  
+
+    // 读取一页寄存器数据  
+    rt_thread_delay(2);  
+    i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_READ);  
+    i2c_receive_ack(&i2c_info); 
+    i2c_receive_data(&i2c_info, recv_buff, 8);  
+    i2c_send_stop(&i2c_info);  
+
+ 
+    for(i=0;i<8;i++)
+    {
+        rt_kprintf("  0x%02x  ",  recv_buff[i] );
+    }
+    rt_kprintf("\n\r");
+}
 
 /* 测试ds3231   */
 #define ds3231_slave_addr 0x68
@@ -282,6 +342,13 @@ void test_at24_msh(int argc, char** argv)
 	num2 = strtoul(argv[2], NULL, 0);
 	test_at24(num1, num2);
 }
+void test_at2402_msh(int argc, char** argv)
+{
+    unsigned int num1,num2;
+	num1 = strtoul(argv[1], NULL, 0);
+	num2 = strtoul(argv[2], NULL, 0);
+	test_at2402(num1, num2);
+}
 void ds3231_getdata_msh(int argc, char** argv)
 {
     unsigned int num1,num2;
@@ -313,12 +380,14 @@ void ds3231_settime_msh(int argc, char** argv)
 
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_at24 , test_at24  e.g.test_at24(1,17));
+FINSH_FUNCTION_EXPORT(test_at2402 , test_at2402  e.g.test_at2402(1,17));
 FINSH_FUNCTION_EXPORT(ds3231_getdata , ds3231_getdata  e.g.ds3231_getdata(1));
 FINSH_FUNCTION_EXPORT(ds3231_gettime , ds3231_gettime  e.g.ds3231_gettime(1));
 FINSH_FUNCTION_EXPORT(ds3231_setdata , ds3231_setdata  e.g.ds3231_setdata(1,180101));
 FINSH_FUNCTION_EXPORT(ds3231_settime , ds3231_settime  e.g.ds3231_settime(1,140000));
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_at24_msh, test_at24_msh 1 17);
+MSH_CMD_EXPORT(test_at2402_msh, test_at2402_msh 1 17);
 MSH_CMD_EXPORT(ds3231_getdata_msh, ds3231_getdata_msh 1);
 MSH_CMD_EXPORT(ds3231_gettime_msh, ds3231_gettime_msh 1);
 MSH_CMD_EXPORT(ds3231_setdata_msh, ds3231_setdata_msh 1 180101);

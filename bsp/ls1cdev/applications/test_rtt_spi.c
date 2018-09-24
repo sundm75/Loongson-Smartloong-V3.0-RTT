@@ -10,7 +10,7 @@
 #include <stdlib.h>  
 #include "ls1c_spi.h"
 #include "drv_spi.h"
-void test_spi01(void)
+void test_rtt_spi01(void)
 {    
     rt_uint32_t count = 0;
     rt_uint8_t buf[16] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
@@ -54,7 +54,7 @@ void test_spi01(void)
     rt_device_close(spi);
 }
 
-void test_spi10(void)
+void test_rtt_spi10(void)
 {    
     rt_uint32_t count = 0;
     rt_uint8_t buf[16] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
@@ -111,8 +111,8 @@ void test_spi10(void)
 
 
   #include  <finsh.h>
-FINSH_FUNCTION_EXPORT(test_spi01, test_spi01 e.g.test_spi01());
-FINSH_FUNCTION_EXPORT(test_spi10, test_spi10  e.g.test_spi10());
+FINSH_FUNCTION_EXPORT(test_rtt_spi01, test_spi01 e.g.test_rtt_spi01());
+FINSH_FUNCTION_EXPORT(test_rtt_spi10, test_spi10  e.g.test_rtt_spi10());
 /* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(test_spi01, test_spi01);
-MSH_CMD_EXPORT(test_spi10, test_spi10);
+MSH_CMD_EXPORT(test_rtt_spi01, test_rtt_spi01);
+MSH_CMD_EXPORT(test_rtt_spi10, test_rtt_spi10);

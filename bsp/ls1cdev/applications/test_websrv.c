@@ -51,7 +51,6 @@ static void process_connection(struct netconn *conn)
                   netconn_write(conn, http_html_hdr, sizeof(http_html_hdr), NETCONN_COPY);
                   /*  发送实际的web页面 */
                   netconn_write(conn, indexdata, sizeof(indexdata), NETCONN_COPY);
-
           }
         }
         /*  关闭连接 */
@@ -60,7 +59,7 @@ static void process_connection(struct netconn *conn)
 }
 
 /* 线程入口 */
-void lw_thread(void* paramter)
+static void lw_thread(void* paramter)
 {
 	struct netconn *conn, *newconn;
         rt_err_t net_acp_result;
@@ -84,7 +83,6 @@ void lw_thread(void* paramter)
 		/*  删除连接句柄 */
 		netconn_delete(newconn);
         rt_kprintf("TCP/IP closed!\n");
-
 	}
 }
 

@@ -18,7 +18,6 @@
 #define led_gpio 52
 #define key_gpio 85
 
-
 /*
  * 测试库中gpio作为输出时的相关接口
  * led闪烁10次
@@ -41,11 +40,8 @@ void test_output(void)
         delay_ms(500);
     rt_kprintf("current time: %d \n", i);
     }
-    
     return ;
 }
-
-
 
 /*
  * 测试库中gpio作为输入时的相关接口

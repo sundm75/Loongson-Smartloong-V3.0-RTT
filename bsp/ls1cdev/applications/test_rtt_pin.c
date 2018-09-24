@@ -25,7 +25,15 @@ void test_pin(rt_uint8_t pin_led )
         rt_thread_delay(1 * RT_TICK_PER_SECOND);
     }  
 }  
+
+void test_pin_msh(int argc, char** argv)
+{
+    unsigned int num;
+	num = strtoul(argv[1], NULL, 0);
+	test_pin(num);
+}
+
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_pin , test_pin led-gpio52 e.g.test_pin(52));
 /* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(test_pin, test_pin 52);
+MSH_CMD_EXPORT(test_pin_msh, test_pin 52);

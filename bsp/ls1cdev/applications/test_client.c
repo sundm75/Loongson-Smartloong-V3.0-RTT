@@ -2553,7 +2553,7 @@ struct tx_session tx_data;
 struct rt_event nw_event;
 struct rt_semaphore nw_sem;
 
-void rx_callback(struct netconn *conn, enum netconn_evt evt, rt_uint16_t len)
+static void rx_callback(struct netconn *conn, enum netconn_evt evt, rt_uint16_t len)
 {
    if (evt == NETCONN_EVT_RCVPLUS)
    {
@@ -2561,7 +2561,7 @@ void rx_callback(struct netconn *conn, enum netconn_evt evt, rt_uint16_t len)
    }
 }
 
-void process_rx_data(struct netbuf *buffer)
+static void process_rx_data(struct netbuf *buffer)
 {
    rt_uint8_t *data;
    rt_uint16_t length;
@@ -2572,7 +2572,7 @@ void process_rx_data(struct netbuf *buffer)
    rt_kprintf("rx: %s\n", data);
 }
 
-void nw_thread(void* parameter)
+static void nw_thread(void* parameter)
 {
    struct netbuf *buf;
     
@@ -2620,7 +2620,7 @@ void nw_thread(void* parameter)
    }
 }
 
-void test_sendhit(void)
+static void test_sendhit(void)
 {
    static char hit_data[80];
    static rt_uint32_t hit = 0;
