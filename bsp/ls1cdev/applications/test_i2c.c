@@ -2,6 +2,7 @@
 file: test_user_i2c.c
 测试祼机i2c2驱动程序ls1c_i2c.c 在finsh 中运行
 1. test_at24(1,17) //使用i2c1 , 写入at24c32(地址0~31)数据(17*i(i=0~31)),再读出并打印
+   test_at2402(1,17) //使用i2c1 , 写入at24c02(地址0~7)数据(17*i(i=0~7)),再读出并打印
 2. ds3231_getdata(1) //使用i2c1,读出ds3231的日期
 3. ds3231_gettime(1)  //使用i2c1,读出ds3231的时间
 4. ds3231_setdata(1,180101)  //使用i2c1,写入ds3231的日期(2018.1.1)
@@ -14,18 +15,13 @@ file: test_user_i2c.c
 #include "ls1c_i2c.h"  
 #include "ls1c_pin.h"  
   
-  
-
-  
 // I2C1
 #define LS1C_I2C_SDA1            (2)  
 #define LS1C_I2C_SCL1            (3)  
   
 // I2C2 
-#define LS1C_I2C_SDA2          (50)  
-#define LS1C_I2C_SCL2          (51)  
-  
- 
+#define LS1C_I2C_SDA2          (54)  
+#define LS1C_I2C_SCL2          (55)  
   
 // 测试at24C32  页面长度32 字节 ，地址2 字节
 void test_at24(rt_int8_t ic_no, rt_int8_t num )    
@@ -38,8 +34,8 @@ void test_at24(rt_int8_t ic_no, rt_int8_t num )
       
     i2c_info.clock = 50*1000;       // 50kb/s  
     switch( ic_no)
-        {
-        case 0:
+    {
+      case 0:
         i2c_info.I2Cx = LS1C_I2C_0;
       break;
       case 1:
@@ -51,7 +47,7 @@ void test_at24(rt_int8_t ic_no, rt_int8_t num )
       default:
           i2c_info.I2Cx = LS1C_I2C_2;
       break;
-}
+    }
     i2c_init(&i2c_info);  
       
     send_buff[0] = 0x00;
@@ -68,6 +64,7 @@ void test_at24(rt_int8_t ic_no, rt_int8_t num )
     rt_thread_delay(1);  
     i2c_send_stop(&i2c_info);  
 
+    rt_thread_delay(2);  
     // 发送读指令  的地址
     i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_WRITE);  
     i2c_receive_ack(&i2c_info);  
@@ -75,12 +72,10 @@ void test_at24(rt_int8_t ic_no, rt_int8_t num )
     i2c_send_stop(&i2c_info);  
 
     // 读取一页寄存器数据  
-    rt_thread_delay(2);  
     i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_READ);  
     i2c_receive_ack(&i2c_info); 
     i2c_receive_data(&i2c_info, recv_buff, 32);  
     i2c_send_stop(&i2c_info);  
-
  
     for(i=0;i<32;i++)
     {
@@ -94,14 +89,14 @@ void test_at2402(rt_int8_t ic_no, rt_int8_t num )
 {  
     int i;
     ls1c_i2c_info_t i2c_info;  
-    int slave_addr = 0xA0 >> 1;    
+    int slave_addr = 0x50;    
     unsigned char send_buff[64] = {0};  
     unsigned char recv_buff[64] = {0};  
       
     i2c_info.clock = 50*1000;       // 50kb/s  
     switch( ic_no)
-        {
-        case 0:
+    {
+      case 0:
         i2c_info.I2Cx = LS1C_I2C_0;
       break;
       case 1:
@@ -113,7 +108,7 @@ void test_at2402(rt_int8_t ic_no, rt_int8_t num )
       default:
           i2c_info.I2Cx = LS1C_I2C_2;
       break;
-}
+    }
     i2c_init(&i2c_info);  
       
     send_buff[0] = 0x00;
@@ -128,6 +123,8 @@ void test_at2402(rt_int8_t ic_no, rt_int8_t num )
     i2c_send_data(&i2c_info, send_buff, 9);  
     rt_thread_delay(1);  
     i2c_send_stop(&i2c_info);  
+	
+    rt_thread_delay(2);  
 
     // 发送读指令  的地址
     i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_WRITE);  
@@ -136,12 +133,10 @@ void test_at2402(rt_int8_t ic_no, rt_int8_t num )
     i2c_send_stop(&i2c_info);  
 
     // 读取一页寄存器数据  
-    rt_thread_delay(2);  
     i2c_send_start_and_addr(&i2c_info, slave_addr, LS1C_I2C_DIRECTION_READ);  
     i2c_receive_ack(&i2c_info); 
     i2c_receive_data(&i2c_info, recv_buff, 8);  
     i2c_send_stop(&i2c_info);  
-
  
     for(i=0;i<8;i++)
     {
@@ -278,15 +273,13 @@ void ds3231_setdata(rt_int8_t ic_no , rt_uint32_t data)
       break;
 }
     i2c_init(&i2c_info);  
-      
-    
+
     // 发送器件地址和要写入的地址、数据
     i2c_send_start_and_addr(&i2c_info, ds3231_slave_addr, LS1C_I2C_DIRECTION_WRITE);  
     i2c_receive_ack(&i2c_info);  
     i2c_send_data(&i2c_info, send_buff, 4);  
     rt_thread_delay(1);  
     i2c_send_stop(&i2c_info);  
-
 }
 
 /*设置到ds3231。 格式为hhmmss。如14:00:00写为140000*/
@@ -332,7 +325,6 @@ void ds3231_settime(rt_int8_t ic_no , rt_uint32_t time)
     i2c_send_data(&i2c_info, send_buff, 4);  
     rt_thread_delay(1);  
     i2c_send_stop(&i2c_info);  
-
 }
 
 void test_at24_msh(int argc, char** argv)
@@ -375,9 +367,6 @@ void ds3231_settime_msh(int argc, char** argv)
 	num2 = strtoul(argv[2], NULL, 0);
 	ds3231_settime(num1, num2);
 }
-
-
-
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_at24 , test_at24  e.g.test_at24(1,17));
 FINSH_FUNCTION_EXPORT(test_at2402 , test_at2402  e.g.test_at2402(1,17));
@@ -392,6 +381,4 @@ MSH_CMD_EXPORT(ds3231_getdata_msh, ds3231_getdata_msh 1);
 MSH_CMD_EXPORT(ds3231_gettime_msh, ds3231_gettime_msh 1);
 MSH_CMD_EXPORT(ds3231_setdata_msh, ds3231_setdata_msh 1 180101);
 MSH_CMD_EXPORT(ds3231_settime_msh, ds3231_settime_msh 1 140000);
-
-
 

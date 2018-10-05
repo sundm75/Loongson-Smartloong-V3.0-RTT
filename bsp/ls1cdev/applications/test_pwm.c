@@ -6,7 +6,7 @@
 3. test_pwm_gpio04_gpio06()  测试gpio04复用为pwm,gpio06作为普通gpio使用
 4. test_pwm_max_period() 测试pwm最大周期
  */
-
+#include <rtthread.h>
 #include "../libraries/ls1c_public.h"
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"
@@ -20,7 +20,7 @@ void test_pwm_normal(void)
 
     pwm_info.gpio = LS1C_PWM0_GPIO06;               // pwm引脚位gpio06
     pwm_info.mode = PWM_MODE_NORMAL;                // 正常模式--连续输出pwm波形
-    pwm_info.duty = 0.85;                           // pwm占空比
+    pwm_info.duty = 0.65;                           // pwm占空比
     pwm_info.period_ns = 5*1000*1000;               // pwm周期5ms
 
     // pwm初始化，初始化后立即产生pwm波形
@@ -28,14 +28,14 @@ void test_pwm_normal(void)
 
     while (1)
     {
-        // 延时100ms
-        delay_ms(100);
+        // 延时1s
+        rt_thread_delay(RT_TICK_PER_SECOND*2);
 
         // 禁止pwm
         pwm_disable(&pwm_info);
 
-        // 延时100ms
-        delay_ms(100);
+        // 延时1s
+         rt_thread_delay(RT_TICK_PER_SECOND*2);
 
         // 使能pwm
         pwm_enable(&pwm_info);

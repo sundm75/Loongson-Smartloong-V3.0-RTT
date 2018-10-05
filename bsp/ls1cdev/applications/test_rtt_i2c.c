@@ -10,11 +10,9 @@
 #include <drivers/i2c.h>
 #include "../drivers/drv_i2c.h"
 
-
 #define AT24c32_I2C_BUS_NAME                ("i2c2")        // 注意与i2c bus初始化函数中的bus name保持一致
 struct rt_i2c_bus_device *at24c32_i2c_bus = RT_NULL;
 int at24c32_addr = 0xA0 >> 1;               // 地址前7位
-
 
 /*
  * 从指定地址读出一个字节
@@ -42,8 +40,6 @@ unsigned char at24c32_read_byte(unsigned char read_addr)
 
     return data;
 }
-
-
 /*
  * 在指定地址写入一个字节的数据
  * @write_addr 地址
@@ -67,8 +63,6 @@ void at24c32_write_byte(unsigned char write_addr, unsigned char data)
 
     return ;
 }
-
-
 // 测试用的线程的入口  
 void test_at24c32(void )  
 {
@@ -79,7 +73,7 @@ void test_at24c32(void )
     at24c32_i2c_bus = (struct rt_i2c_bus_device *)rt_device_find(AT24c32_I2C_BUS_NAME);
     if (RT_NULL == at24c32_i2c_bus)
     {
-        rt_kprintf("[%s] no i2c device -- am2320!\n", __FUNCTION__);
+        rt_kprintf("[%s] no i2c device -- at24c32!\n", __FUNCTION__);
         return ;
     }
 
@@ -95,8 +89,6 @@ void test_at24c32(void )
     // 读
     count = at24c32_read_byte(read_addr);
     rt_kprintf("[%s] current count=%d\n", __FUNCTION__, count);
-    
-
 }  
 
  #include  <finsh.h>

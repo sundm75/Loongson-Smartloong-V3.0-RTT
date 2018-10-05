@@ -18,16 +18,16 @@
 
 void test_spi01(void)
 {    
-	int i;
+    int i;
     rt_uint8_t buf[16] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
     unsigned char SPIx = 0;
     void *spi_base = NULL;
     unsigned char cpol = 0;
     unsigned char cpha = 0;
     unsigned char val = 0;
-	
+    
     spi_base = ls1c_spi_get_base(SPIx);
-	ls1c_spi_set_cs(spi_base, 1, 0); //SPI0 CS1
+    ls1c_spi_set_cs(spi_base, 1, 0); //SPI0 CS1
     {
         // 使能SPI控制器，master模式，关闭中断
         reg_write_8(0x53, spi_base + LS1C_SPI_SPCR_OFFSET);
@@ -51,27 +51,27 @@ void test_spi01(void)
     ls1c_spi_set_clock(spi_base, 100*1000);
     // 设置通信模式(时钟极性和相位)
     ls1c_spi_set_mode(spi_base, SPI_CPOL_1, SPI_CPHA_1);
-	
+    
     delay_us(1);
     for( i=0; i<16; i++)
-	{
-		ls1c_spi_txrx_byte(spi_base, buf[i]);
-	}    
-	ls1c_spi_set_cs(spi_base, 1, 1); //SPI0 CS1
+    {
+        ls1c_spi_txrx_byte(spi_base, buf[i]);
+    }    
+    ls1c_spi_set_cs(spi_base, 1, 1); //SPI0 CS1
 }
 
 void test_spi10(void)
 {    
-	int i;
+    int i;
     rt_uint8_t buf[16] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
     unsigned char SPIx = 1;
     void *spi_base = NULL;
     unsigned char cpol = 0;
     unsigned char cpha = 0;
     unsigned char val = 0;
-	
+    
     spi_base = ls1c_spi_get_base(SPIx);
-	ls1c_spi_set_cs(spi_base, 0, 0); //SPI1 CS0
+    ls1c_spi_set_cs(spi_base, 0, 0); //SPI1 CS0
     {
         // 使能SPI控制器，master模式，关闭中断
         reg_write_8(0x53, spi_base + LS1C_SPI_SPCR_OFFSET);
@@ -95,15 +95,14 @@ void test_spi10(void)
     ls1c_spi_set_clock(spi_base, 100*1000);
     // 设置通信模式(时钟极性和相位)
     ls1c_spi_set_mode(spi_base, SPI_CPOL_1, SPI_CPHA_1);
-	
+    
     delay_us(1);
     for( i=0; i<16; i++)
-	{
-		ls1c_spi_txrx_byte(spi_base, buf[i]);
-	}    
-	ls1c_spi_set_cs(spi_base, 0, 1); //SPI1 CS0
+    {
+        ls1c_spi_txrx_byte(spi_base, buf[i]);
+    }    
+    ls1c_spi_set_cs(spi_base, 0, 1); //SPI1 CS0
 }
-
 
   #include  <finsh.h>
 FINSH_FUNCTION_EXPORT(test_spi01, test_spi01 e.g.test_spi01());

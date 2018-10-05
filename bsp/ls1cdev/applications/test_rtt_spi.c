@@ -1,11 +1,10 @@
 /*
- * File      : test_spi.c
- 测控SPI发送， 在finsh中运行
+ * File      : test_rtt_spi.c
+ 测试SPI发送， 在finsh中运行
 1. test_spi01()   SPI0 CS1 发送16个字节
 2. test_spi10()   SPI1 CS0 发送16个字节
-
  */
- #include <rtthread.h>
+#include <rtthread.h>
 #include <drivers/spi.h>
 #include <stdlib.h>  
 #include "ls1c_spi.h"
@@ -86,17 +85,14 @@ void test_rtt_spi10(void)
         rt_spi_configure(spi_device, &cfg);
     }
 
-
     for(i=0;i<16;i++)
     {
         if(spi != RT_NULL)
         {
-            //rt_device_write(spi, 0, buf, 16);
-            
+            rt_device_write(spi, 0, buf, 16);
         }
         rt_thread_delay(1);
     }
-
       
       struct ls1c_spi *ls1c_spi = NULL;
       struct ls1c_spi_cs *ls1c_spi_cs = NULL;
@@ -109,8 +105,7 @@ void test_rtt_spi10(void)
     rt_device_close(spi);
 }
 
-
-  #include  <finsh.h>
+#include  <finsh.h>
 FINSH_FUNCTION_EXPORT(test_rtt_spi01, test_spi01 e.g.test_rtt_spi01());
 FINSH_FUNCTION_EXPORT(test_rtt_spi10, test_spi10  e.g.test_rtt_spi10());
 /* 导出到 msh 命令列表中 */

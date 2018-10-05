@@ -5,8 +5,8 @@
  * 程序清单：串口设备操作例程
  *
  * 在这个例程中，将启动一个devt线程，然后打开串口1和2
- * 当串口1和2有输入时，将读取其中的输入数据然后写入到
- * 串口1设备中。
+ * 当串口1有输入时，将读取其中的输入数据然后写入到
+ * 串口1和 串口2设备中。
  *
  */
 
@@ -70,7 +70,7 @@ static void device_thread_entry(void* parameter)
         if (result == -RT_ETIMEOUT)
         {
             /* 接收超时*/
-            rt_kprintf("timeout count:%d\n", ++count);
+            rt_kprintf("\r\ntimeout count:%d\n", ++count);
         }
 
         /* 成功收到消息*/
@@ -89,6 +89,7 @@ static void device_thread_entry(void* parameter)
             if (write_device != RT_NULL)
                 rt_device_write(write_device, 0, &uart_rx_buffer[0],
                         rx_length);
+            rt_kprintf("\r\n uart1 rev %d bytes: %s \r\n", rx_length,  &uart_rx_buffer[0]);
         }
     }
 }
