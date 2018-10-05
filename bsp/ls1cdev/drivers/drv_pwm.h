@@ -1,5 +1,5 @@
 /*
- * File      : drv_can.h
+ * File      : drv_pwm.h
  * This file is part of RT-Thread RTOS
  * COPYRIGHT (C) 2006 - 2018, RT-Thread Development Team
  *
@@ -19,12 +19,12 @@
  *
  * Change Logs:
  * Date           Author       Notes
- * 2018-01-06     sundm75       first version
+ * 2018-09-26     sundm75       first version
  */
 
-#ifndef LS1C_DRV_CAN_H
-#define LS1C_DRV_CAN_H
+#ifndef LS1C_DRV_PWM_H
+#define LS1C_DRV_PWM_H
 
-extern int ls1c_bxcan_init(void);
+int ls1c_pwm_init(void);
 
 #endif /*DRV_CAN_H_*/

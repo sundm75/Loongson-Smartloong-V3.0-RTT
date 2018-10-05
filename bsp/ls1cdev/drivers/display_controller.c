@@ -31,7 +31,8 @@
 #include "../../libraries/ls1c_gpio.h"
 #include "../../libraries/ls1c_pin.h"
 
-#ifdef RT_USING_RTGUI
+//#ifdef RT_USING_RTGUI
+#ifdef PKG_USING_GUIENGINE
 
 struct vga_struct vga_mode[] =
 {

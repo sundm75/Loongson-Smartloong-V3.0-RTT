@@ -189,10 +189,10 @@ void rt_hw_uart_init(void)
     serial1.ops    = &ls1c_uart_ops;
     serial1.config = config;
 
-    pin_set_purpose(36, PIN_PURPOSE_OTHER);
-    pin_set_purpose(37, PIN_PURPOSE_OTHER);
-    pin_set_remap(36, PIN_REMAP_SECOND);
-    pin_set_remap(37, PIN_REMAP_SECOND);
+    pin_set_purpose(2, PIN_PURPOSE_OTHER);
+    pin_set_purpose(3, PIN_PURPOSE_OTHER);
+    pin_set_remap(2, PIN_REMAP_FOURTH);
+    pin_set_remap(3, PIN_REMAP_FOURTH);
 
     rt_hw_interrupt_install(uart->IRQ, uart_irq_handler, &serial1, "UART1");
 
