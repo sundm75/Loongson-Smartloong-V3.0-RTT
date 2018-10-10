@@ -21,7 +21,7 @@
  * Date           Author       Notes
  * 2018-02-08     Zhangyihong  the first version
  * 2018-04-03     XY           gt9xx for 1024 * 600
- * 2018-09-25     sundm75      ls1x for  480 * 272
+ * 2018-10-11     sundm75      ls1c for  480 * 272
  */
 #include "rtthread.h"
 
@@ -34,20 +34,21 @@
 #ifdef TINA_USING_TOUCH
 
 #define TP_INT_PIN          (89)
-
 #define TP_RESET_PIN        (87)
+#define LED_PIN        		(52)
 
-#define gt9xx_READ_XY_REG 			0x814E    	/* 坐标寄存器 */
+
+#define gt9xx_READ_XY_REG 			0x814E    	/* 坐标寄存器 当前检测到的触摸情况 */
 #define gt9xx_CLEARBUF_REG 			0x814E   	/* 清除坐标寄存器 */
 #define gt9xx_CONFIG_REG    		0x8047  	/* 配置参数寄存器 */
 #define gt9xx_COMMAND_REG 			0x8040 		/* 实时命令 */
-#define gt9xx_PRODUCT_ID_REG 		0x8140 		/*productid*/
+#define gt9xx_PRODUCT_ID_REG 		0x8140 		/* productid */
 #define gt9xx_VENDOR_ID_REG 		0x814A 		/* 当前模组选项信息 */
 #define gt9xx_CONFIG_VERSION_REG 	0x8047 		/* 配置文件版本号 */
 #define gt9xx_CONFIG_CHECKSUM_REG 	0x80FF 		/* 配置文件校验码 */
 #define gt9xx_FIRMWARE_VERSION_REG 	0x8144 		/* 固件版本号 */
 
-#define IIC_RETRY_NUM 4
+#define IIC_RETRY_NUM 1
 
 void touch_down(void);
 void touch_mo(void);
@@ -186,7 +187,7 @@ static rt_err_t gt9xx_read_point(touch_msg_t msg)
 
     gt9xx_read(gt9xx_i2c_bus, gt9xx_READ_XY_REG, buf, 8);
     gt9xx_write(gt9xx_i2c_bus, gt9xx_CLEARBUF_REG, &clean, 1);
-    if ((buf[0] & 0x01) == 0)
+    if ((buf[0] & 0x80) == 0)
     {
         if (s_tp_down)
         {
@@ -197,10 +198,8 @@ static rt_err_t gt9xx_read_point(touch_msg_t msg)
         msg->event = TOUCH_EVENT_NONE;
         return RT_EOK;
     }
-
     msg->x = ((rt_uint16_t)buf[3] << 8) | buf[2];
     msg->y = ((rt_uint16_t)buf[5] << 8) | buf[4];
-    rt_kprintf("x : %d, y : %d\n", msg->x, msg->y);
     if (s_tp_down)
     {
         msg->event = TOUCH_EVENT_MOVE;
@@ -216,6 +215,10 @@ void gt9xx_touch_isr(int irq, void *param)
 {
     gpio_irq_disable(TP_INT_PIN);
     rt_sem_release(gt9xx_driver.isr_sem);
+    if (0 == (gpio_get(LED_PIN)))
+        gpio_set(LED_PIN, gpio_level_high); 
+    else
+        gpio_set(LED_PIN, gpio_level_low); 
 }
 
 static void gt9xx_set_address(rt_uint8_t address)
@@ -224,19 +227,26 @@ static void gt9xx_set_address(rt_uint8_t address)
     pin_set_purpose(TP_RESET_PIN, PIN_PURPOSE_OTHER);
     gpio_direction_output( TP_INT_PIN, 0);
     gpio_direction_output( TP_RESET_PIN, 0);
-    rt_kprintf("\r\n[%s] \r\n", __FUNCTION__);
     if (address == 0x5D)
     {
-        rt_thread_delay(300);
+        rt_thread_delay(30);
         gpio_set_value( TP_RESET_PIN, 1);
         rt_thread_delay(300);
         pin_set_purpose(TP_INT_PIN, PIN_PURPOSE_OTHER);
         gpio_direction_input(TP_INT_PIN);
-        rt_thread_delay(100);
+        rt_thread_delay(10);
     }
     else
     {
-
+        gpio_set_value( TP_INT_PIN, 1);
+        gpio_set_value( TP_RESET_PIN, 0);
+        rt_thread_delay(30);
+        gpio_set_value( TP_RESET_PIN, 1);
+        gpio_set_value( TP_INT_PIN, 1);
+        rt_thread_delay(30);
+        gpio_set_value( TP_INT_PIN, 0);
+        rt_thread_delay(30);
+        gpio_set_value( TP_INT_PIN, 1);    
     }
 }
 
@@ -269,6 +279,7 @@ static void gt9xx_init(struct rt_i2c_bus_device *i2c_bus)
     rt_hw_interrupt_install(touch_irq, gt9xx_touch_isr, RT_NULL, "touch");  
     
     rt_thread_delay(RT_TICK_PER_SECOND / 5);
+    gpio_init(LED_PIN, gpio_mode_output);
 }
 
 static int gt9xx_write_config(void)
@@ -277,11 +288,14 @@ static int gt9xx_write_config(void)
     rt_uint8_t config_checksum = 0;
     gt9xx_set_address(gt9xx_driver.address);
     //Add sth...
+    gt9xx_config[5] = 0x05;
+    gt9xx_config[6] = 0x0C;
     for (i = 0; i < sizeof(gt9xx_config) - 2; i++)
     {
         config_checksum += gt9xx_config[i];
     }
     gt9xx_config[184] = (~config_checksum) + 1;
+    gt9xx_config[185] = 0x01;
     gt9xx_write(gt9xx_i2c_bus, gt9xx_CONFIG_REG, gt9xx_config, sizeof(gt9xx_config));
     return 0;
 }
@@ -292,7 +306,6 @@ static int gt9xx_read_config(void)
     int i;
     rt_uint8_t buf[8];
     rt_uint8_t clean = 0;
-	rt_uint16_t x,y;
     gt9xx_read(gt9xx_i2c_bus, gt9xx_CONFIG_VERSION_REG, gt9xx_config, sizeof(gt9xx_config));
     gt9xx_config[sizeof(gt9xx_config)-1] = 1;
     
@@ -305,7 +318,6 @@ static int gt9xx_read_config(void)
             rt_kprintf("\n");
         }
     }
-	
     rt_kprintf("\n");
     return 0;
 }
@@ -315,14 +327,14 @@ static int gt9xx_read_xy(void)
     int i;
     rt_uint8_t buf[8];
     rt_uint8_t clean = 0;
-	rt_uint16_t x,y;
+    rt_uint16_t x,y;
     
     gt9xx_read(gt9xx_i2c_bus, gt9xx_READ_XY_REG, buf, 8);
-	gt9xx_write(gt9xx_i2c_bus, gt9xx_CLEARBUF_REG, &clean, 1);
+    gt9xx_write(gt9xx_i2c_bus, gt9xx_CLEARBUF_REG, &clean, 1);
     x = ((rt_uint16_t)buf[3] << 8) | buf[2];
     y = ((rt_uint16_t)buf[5] << 8) | buf[4];
-    rt_kprintf("\nx : %d, y : %d\n", x, y);	
-	
+    rt_kprintf("\n814e= 0x%02x; 814f= 0x%02x;\n x1 : %d, y1 : %d\n", buf[0], buf[1], x, y);	
+
     rt_kprintf("\n");
     return 0;
 }
@@ -333,7 +345,7 @@ static rt_bool_t gt9xx_probe(struct rt_i2c_bus_device *i2c_bus)
     rt_uint8_t buffer[5] = { 0 };
 
     gt9xx_set_address(gt9xx_driver.address);
-    //gt9xx_soft_reset(i2c_bus);
+    gt9xx_soft_reset(i2c_bus);
     gt9xx_read(i2c_bus, gt9xx_PRODUCT_ID_REG, buffer, 4);
     buffer[4] = '\0';
     if (buffer[0] == '9' && buffer[1] == '1' && buffer[2] == '1')
@@ -365,7 +377,7 @@ static void gt9xx_deinit(void)
 
 static int gt9xx_driver_register(void)
 {
-    rt_kprintf("\r\n[%s] \r\n", __FUNCTION__);
+    rt_kprintf("\r\n%s \r\n", __FUNCTION__);
     gt9xx_driver.address = 0x5D;
     gt9xx_driver.probe = gt9xx_probe;
     gt9xx_driver.ops = &gt9xx_ops;

@@ -60,7 +60,7 @@ static void post_down_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
     emouse.ts = rt_tick_get();
     emouse.id = ts;
     rtgui_server_post_event(&emouse.parent, sizeof(emouse));
-    //rt_kprintf("touch down x:%d,y%d,id:%d\r\n", x, y, ts);
+    rt_kprintf("touch down x:%d,y%d,id:%d\r\n", x, y, ts);
     touch_down();
 #endif
 }
@@ -80,7 +80,7 @@ static void post_motion_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
     emouse.ts = rt_tick_get();
     emouse.id = ts;
     rtgui_server_post_event(&emouse.parent, sizeof(emouse));
-    //rt_kprintf("touch motion x:%d,y%d,id:%d\r\n", x, y, ts);
+    rt_kprintf("touch motion x:%d,y%d,id:%d\r\n", x, y, ts);
 #endif
 }
 
@@ -99,7 +99,7 @@ static void post_up_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
     emouse.ts = rt_tick_get();
     emouse.id = ts;
     rtgui_server_post_event(&emouse.parent, sizeof(emouse));
-    //rt_kprintf("touch up x:%d,y%d,id:%d\r\n", x, y, ts);
+    rt_kprintf("touch up x:%d,y%d,id:%d\r\n", x, y, ts);
 #endif
 }
 
@@ -143,7 +143,7 @@ static void touch_thread_entry(void *parameter)
 
 int rt_touch_driver_init(void)
 {
-	rt_kprintf("\r\n[%s] \r\n", __FUNCTION__);
+	rt_kprintf("\r\n%s \r\n", __FUNCTION__);
     rt_list_init(&driver_list);
     return 0;
 }
