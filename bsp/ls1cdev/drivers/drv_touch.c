@@ -29,7 +29,7 @@
  
 #include "drv_touch.h"
 #ifdef TINA_USING_TOUCH
-#ifdef PKG_USING_GUIENGINE
+#if (defined PKG_USING_GUIENGINE) || (defined RT_USING_RTGUI)
 #include <rtgui/event.h>
 #include <rtgui/rtgui_server.h>
 #endif
@@ -47,7 +47,7 @@ void rt_touch_drivers_register(touch_drv_t drv)
 
 static void post_down_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
 {
-#ifdef PKG_USING_GUIENGINE
+#if (defined PKG_USING_GUIENGINE) || (defined RT_USING_RTGUI)
     struct rtgui_event_mouse emouse;
 
     emouse.parent.sender = RT_NULL;
@@ -57,8 +57,10 @@ static void post_down_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
     emouse.button = RTGUI_MOUSE_BUTTON_LEFT | RTGUI_MOUSE_BUTTON_DOWN;
     emouse.x = x;
     emouse.y = y;
+#ifdef PKG_USING_GUIENGINE
     emouse.ts = rt_tick_get();
     emouse.id = ts;
+#endif
     rtgui_server_post_event(&emouse.parent, sizeof(emouse));
     rt_kprintf("touch down x:%d,y%d,id:%d\r\n", x, y, ts);
     touch_down();
@@ -67,7 +69,7 @@ static void post_down_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
 
 static void post_motion_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
 {
-#ifdef PKG_USING_GUIENGINE
+#if (defined PKG_USING_GUIENGINE) || (defined RT_USING_RTGUI)
     struct rtgui_event_mouse emouse;
 
     emouse.parent.sender = RT_NULL;
@@ -77,16 +79,19 @@ static void post_motion_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
     emouse.parent.type = RTGUI_EVENT_MOUSE_MOTION;
     emouse.x = x;
     emouse.y = y;
+#ifdef PKG_USING_GUIENGINE
     emouse.ts = rt_tick_get();
     emouse.id = ts;
+#endif
     rtgui_server_post_event(&emouse.parent, sizeof(emouse));
     rt_kprintf("touch motion x:%d,y%d,id:%d\r\n", x, y, ts);
+	touch_mo();
 #endif
 }
 
 static void post_up_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
 {
-#ifdef PKG_USING_GUIENGINE
+#if (defined PKG_USING_GUIENGINE) || (defined RT_USING_RTGUI)
     struct rtgui_event_mouse emouse;
 
     emouse.parent.sender = RT_NULL;
@@ -96,10 +101,13 @@ static void post_up_event(rt_uint16_t x, rt_uint16_t y, rt_tick_t ts)
     emouse.button = RTGUI_MOUSE_BUTTON_LEFT | RTGUI_MOUSE_BUTTON_UP;
     emouse.x = x;
     emouse.y = y;
+#ifdef PKG_USING_GUIENGINE
     emouse.ts = rt_tick_get();
     emouse.id = ts;
+#endif
     rtgui_server_post_event(&emouse.parent, sizeof(emouse));
     rt_kprintf("touch up x:%d,y%d,id:%d\r\n", x, y, ts);
+	touch_up();
 #endif
 }
 

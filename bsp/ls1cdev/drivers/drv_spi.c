@@ -24,6 +24,7 @@
 
 #include <rtthread.h>
 #include <drivers/spi.h>
+#include <rthw.h>
 #include "drv_spi.h"
 #include "../libraries/ls1c_pin.h"
 
@@ -288,6 +289,23 @@ int ls1c_hw_spi_init(void)
 }
 
 INIT_BOARD_EXPORT(ls1c_hw_spi_init);
+
+static int board_sd_init(void)
+{
+    #if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
+        /* mount sd card fat partition 1 as root directory */
+        if( dfs_mount("sd0", "/", "elm", 0, 0) == 0)
+        {
+            rt_kprintf("File System initialized!\n");
+        }
+        else
+        {
+            rt_kprintf("File System initialzation failed!\n");
+        }
+    #endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
+}
+
+INIT_APP_EXPORT(board_sd_init);
 
 #endif
 

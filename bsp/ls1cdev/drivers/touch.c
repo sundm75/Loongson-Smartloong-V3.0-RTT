@@ -32,7 +32,7 @@
 #include "drv_spi.h"
 #include "touch.h"
 
-#ifdef RT_USING_RTGUI
+#ifdef XPT2046_USING_TOUCH
 
 #include <rtgui/calibration.h>
 #include <rtgui/event.h>

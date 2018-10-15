@@ -215,10 +215,6 @@ void gt9xx_touch_isr(int irq, void *param)
 {
     gpio_irq_disable(TP_INT_PIN);
     rt_sem_release(gt9xx_driver.isr_sem);
-    if (0 == (gpio_get(LED_PIN)))
-        gpio_set(LED_PIN, gpio_level_high); 
-    else
-        gpio_set(LED_PIN, gpio_level_low); 
 }
 
 static void gt9xx_set_address(rt_uint8_t address)
@@ -346,6 +342,7 @@ static rt_bool_t gt9xx_probe(struct rt_i2c_bus_device *i2c_bus)
 
     gt9xx_set_address(gt9xx_driver.address);
     gt9xx_soft_reset(i2c_bus);
+	rt_thread_delay(10);
     gt9xx_read(i2c_bus, gt9xx_PRODUCT_ID_REG, buffer, 4);
     buffer[4] = '\0';
     if (buffer[0] == '9' && buffer[1] == '1' && buffer[2] == '1')
@@ -365,7 +362,9 @@ static rt_bool_t gt9xx_probe(struct rt_i2c_bus_device *i2c_bus)
     }
     else
     {
-        rt_kprintf("Uknow chip %s\r\n",buffer);
+        rt_kprintf("Uknow chip :");
+	    rt_kprintf("%d%d%d%d\r\n",buffer[0], buffer[1] , buffer[2], buffer[3]);
+		return RT_TRUE;
     }
     return RT_FALSE;
 }
@@ -390,14 +389,20 @@ INIT_ENV_EXPORT(gt9xx_driver_register);
 
 void touch_down(void)
 {
+    gpio_set(LED_PIN, gpio_level_low);
 }
 
 void touch_mo(void)
 {
+    if (0 == (gpio_get(LED_PIN)))
+        gpio_set(LED_PIN, gpio_level_high); 
+    else
+        gpio_set(LED_PIN, gpio_level_low); 
 }
 
 void touch_up(void)
 {
+    gpio_set(LED_PIN, gpio_level_high); 
 }
 
 
