@@ -126,14 +126,14 @@ void cal(void)
 			
 			//计算完
 			memset(buf,0 ,sizeof(buf));
-			sprintf(buf, "%d", f_res); //将f_res转为字符串 //%f
+			rt_sprintf(buf, "%d", f_res); //将f_res转为字符串 //%f
 			
 			i=strlen(buf)+1;//结果加上=的长度
 			rt_kprintf("i=%d\r\n", i);
 			memset(char_res,' ' ,sizeof(char_res));
 			memcpy(&char_res[LEN-(LEN-offset_num1-1+i)-1], &char_display[offset_num1], LEN-offset_num1-1);
 			char_res[LEN-i-1]='=';
-			sprintf(&char_res[LEN-i], "%d", f_res); //将f_res转为字符串 //%f
+			rt_sprintf(&char_res[LEN-i], "%d", f_res); //将f_res转为字符串 //%f
 			/*
 			if (strstr(&char_res[LEN-8], ".000000")!= RT_NULL)
 			{
