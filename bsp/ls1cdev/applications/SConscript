@@ -12,6 +12,10 @@ if GetDepend(  'RT_USING_RTGUI') == False:
 if GetDepend('RT_USING_USER_MAIN') == True:
 	SrcRemove(src, 'application.c')
 	SrcRemove(src, 'startup.c')
+
+if GetDepend('RT_USING_LWIP') == False:
+	SrcRemove(src, 'test_client.c')
+	SrcRemove(src, 'test_websrv.c')
 	
 group = DefineGroup('Applications', src, depend = [''], CPPPATH = CPPPATH)
 
