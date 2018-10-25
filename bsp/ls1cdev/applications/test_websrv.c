@@ -8,6 +8,8 @@ History:
       <author>  <time>   <version >   <desc> 
       Sundm    14/07/30     1.0     文件创建   
 ********************************************************************************/ 
+#ifdef RT_USING_LWIP
+
 #include <lwip/api.h>
 #include <finsh.h> 
 
@@ -99,3 +101,5 @@ void test_websrv(void)
 FINSH_FUNCTION_EXPORT(test_websrv, startup a simple web server e.g.test_websrv()); 
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_websrv, startup a simple web server test);
+
+#endif

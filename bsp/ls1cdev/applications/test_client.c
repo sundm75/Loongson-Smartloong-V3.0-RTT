@@ -8,6 +8,7 @@ History:
       <author>  <time>   <version >   <desc> 
       Sundm    14/07/30     1.0     文件创建   
 ********************************************************************************/ 
+#ifdef RT_USING_LWIP
 #include <rtthread.h>
 #include <lwip/api.h>
 #include <finsh.h> 
@@ -2705,4 +2706,5 @@ FINSH_FUNCTION_EXPORT(test_sendblock, send lock on network e.g.test_sendblock())
 MSH_CMD_EXPORT(test_client, tcp client connect to 193.169.2.215:9000);
 MSH_CMD_EXPORT(test_sendhit, send hit on network);
 MSH_CMD_EXPORT(test_sendblock, send lock on network);
+#endif
 
