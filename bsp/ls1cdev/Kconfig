@@ -83,11 +83,22 @@ config RT_CAN_USING_HDR
     default y  
 endif    
 
-if PKG_USING_GUIENGINE
-config TINA_USING_TOUCH
-    bool "Using TINA_USING_TOUCH"
-    default y  
+choice
+    prompt "Touch format"
+    default NO_TOUCH
+
+    config NO_TOUCH
+        bool "with no touch"	
+		
+if PKG_USING_RTGUI
+    config XPT2046_USING_TOUCH
+        bool "with XPT2046 touch"
 endif    
+
+    config TINA_USING_TOUCH
+        bool "with TINA touch"		
+endchoice
+
 
 if RT_USING_RTC
 config RT_RTC_NAME
