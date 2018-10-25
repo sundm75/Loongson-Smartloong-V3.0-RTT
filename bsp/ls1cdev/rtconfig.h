@@ -101,6 +101,9 @@
 #define RT_USING_SPI
 #define RT_USING_SPI_MSD
 
+/* Using WiFi */
+
+
 /* Using USB */
 
 
@@ -161,6 +164,25 @@
 
 /* Utilities */
 
+
+/* RT-Thread RTGUI */
+
+#define RT_USING_RTGUI
+#define RTGUI_NAME_MAX 16
+#define RTGUI_USING_FONT16
+#define RTGUI_USING_FONT12
+#define RTGUI_USING_FONTHZ
+#define RTGUI_DEFAULT_FONT_SIZE 16
+#define RTGUI_USING_DFS_FILERW
+#define RTGUI_USING_HZ_FILE
+#define RTGUI_USING_SMALL_SIZE
+#define RTGUI_IMAGE_XPM
+#define RTGUI_IMAGE_JPEG_NONE
+#define RTGUI_IMAGE_PNG_NONE
+#define RTGUI_IMAGE_BMP
+#define TINA_USING_TOUCH
+#define RTGUI_USING_DEMO
+#define USING_DEMO
 
 /* RT-Thread online packages */
 
@@ -263,40 +285,6 @@
 #define RT_USING_I2C2
 #define USING_BXCAN0
 #define USING_BXCAN1
-#define TINA_USING_TOUCH
-#define RT_USING_RTGUI
 #define RT_RTC_NAME "rtc"
-
-// <section name="RT_USING_RTGUI" description="RTGUI, a graphic user interface" default="true" >
- #define RT_USING_RTGUI
-// <integer name="RTGUI_NAME_MAX" description="Maximal size of RTGUI object name length" default="16" />
-#define RTGUI_NAME_MAX	16
-// <bool name="RTGUI_USING_FONT16" description="Support 16 weight font" default="true" />
-#define RTGUI_USING_FONT16
-// <bool name="RTGUI_USING_FONT12" description="Support 12 weight font" default="true" />
-#define RTGUI_USING_FONT12
-// <bool name="RTGUI_USING_FONTHZ" description="Support Chinese font" default="true" />
-#define RTGUI_USING_FONTHZ
-// <bool name="RTGUI_USING_DFS_FILERW" description="Using DFS as file interface " default="true" />
-#define RTGUI_DEFAULT_FONT_SIZE	16
-// <bool name="RTGUI_USING_DFS_FILERW" description="use RT-Thread/DFS as file interface" default="true" />
-#define RTGUI_USING_DFS_FILERW
-// <bool name="RTGUI_USING_HZ_FILE" description="Using font file as Chinese font" default="false" />
- #define RTGUI_USING_HZ_FILE
-// <bool name="RTGUI_USING_HZ_BMP" description="Using Chinese bitmap font" default="true" />
-//#define RTGUI_USING_HZ_BMP
-// <bool name="RTGUI_USING_SMALL_SIZE" description="Using small size in RTGUI" default="false" />
-#define RTGUI_USING_SMALL_SIZE
-// <bool name="RTGUI_USING_MOUSE_CURSOR" description="Using mouse cursor in RTGUI" default="false" />
-// #define RTGUI_USING_MOUSE_CURSOR
-// <bool name="RTGUI_IMAGE_XPM" description="Using xpm image in RTGUI" default="true" />
-#define RTGUI_IMAGE_XPM
-// <bool name="RTGUI_IMAGE_JPEG" description="Using jpeg image in RTGUI" default="true" />
-// #define RTGUI_IMAGE_JPEG
-// <bool name="RTGUI_IMAGE_PNG" description="Using png image in RTGUI" default="true" />
-// #define RTGUI_IMAGE_PNG
-// <bool name="RTGUI_IMAGE_BMP" description="Using bmp image in RTGUI" default="true" />
-#define RTGUI_IMAGE_BMP
-// </section>
 
 #endif
