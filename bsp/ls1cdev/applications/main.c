@@ -32,8 +32,13 @@ int main(int argc, char** argv)
 		rtgui_touch_hw_init("spi10");
 	#endif
 	rt_kprintf("Loongson系统初始化完成！\n");
-	#ifdef RT_USING_RTGUI
+	#if (defined RT_USING_RTGUI) && (defined RTGUI_USING_DEMO)
+	#ifdef USING_DEMO
 	test_guidemo();
+	#endif
+	#ifdef USING_UI_BUTTON
+	ui_button();
+	#endif
 	#endif
     return 0;
 }
