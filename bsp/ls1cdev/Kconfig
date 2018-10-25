@@ -90,7 +90,7 @@ choice
     config NO_TOUCH
         bool "with no touch"	
 		
-if PKG_USING_RTGUI
+if RT_USING_RTGUI
     config XPT2046_USING_TOUCH
         bool "with XPT2046 touch"
 endif    

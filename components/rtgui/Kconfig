@@ -77,18 +77,6 @@ config RTGUI_IMAGE_BMP
     bool "Support BMP image format"
     default y
 
-choice
-    prompt "Touch format"
-    default TINA_USING_TOUCH
-
-    config XPT2046_USING_TOUCH
-        bool "with XPT2046"
-
-    config TINA_USING_TOUCH
-        bool "with TINA"
-		
-endchoice
-
 config RTGUI_USING_DEMO
     bool "Enable the example of RTGUI"
     default n

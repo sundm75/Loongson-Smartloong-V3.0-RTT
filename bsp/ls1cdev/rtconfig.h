@@ -180,7 +180,6 @@
 #define RTGUI_IMAGE_JPEG_NONE
 #define RTGUI_IMAGE_PNG_NONE
 #define RTGUI_IMAGE_BMP
-#define TINA_USING_TOUCH
 #define RTGUI_USING_DEMO
 #define USING_DEMO
 
@@ -285,6 +284,7 @@
 #define RT_USING_I2C2
 #define USING_BXCAN0
 #define USING_BXCAN1
+#define TINA_USING_TOUCH
 #define RT_RTC_NAME "rtc"
 
 #endif
