@@ -1,0 +1,112 @@
+menu "RT-Thread RTGUI"
+
+config RT_USING_RTGUI
+    bool "Enable GUI"
+    default n
+
+if RT_USING_RTGUI
+
+config RTGUI_NAME_MAX
+    int "The maximal size of name in RTGUI"
+    default 16
+    
+config RTGUI_USING_FONT16
+    bool "Support 16 height font"
+    default y
+
+config RTGUI_USING_FONT12
+    bool "Support 12 height font"
+    default y
+
+config RTGUI_USING_FONTHZ
+    bool "Support Chinese font"
+    default n
+
+if RTGUI_USING_FONTHZ
+config RTGUI_USING_HZ_BMP
+    bool "Use bitmap Chinese font"
+    default n
+config RTGUI_DEFAULT_FONT_SIZE
+    int "Support 16 default weight font"
+    default 16
+config RTGUI_USING_DFS_FILERW
+    bool "use RT-Thread/DFS as file interface"
+    default y
+config RTGUI_USING_HZ_FILE
+    bool "Using font file as Chinese font"
+    default y
+endif
+
+config RTGUI_USING_SMALL_SIZE
+    bool "Using small size in RTGUI"
+    default y
+
+config RTGUI_IMAGE_XPM
+    bool "Support XPM image format"
+    default n
+
+choice
+    prompt "JPEG image format"
+    default RTGUI_IMAGE_JPEG_NONE
+
+    config RTGUI_IMAGE_JPEG_NONE
+        bool "No"
+
+    config RTGUI_IMAGE_JPEG
+        bool "with libjpeg"
+
+    config RTGUI_IMAGE_TJPGD
+        bool "with TJpgDec(Tiny JPEG Decompressor)"
+endchoice
+
+choice
+    prompt "PNG image format"
+    default RTGUI_IMAGE_PNG_NONE
+
+    config RTGUI_IMAGE_PNG_NONE
+        bool "No"
+
+    config RTGUI_IMAGE_PNG
+        bool "with libpng"
+
+    config RTGUI_IMAGE_LODEPNG
+        bool "with LodePNG"
+endchoice
+
+config RTGUI_IMAGE_BMP
+    bool "Support BMP image format"
+    default y
+
+choice
+    prompt "Touch format"
+    default TINA_USING_TOUCH
+
+    config XPT2046_USING_TOUCH
+        bool "with XPT2046"
+
+    config TINA_USING_TOUCH
+        bool "with TINA"
+		
+endchoice
+
+config RTGUI_USING_DEMO
+    bool "Enable the example of RTGUI"
+    default n
+
+if RTGUI_USING_DEMO
+choice
+    prompt "Demo Select"
+    default USING_DEMO
+
+    config USING_DEMO
+        bool "excute ui demo"
+
+    config USING_UI_BUTTON
+        bool "excute ui_button & calculte"
+		
+endchoice
+endif	
+
+endif
+
+endmenu

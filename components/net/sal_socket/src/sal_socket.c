@@ -1,21 +1,7 @@
 /*
- * File      : sal_socket.c
- * This file is part of RT-Thread RTOS
- * COPYRIGHT (C) 2006 - 2018, RT-Thread Development Team
+ * Copyright (c) 2006-2018, RT-Thread Development Team
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Change Logs:
  * Date           Author       Notes
@@ -30,10 +16,12 @@
 #include <sal.h>
 
 #define DBG_ENABLE
-#define DBG_SECTION_NAME    "SAL_SOC"
-#define DBG_LEVEL           DBG_INFO
+#define DBG_SECTION_NAME               "SAL_SOC"
+#define DBG_LEVEL                      DBG_INFO
 #define DBG_COLOR
 #include <rtdbg.h>
+
+#define SOCKET_TABLE_STEP_LEN          4
 
 /* the socket table used to dynamic allocate sockets */
 struct sal_socket_table
@@ -50,21 +38,31 @@ static struct rt_mutex sal_core_lock;
 static rt_bool_t init_ok = RT_FALSE;
 
 /**
- * SAL (Socket Abstraction Layer) initialization.
+ * SAL (Socket Abstraction Layer) initialize.
  *
- * @return result
- *         >= 0: initialize success
+ * @return result  0: initialize success
+ *                -1: initialize failed        
  */
 int sal_init(void)
 {
+    int cn;
+    
     if(init_ok)
     {
         LOG_D("Socket Abstraction Layer is already initialized.");
         return 0;
     }
 
-    /* clean sal socket table */
-    memset(&socket_table, 0, sizeof(socket_table));
+    /* init sal socket table */
+    cn = SOCKET_TABLE_STEP_LEN < SAL_SOCKETS_NUM ? SOCKET_TABLE_STEP_LEN : SAL_SOCKETS_NUM;
+    socket_table.max_socket = cn;
+    socket_table.sockets = rt_calloc(1, cn * sizeof(struct sal_socket *));
+    if (socket_table.sockets == RT_NULL)
+    {
+        LOG_E("No memory for socket table.\n");
+        return -1;
+    }
+    
     /* create sal socket lock */
     rt_mutex_init(&sal_core_lock, "sal_lock", RT_IPC_FLAG_FIFO);
 
@@ -76,12 +74,12 @@ int sal_init(void)
 INIT_COMPONENT_EXPORT(sal_init);
 
 /**
- *  this function will register the current protocol family to the global array of protocol families.
+ * This function will register protocol family to the global array of protocol families.
  *
- * @param pf protocol families structure
+ * @param pf protocol family object
  *
- * @return 0 : protocol families structure index
- *        -1 : the global array of available protocol families is full
+ * @return   0 : protocol family object register success
+ *          -1 : the global array of available protocol families is full
  */
 int sal_proto_family_register(const struct proto_family *pf)
 {
@@ -91,6 +89,18 @@ int sal_proto_family_register(const struct proto_family *pf)
     /* disable interrupt */
     level = rt_hw_interrupt_disable();
 
+    /* check protocol family is already registered */
+    for(idx = 0; idx < SAL_PROTO_FAMILIES_NUM; idx++)
+    {
+        if(rt_strcmp(proto_families[idx].name, pf->name) == 0)
+        {
+            /* enable interrupt */
+            rt_hw_interrupt_enable(level);
+            LOG_E("%s protocol family is already registered!", pf->name);
+            return -1;
+        }
+    }
+
     /* find an empty protocol family entry */
     for(idx = 0; idx < SAL_PROTO_FAMILIES_NUM && proto_families[idx].create; idx++);
 
@@ -99,10 +109,10 @@ int sal_proto_family_register(const struct proto_family *pf)
     {
         /* enable interrupt */
         rt_hw_interrupt_enable(level);
-
         return -1;
     }
 
+    rt_strncpy(proto_families[idx].name, pf->name, rt_strlen(pf->name));
     proto_families[idx].family = pf->family;
     proto_families[idx].sec_family = pf->sec_family;
     proto_families[idx].create = pf->create;
@@ -119,11 +129,62 @@ int sal_proto_family_register(const struct proto_family *pf)
 }
 
 /**
- *  this function will get socket structure by sal socket descriptor
+ * This function removes a previously registered protocol family object.
+ *
+ * @param pf protocol family object
+ *
+ * @return >=0 : unregister protocol family index
+ *          -1 : unregister failed
+ */
+int sal_proto_family_unregister(const struct proto_family *pf)
+{
+    int idx = 0;
+
+    RT_ASSERT(pf != RT_NULL);
+
+    for(idx = 0; idx < SAL_PROTO_FAMILIES_NUM; idx++)
+    {
+        if(rt_strcmp(proto_families[idx].name, pf->name) == 0)
+        {
+            rt_memset(&proto_families[idx], 0x00, sizeof(struct proto_family));
+
+            return idx;
+        }
+    }
+
+    return -1;
+}
+
+/**
+ * This function will get protocol family by name.
+ *
+ * @param name protocol family name
+ *
+ * @return protocol family object
+ */
+struct proto_family *sal_proto_family_find(const char *name)
+{
+    int idx = 0;
+
+    RT_ASSERT(name != RT_NULL);
+
+    for (idx = 0; idx < SAL_PROTO_FAMILIES_NUM; idx++)
+    {
+        if (rt_strcmp(proto_families[idx].name, name) == 0)
+        {
+            return &proto_families[idx];
+        }
+    }
+
+    return RT_NULL;
+}
+
+/**
+ * This function will get sal socket object by sal socket descriptor.
  *
  * @param socket sal socket index
  *
- * @return socket structure of the current sal socket index
+ * @return sal socket object of the current sal socket index
  */
 struct sal_socket *sal_get_socket(int socket)
 {
@@ -145,7 +206,7 @@ struct sal_socket *sal_get_socket(int socket)
 }
 
 /**
- * this function will lock sal socket.
+ * This function will lock sal socket.
  *
  * @note please don't invoke it on ISR.
  */
@@ -161,7 +222,7 @@ static void sal_lock(void)
 }
 
 /**
- * this function will lock sal socket.
+ * This function will lock sal socket.
  *
  * @note please don't invoke it on ISR.
  */
@@ -171,7 +232,7 @@ static void sal_unlock(void)
 }
 
 /**
- *  this function will get protocol family structure by family type
+ * This function will get protocol family structure by family type
  *
  * @param family  protocol family
  *
@@ -201,17 +262,17 @@ static struct proto_family *get_proto_family(int family)
 }
 
 /**
- *  this function will initialize socket structure and set socket options
+ * This function will initialize sal socket object and set socket options
  *
  * @param family    protocol family
  * @param type      socket type
  * @param protocol  transfer Protocol
- * @param res       socket structure address
+ * @param res       sal socket object address
  *
  * @return  0 : socket initialize success
  *         -1 : input the wrong family
  *         -2 : input the wrong socket type
- *         -3 : get protocol family structure failed
+ *         -3 : get protocol family object failed
  *         -4 : set socket options failed
  */
 static int socket_init(int family, int type, int protocol, struct sal_socket **res)
@@ -234,7 +295,7 @@ static int socket_init(int family, int type, int protocol, struct sal_socket **r
     sock->type = type;
     sock->protocol = protocol;
 
-    /* get socket protocol family structure */
+    /* get socket protocol family object */
     if ((pf = get_proto_family(family)) == RT_NULL)
     {
         return -3;
@@ -268,8 +329,8 @@ static int socket_alloc(struct sal_socket_table *st, int f_socket)
         int cnt, index;
         struct sal_socket **sockets;
 
-        /* increase the number of FD with 4 step length */
-        cnt = st->max_socket + 4;
+        /* increase the number of socket with 4 step length */
+        cnt = st->max_socket + SOCKET_TABLE_STEP_LEN;
         cnt = cnt > SAL_SOCKETS_NUM ? SAL_SOCKETS_NUM : cnt;
 
         sockets = rt_realloc(st->sockets, cnt * sizeof(struct sal_socket *));
@@ -289,7 +350,7 @@ static int socket_alloc(struct sal_socket_table *st, int f_socket)
     /* allocate  'struct sal_socket' */
     if (idx < (int) st->max_socket && st->sockets[idx] == RT_NULL)
     {
-        st->sockets[idx] = rt_malloc(sizeof(struct sal_socket));
+        st->sockets[idx] = rt_calloc(1, sizeof(struct sal_socket));
         if (st->sockets[idx] == RT_NULL)
         {
             idx = st->max_socket;
@@ -301,11 +362,6 @@ __result:
 
 }
 
-/**
- * this function will return a empty sal socket structure address
- *
- * @return sal socket structure address
- */
 static int socket_new(void)
 {
     struct sal_socket *sock;
@@ -353,20 +409,23 @@ int sal_accept(int socket, struct sockaddr *addr, socklen_t *addrlen)
     if (new_socket != -1)
     {
         int retval;
-        int new_socket;
+        int new_sal_socket;
         struct sal_socket *new_sock;
 
         /* allocate a new socket structure and registered socket options */
-        new_socket = socket_new();
-        if (new_socket < 0)
+        new_sal_socket = socket_new();
+        if (new_sal_socket < 0)
         {
+            sock->ops->closesocket(new_socket);
             return -1;
         }
-        new_sock = sal_get_socket(new_socket);
+        new_sock = sal_get_socket(new_sal_socket);
 
         retval = socket_init(sock->domain, sock->type, sock->protocol, &new_sock);
         if (retval < 0)
         {
+            sock->ops->closesocket(new_socket);
+            rt_memset(new_sock, 0x00, sizeof(struct sal_socket));
             LOG_E("New socket registered failed, return error %d.", retval);
             return -1;
         }
@@ -374,7 +433,7 @@ int sal_accept(int socket, struct sockaddr *addr, socklen_t *addrlen)
         /* socket struct user_data used to store the acquired new socket */
         new_sock->user_data = (void *) new_socket;
 
-        return new_sock->socket;
+        return new_sal_socket;
     }
 
     return -1;
@@ -415,7 +474,8 @@ int sal_shutdown(int socket, int how)
 
     if (sock->ops->shutdown((int) sock->user_data, how) == 0)
     {
-        memset(sock, 0x00, sizeof(struct sal_socket));
+        rt_free(sock);
+        socket_table.sockets[socket] = RT_NULL;
         return 0;
     }
 
@@ -622,7 +682,8 @@ int sal_closesocket(int socket)
 
     if (sock->ops->closesocket((int) sock->user_data) == 0)
     {
-        memset(sock, 0x00, sizeof(struct sal_socket));
+        rt_free(sock);        
+        socket_table.sockets[socket] = RT_NULL;
         return 0;
     }
 
@@ -647,6 +708,7 @@ int sal_ioctlsocket(int socket, long cmd, void *arg)
     return sock->ops->ioctlsocket((int) sock->user_data, cmd, arg);
 }
 
+#ifdef SAL_USING_POSIX
 int sal_poll(struct dfs_fd *file, struct rt_pollreq *req)
 {
     struct sal_socket *sock;
@@ -665,16 +727,22 @@ int sal_poll(struct dfs_fd *file, struct rt_pollreq *req)
 
     return sock->ops->poll(file, req);
 }
+#endif
 
 struct hostent *sal_gethostbyname(const char *name)
 {
     int i;
+    struct hostent *hst;
 
     for (i = 0; i < SAL_PROTO_FAMILIES_NUM; ++i)
     {
         if (proto_families[i].gethostbyname)
         {
-            return proto_families[i].gethostbyname(name);
+            hst = proto_families[i].gethostbyname(name);
+            if (hst != RT_NULL)
+            {
+                return hst;
+            }
         }
     }
 
@@ -684,13 +752,17 @@ struct hostent *sal_gethostbyname(const char *name)
 int sal_gethostbyname_r(const char *name, struct hostent *ret, char *buf,
                 size_t buflen, struct hostent **result, int *h_errnop)
 {
-    int i;
+    int i, res;
 
     for (i = 0; i < SAL_PROTO_FAMILIES_NUM; ++i)
     {
         if (proto_families[i].gethostbyname_r)
         {
-            return proto_families[i].gethostbyname_r(name, ret, buf, buflen, result, h_errnop);
+            res = proto_families[i].gethostbyname_r(name, ret, buf, buflen, result, h_errnop);
+            if (res == 0)
+            {
+                return res;
+            }
         }
     }
 
@@ -716,13 +788,17 @@ int sal_getaddrinfo(const char *nodename,
        const struct addrinfo *hints,
        struct addrinfo **res)
 {
-    int i;
+    int i, ret;
 
     for (i = 0; i < SAL_PROTO_FAMILIES_NUM; ++i)
     {
         if (proto_families[i].getaddrinfo)
         {
-            return proto_families[i].getaddrinfo(nodename, servname, hints, res);
+            ret = proto_families[i].getaddrinfo(nodename, servname, hints, res);
+            if (ret == 0)
+            {
+                return ret;
+            }
         }
     }
 

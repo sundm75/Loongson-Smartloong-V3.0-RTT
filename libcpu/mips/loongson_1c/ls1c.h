@@ -20,7 +20,7 @@
 
 #define LS1C_ACPI_IRQ	0
 #define LS1C_HPET_IRQ	1
-#define LS1C_UART0_IRQ	3  // linux中是3，v1.4版本的1c手册中是2，暂屏蔽，待确认
+//#define LS1C_UART0_IRQ	3  // linux中是3，v1.4版本的1c手册中是2，暂屏蔽，待确认
 #define LS1C_UART1_IRQ	4
 #define LS1C_UART2_IRQ	5
 #define LS1C_CAN0_IRQ	6
