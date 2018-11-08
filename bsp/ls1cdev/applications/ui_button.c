@@ -111,7 +111,7 @@ int test_cali(void)
 
 int test_guidemo(void)
 {
-    application_init();
+    application_init(); 
 }
 
 

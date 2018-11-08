@@ -17,6 +17,10 @@ if GetDepend('RT_USING_LWIP') == False:
 	SrcRemove(src, 'test_client.c')
 	SrcRemove(src, 'test_websrv.c')
 	
+if GetDepend('PKG_USING_WEBCLIENT') == False:
+	SrcRemove(src, 'test_wget.c')
+	SrcRemove(src, 'test_wpost.c')
+	
 group = DefineGroup('Applications', src, depend = [''], CPPPATH = CPPPATH)
 
 Return('group')

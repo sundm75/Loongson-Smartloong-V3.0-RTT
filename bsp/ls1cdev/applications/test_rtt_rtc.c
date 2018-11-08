@@ -57,15 +57,3 @@ FINSH_FUNCTION_EXPORT(test_rtt_rtc , test_rtt_rtc  e.g.test_rtt_rtc(1));
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_rtt_rtcmsh, test_rtt_rtcmsh 0);
 
-void test_mphaldelay(void)
-
-{
-  rt_kprintf("\r\nstart");
-   mp_hal_delay_ms(1000);
-  rt_kprintf("\r\nend");
-}
- #include  <finsh.h> 
-FINSH_FUNCTION_EXPORT(test_mphaldelay , test_mphaldelay  e.g.test_mphaldelay());
-/* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(test_mphaldelay, test_mphaldelay);
-

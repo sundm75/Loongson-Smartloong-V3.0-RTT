@@ -27,18 +27,19 @@
 int main(int argc, char** argv)
 {   
 
-	#ifdef XPT2046_USING_TOUCH
-	/*´¥ÃşÆÁÊ¹ÓÃSPI×ÜÏßSPI1 CS0  ³õÊ¼»¯*/
+#ifdef XPT2046_USING_TOUCH
+	/*è§¦æ‘¸å±ä½¿ç”¨SPIæ€»çº¿SPI1 CS0  åˆå§‹åŒ–*/
 		rtgui_touch_hw_init("spi10");
-	#endif
-	rt_kprintf("LoongsonÏµÍ³³õÊ¼»¯Íê³É£¡\n");
-	#if (defined RT_USING_RTGUI) && (defined RTGUI_USING_DEMO)
-	#ifdef USING_DEMO
+#endif
+	rt_kprintf("Loongsonç³»ç»Ÿåˆå§‹åŒ–å®Œæˆï¼\n");
+#if (defined RT_USING_RTGUI) && (defined RTGUI_USING_DEMO)
+#ifdef USING_DEMO
+extern int test_guidemo(void);
 	test_guidemo();
-	#endif
-	#ifdef USING_UI_BUTTON
+#endif
+#ifdef USING_UI_BUTTON
 	ui_button();
-	#endif
-	#endif
+#endif
+#endif	
     return 0;
 }

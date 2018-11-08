@@ -4,7 +4,7 @@
 1. test_rtt_canrev()  测试RTT 的CAN驱动，先初始化CAN,后开启接收线程，每接收一个帧就打印出来。
 2. test_rtt_send(1)  测试发送数据,一共8个
  */
-
+#ifdef RT_USING_CAN
 #include <rtthread.h>
 #include <ipc/completion.h>
 #include <drivers/can.h>
@@ -194,3 +194,4 @@ FINSH_FUNCTION_EXPORT(test_rtt_canrev, test_rtt_canrev  e.g.test_rtt_canrev());
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_rtt_csmsh, test_rtt_csmsh 1);
 MSH_CMD_EXPORT(test_rtt_canrev, can rev test);
+#endif
