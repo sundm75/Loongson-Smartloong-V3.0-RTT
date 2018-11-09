@@ -4,6 +4,8 @@
 
 百度网盘： https://pan.baidu.com/s/1m21e8TwbemOu033U85uH1g
 
+嵌入式系统设计大赛录制的相关视频 ：　http://www.socchina.net/video
+
 [中文页](README_zh.md) |
 
 [![GitHub](https://img.shields.io/github/license/RT-Thread/rt-thread.svg)](https://github.com/RT-Thread/rt-thread/blob/master/LICENSE)
