@@ -15,7 +15,7 @@
 #define MP3_FILE "/%s.pcm"
 
 /* 语音识别 */
-#define POST_FILE_URL    "http://vop.baidu.com/server_api?dev_pid=1536&cuid=asr&token=24.985dfc216bb3957ace3d5bf97955a7e8.2592000.1543982651.282335-14676469" 
+#define POST_FILE_URL    "http://vop.baidu.com/server_api?dev_pid=1536&cuid=asr&token=***" //将***更换成自己的token,共70个
 /* Content-Type*/
 #define C_TYPE   "audio/pcm;rate=16000"
 

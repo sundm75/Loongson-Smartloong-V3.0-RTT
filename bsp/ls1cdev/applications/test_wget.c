@@ -27,7 +27,7 @@ int speak(int argc, char** argv)
     }
 
     /* The first part of the voice link */
-    char *urlhd = "http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=24.985dfc216bb3957ace3d5bf97955a7e8.2592000.1543982651.282335-14676469&tex=";
+    char *urlhd = "http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=***&tex=";//将***更换成自己的token,共70个
     
     /* The last part of the voice link */
     char *urltl = "&vol=9&per=0&spd=5&pit=5&aue=3";
