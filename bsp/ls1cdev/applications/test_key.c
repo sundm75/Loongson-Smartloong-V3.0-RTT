@@ -8,6 +8,7 @@
  */
 #include <rtthread.h>  
 #include <stdlib.h>  
+#include <rthw.h>
 
 #include "ls1c.h"  
 #include "ls1c_timer.h"  
@@ -46,6 +47,7 @@ void thread_test_entry(void *parameter)
     rt_hw_interrupt_install(key_irq, ls1c_test_key_irqhandler, RT_NULL, "Key1");  
     rt_hw_interrupt_umask(key_irq);  
     gpio_init(key_gpio, gpio_mode_input);  
+    rt_kprintf("\r\nkey_irq = %d \r\n", key_irq);
   
     // 初始化led  
     gpio_init(led_gpio, gpio_mode_output);
@@ -70,7 +72,6 @@ void thread_test_entry(void *parameter)
 }    
   
   
-
 int test_key(void)  
 {  
     rt_thread_t tid;  
@@ -99,7 +100,14 @@ int test_key(void)
   
     return 0;  
 }  
+int test_print(void)  
+{  
+    printf("\r\nthis is test \r\n");
+}  
+
+
  #include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_key, test_key  e.g.test_key());
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_key, test_key);
+MSH_CMD_EXPORT(test_print, test_key);

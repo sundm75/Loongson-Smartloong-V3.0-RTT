@@ -1,11 +1,7 @@
 /*
- * File      : board.c
- * This file is part of RT-Thread RTOS
- * COPYRIGHT (C) 2006-2012, RT-Thread Develop Team
+ * Copyright (c) 2006-2018, RT-Thread Development Team
  *
- * The license and distribution terms for this file may be
- * found in the file LICENSE in this distribution or at
- * http://www.rt-thread.org/license/LICENSE
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Change Logs:
  * Date           Author       Notes
@@ -21,20 +17,10 @@
 #include "drv_uart.h"
 #include "ls1c.h"
 
-/**
- * @addtogroup Loongson LS1B
- */
- #define A_K0BASE		0x80000000
-
-/**
- * @addtogroup Loongson LS1B
- */
-
-/*@{*/
+#define A_K0BASE		0x80000000
 
 extern unsigned char __bss_end;
 
-extern int rt_application_init(void);
 
 extern void tlb_refill_exception(void);
 extern void general_exception(void);
@@ -42,7 +28,6 @@ extern void irq_exception(void);
 extern void rt_hw_cache_init(void);
 extern void invalidate_writeback_dcache_all(void);
 extern void invalidate_icache_all(void);
-/*@{*/
 
 /**
  * This is the timer interrupt service routine.

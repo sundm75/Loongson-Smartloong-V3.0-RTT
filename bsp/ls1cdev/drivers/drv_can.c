@@ -1,21 +1,7 @@
 /*
- * File      : drv_can.c
- * This file is part of RT-Thread RTOS
- * COPYRIGHT (C) 2006 - 2018, RT-Thread Development Team
+ * Copyright (c) 2006-2018, RT-Thread Development Team
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Change Logs:
  * Date           Author            Notes
@@ -515,7 +501,7 @@ int ls1c_bxcan_init(void)
     rt_kprintf("\r\ncan0 register! \r\n");
     
     rt_hw_interrupt_install(LS1C_CAN0_IRQ,( rt_isr_handler_t)bxcan0data.irq , RT_NULL, "can0");  
-    rt_hw_interrupt_umask(LS1C_CAN0_IRQ); 
+    rt_hw_interrupt_umask(LS1C_CAN0_IRQ);  
 #endif
 #ifdef USING_BXCAN1
     bxcan1.config.baud_rate = CAN250kBaud;

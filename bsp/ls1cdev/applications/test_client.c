@@ -1,4 +1,8 @@
-/****************************2012-2013, NJUT, Edu.****************************** 
+/*
+ * Copyright (c) 2006-2018, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
 FileName: clienttest.c 
 Author:  Ëï¶¬Ã·       Version :  1.0        Date: 2014.07.30
 Description:    ÍøÂç¿Í»§¶Ë²âÊÔ³ÌÐò 

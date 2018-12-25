@@ -1,11 +1,7 @@
 /*
- * File      : application.c
- * This file is part of RT-Thread RTOS
- * COPYRIGHT (C) 2006-2012, RT-Thread Develop Team
+ * Copyright (c) 2006-2018, RT-Thread Development Team
  *
- * The license and distribution terms for this file may be
- * found in the file LICENSE in this distribution or at
- * http://www.rt-thread.org/license/LICENSE
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Change Logs:
  * Date                Author         Notes
@@ -21,31 +17,20 @@
 
 void rt_init_thread_entry(void *parameter)
 {
-#ifdef RT_USING_COMPONENTS_INIT
-    /* initialization RT-Thread Components */
-    rt_components_init();
-#endif
-#if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
-    /* mount sd card fat partition 1 as root directory */
-    if( dfs_mount("sd0", "/", "elm", 0, 0) == 0)
-    {
-        rt_kprintf("File System initialized!\n");
-    }
-    else
-    {
-        rt_kprintf("File System initialzation failed!\n");
-    }
-#endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
-
-
-/*网口EMAC初始化*/
-    rt_hw_eth_init();
-
-#if defined(RT_USING_RTGUI)
-/*触摸屏使用SPI总线SPI1 CS0  初始化*/
-    rtgui_touch_hw_init("spi10");
-#endif
-rt_kprintf("系统初始化完成！\n");
+    #ifdef XPT2046_USING_TOUCH
+        /*触摸屏使用SPI总线SPI1 CS0  初始化*/
+            rtgui_touch_hw_init("spi10");
+    #endif
+        rt_kprintf("Loongson系统初始化完成！\n");
+    #if (defined RT_USING_RTGUI) && (defined RTGUI_USING_DEMO)
+    #ifdef USING_DEMO
+    extern int test_guidemo(void);
+        test_guidemo();
+    #endif
+    #ifdef USING_UI_BUTTON
+        ui_button();
+    #endif
+    #endif	
 }
 
 int rt_application_init(void)

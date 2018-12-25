@@ -1,4 +1,4 @@
-/*
+﻿/*
 调用方法，在msh中运行以下命令
 1. speak 开 rtt  //从网络得到 “开”的音频文件  rtt.mp3 存到SD卡上
 */
@@ -27,7 +27,7 @@ int speak(int argc, char** argv)
     }
 
     /* The first part of the voice link */
-    char *urlhd = "http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=***&tex=";//将***更换成自己的token,共70个
+    char *urlhd = "http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=24.890e327245c548078b9c453d6d483dc3.2592000.1544565032.282335-14676469&tex=";//将***更换成自己的token,共70个
     
     /* The last part of the voice link */
     char *urltl = "&vol=9&per=0&spd=5&pit=5&aue=3";

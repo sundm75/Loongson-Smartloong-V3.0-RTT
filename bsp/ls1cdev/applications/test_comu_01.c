@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2006-2018, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+
+*/
+
 #include <rtthread.h>
 
 static rt_thread_t tid1 = RT_NULL;

@@ -1,4 +1,8 @@
 /*
+ * Copyright (c) 2006-2018, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * 程序清单：空闲任务钩子例程
  *
  * 这个例程设置了一个空闲任务钩子用于计算CPU使用率，并创建一个线程循环打印CPU使用率

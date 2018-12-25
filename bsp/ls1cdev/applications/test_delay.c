@@ -14,6 +14,7 @@
 #include <stdlib.h>  
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"
+#include "../libraries/ls1c_clock.h"
 
 #define led_gpio 52
 

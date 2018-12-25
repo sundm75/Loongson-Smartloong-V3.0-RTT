@@ -99,12 +99,10 @@ endif
         bool "with TINA touch"		
 endchoice
 
-
 if RT_USING_RTC
 config RT_RTC_NAME
     string "RT_RTC_NAME"
     default "RTC" 
 endif    
-
 
     

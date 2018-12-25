@@ -1,6 +1,11 @@
 /*
- * File      : caculator.c
- 2014-2-22  jiezhi320  实现简易计算器
+ * Copyright (c) 2006-2018, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes 
+ * 2014-2-22  jiezhi320  实现简易计算器
 */
 
 

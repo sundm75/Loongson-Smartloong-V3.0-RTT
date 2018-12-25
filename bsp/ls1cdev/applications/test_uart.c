@@ -18,6 +18,8 @@ file: test_pin.c
 
 #include <rtthread.h>
 #include <stdlib.h>  
+#include <rthw.h>
+
 #include "ls1c.h"
 #include <drivers/pin.h>
 #include "ls1c_public.h"

@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2006-2018, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2017-09-06     勤为本       first version
+ */
+
 /*************************************************************************
  *
  * 中断相关的函数
@@ -68,8 +78,8 @@ void irq_set_exception_vector_handler(unsigned long offset, void *src_addr, unsi
     // 先回写dcache，再作废icache
     // memcpy之后，现在异常向量总入口的指令位于dcache中，需要回写到内存，
     // 并作废相应icache，作废后当有中断发生时，才会从内存重新加载新代码到icache，这样新代码就生效了
-    dcache_writeback_invalidate_range(dst_addr, dst_addr + size);
-    icache_invalidate_range(dst_addr, dst_addr + size);
+    //dcache_writeback_invalidate_range(dst_addr, dst_addr + size);
+    //icache_invalidate_range(dst_addr, dst_addr + size);
 
     return ;
 }
@@ -97,7 +107,7 @@ void irq_init(void)
     irq_disable();
 
     // 初始化高速缓存
-    cache_init();
+    //cache_init();
     
     // 设置整个异常向量的处理函数
     irq_set_exception_vector_handler(0x180, &general_exception, EXCEPTION_HANDER_MAX_SIZE);
@@ -111,8 +121,8 @@ void irq_init(void)
     irq_set_one_exception_handler(0, handle_int);
 
     // 先回写整个dcache，再作废整个icache
-    dcache_writeback_invalidate_all();
-    icache_invalidate_all();
+    //dcache_writeback_invalidate_all();
+    //icache_invalidate_all();
 
     // 使能中断
     irq_enable();

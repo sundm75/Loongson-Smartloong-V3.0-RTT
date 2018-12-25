@@ -117,13 +117,6 @@
 
 /* Socket abstraction layer */
 
-#define RT_USING_SAL
-
-/* protocol stack implement */
-
-#define SAL_USING_AT
-#define SAL_USING_POSIX
-#define SAL_PROTO_FAMILIES_NUM 1
 
 /* light weight TCP/IP stack */
 
@@ -165,13 +158,6 @@
 
 /* AT commands */
 
-#define RT_USING_AT
-#define AT_DEBUG
-#define AT_USING_CLIENT
-#define AT_CLIENT_NUM_MAX 1
-#define AT_USING_SOCKET
-#define AT_USING_CLI
-#define AT_SW_VERSION_NUM 0x10200
 
 /* VBUS(Virtual Software BUS) */
 
@@ -181,25 +167,11 @@
 
 /* RT-Thread RTGUI */
 
-#define RT_USING_RTGUI
-#define RTGUI_NAME_MAX 16
-#define RTGUI_USING_FONT16
-#define RTGUI_USING_FONT12
-#define RTGUI_USING_SMALL_SIZE
-#define RTGUI_IMAGE_JPEG_NONE
-#define RTGUI_IMAGE_PNG_NONE
-#define RTGUI_IMAGE_BMP
-#define RTGUI_USING_DEMO
-#define USING_UI_BUTTON
 
 /* RT-Thread online packages */
 
 /* IoT - internet of things */
 
-#define PKG_USING_WEBCLIENT
-#define WEBCLIENT_USING_TLS
-#define WEBCLIENT_USING_SAMPLES
-#define PKG_USING_WEBCLIENT_LATEST_VERSION
 
 /* Wi-Fi */
 
@@ -208,32 +180,30 @@
 
 /* Wiced WiFi */
 
-#define PKG_USING_AT_DEVICE
-#define PKG_AT_INIT_BY_THREAD
-#define AT_DEVICE_ESP8266
-#define AT_DEVICE_SOCKETS_NUM 5
-#define AT_DEVICE_NAME "uart1"
-#define AT_DEVICE_RECV_BUFF_LEN 512
-#define AT_DEVICE_WIFI_SSID "sun"
-#define AT_DEVICE_WIFI_PASSWORD "121111215"
-#define PKG_USING_AT_DEVICE_LATEST_VERSION
 
 /* IoT Cloud */
 
 
 /* security packages */
 
-#define PKG_USING_MBEDTLS
-
-/* Select Root Certificate */
-
-#define MBEDTLS_AES_ROM_TABLES
-#define MBEDTLS_ECP_WINDOW_SIZE 2
-#define MBEDTLS_SSL_MAX_CONTENT_LEN 3584
-#define PKG_USING_MBEDTLS_V260
 
 /* language packages */
 
+#define PKG_USING_MICROPYTHON
+
+/* Hardware Module */
+
+
+/* System Module */
+
+
+/* Tools Module */
+
+
+/* Network Module */
+
+#define PKG_MICROPYTHON_HEAP_SIZE 8192
+#define PKG_USING_MICROPYTHON_LATEST_VERSION
 
 /* multimedia packages */
 
@@ -260,9 +230,11 @@
 #define RT_USING_UART2
 #define RT_USING_UART1
 #define RT_UART_RX_BUFFER_SIZE 64
+#define RT_USING_GMAC_INT_MODE
 #define RT_USING_FPU
 #define RT_USING_SPI0
 #define RT_USING_SPI1
+#define RT_USING_I2C1
 #define RT_USING_I2C2
 #define USING_BXCAN0
 #define USING_BXCAN1

@@ -7,11 +7,14 @@
 4. test_pwm_max_period() 测试pwm最大周期
  */
 #include <rtthread.h>
+#include <rthw.h>
+#include <ls1c.h>
+#include <stdlib.h> 
+
 #include "../libraries/ls1c_public.h"
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"
 #include "../libraries/ls1c_pwm.h"
-
 
 // 测试硬件pwm产生连续的pwm波形
 void test_pwm_normal(void)
@@ -123,7 +126,7 @@ void test_pwm_max_period(void)
         ;
 }
 
- #include  <finsh.h> 
+#include  <finsh.h> 
 FINSH_FUNCTION_EXPORT(test_pwm_normal, test_pwm_normal e.g.test_pwm_normal());
 FINSH_FUNCTION_EXPORT(test_pwm_pulse, test_pwm_pulse e.g.test_pwm_pulse());
 FINSH_FUNCTION_EXPORT(test_pwm_gpio04_gpio06, test_pwm_gpio04_gpio06 e.g.test_pwm_gpio04_gpio06());

@@ -79,7 +79,7 @@ rt_err_t rt_hw_led_register(rt_device_t device, const char* name, rt_uint32_t fl
     device->close       = rt_led_close;
     device->read        = rt_led_read;
     device->write       = rt_led_write;
-    device->control     = rt_led_control;
+    device->control     = (void *)rt_led_control;
     device->user_data   = user_data;
     
     /* register a character device */

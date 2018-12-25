@@ -24,6 +24,7 @@
  * 2018-10-11     sundm75      ls1c for  480 * 272
  */
 #include "rtthread.h"
+#include "rthw.h"
 
 #include "drv_touch.h"
 #include "string.h"
@@ -61,26 +62,26 @@ static void gt9xx_init(struct rt_i2c_bus_device *i2c_bus);
 static void gt9xx_deinit(void);
 static int gt9xx_read_xy(void);
 
-static gpio_direction_output( int pin, int level)
+static void gpio_direction_output( int pin, int level)
 {
     gpio_init(pin, gpio_mode_output);
     gpio_set(pin, level);
 }
-static gpio_direction_input(int pin)
+static void gpio_direction_input(int pin)
 {
     gpio_init(pin, gpio_mode_input);
 }
-static gpio_irq_enable( int pin)
+static void gpio_irq_enable( int pin)
 {
     int touch_irq = LS1C_GPIO_TO_IRQ(TP_INT_PIN); 
     rt_hw_interrupt_umask(touch_irq); 
 }
-static gpio_irq_disable(int pin)
+static void gpio_irq_disable(int pin)
 {
     int touch_irq = LS1C_GPIO_TO_IRQ(TP_INT_PIN);
     rt_hw_interrupt_mask(touch_irq); 
 }
-static gpio_set_value(int pin, int level)
+static void gpio_set_value(int pin, int level)
 {
     gpio_set(pin, level); 
 }
@@ -382,7 +383,6 @@ static int gt9xx_driver_register(void)
     gt9xx_driver.ops = &gt9xx_ops;
     gt9xx_driver.user_data = RT_NULL;
     rt_touch_drivers_register(&gt9xx_driver);
-
     return 0;
 }
 INIT_ENV_EXPORT(gt9xx_driver_register);

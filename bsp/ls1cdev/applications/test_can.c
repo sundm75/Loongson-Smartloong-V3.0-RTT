@@ -1,4 +1,8 @@
 /*
+ * Copyright (c) 2006-2018, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * File      : test_can.c
 测试硬件can0驱动， 在finsh 中运行 
 1.test_cansend()  测试裸机库程序，    初始化CAN口（250K）后，以速率100K, 发送标准数据帧（1-8 共8个数据）和扩展数据帧（1-8 共8个数据)
@@ -8,6 +12,8 @@
 #include <rtthread.h>
 #include <ipc/completion.h>
 #include <drivers/can.h>
+#include <rthw.h>
+
 #include <stdlib.h>  
 #include "ls1c.h"
 

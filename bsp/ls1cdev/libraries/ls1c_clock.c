@@ -1,8 +1,12 @@
-/*************************************************************************
+/*
+ * Copyright (c) 2006-2018, RT-Thread Development Team
  *
- * 时钟相关函数
+ * SPDX-License-Identifier: Apache-2.0
  *
- *************************************************************************/
+ * Change Logs:
+ * Date           Author       Notes
+ * 2017-09-06     勤为本       first version
+ */
 
 
 #include "ls1c_regs.h"
