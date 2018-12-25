@@ -7,8 +7,7 @@
 #define N 5 /* 定义哲学家的数目 5 */
 #define LEFT_PHD(i) ((i+N-1)%N) /* 哲学家 i 左边的哲学家 */
 #define RIGHT_PHD(i) ((i+1)%N) /* 哲学家 i 右边的哲学家 */
-#define LEFT_PHD(i) ((i+N-1)%N) /* 哲学家 i 左边的哲学家 */
-#define RIGHT_PHD(i) ((i+1)%N) /* 哲学家 i 右边的哲学家 */
+
 
 struct rt_semaphore sem[N]; /* 每位哲学家一个信号量 */
 struct rt_semaphore sem_lock; /* 定义二值信号量实现临界区互斥 */
