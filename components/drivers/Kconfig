@@ -16,6 +16,12 @@ config RT_USING_SERIAL
     select RT_USING_DEVICE
     default y
 
+if RT_USING_SERIAL
+    config RT_SERIAL_USING_DMA
+        bool "Enable serial DMA mode"
+        default y
+endif    
+
 config RT_USING_CAN
     bool "Using CAN device drivers"
     default n
@@ -72,6 +78,10 @@ config RT_USING_PIN
     bool "Using generic GPIO device drivers"
     default y
 
+config RT_USING_ADC
+    bool "Using ADC device drivers"
+    default n
+
 config RT_USING_PWM
     bool "Using PWM device drivers"
     default n
@@ -104,6 +114,10 @@ config RT_USING_MTD
         default n
     endif
 
+config RT_USING_PM
+    bool "Using Power Management device drivers"
+    default n
+
 config RT_USING_RTC
     bool "Using RTC device drivers"
     default n
@@ -114,9 +128,8 @@ config RT_USING_RTC
         default n
     config RTC_SYNC_USING_NTP
         bool "Using NTP auto sync RTC time"
-        select PKG_USING_NETUTILS
-        select PKG_NETUTILS_NTP
-        default n
+        depends on PKG_NETUTILS_NTP
+        default y
 
         if RTC_SYNC_USING_NTP
         config RTC_NTP_FIRST_SYNC_DELAY
@@ -161,7 +174,11 @@ config RT_USING_SPI
     bool "Using SPI Bus/Device device drivers"
     default n
 
-    if RT_USING_SPI
+    if RT_USING_SPI  
+        config RT_USING_QSPI
+            bool "Enable QSPI mode"
+            default n
+
         config RT_USING_SPI_MSD
             bool "Using SD/TF card driver with spi"
             select RT_USING_DFS
@@ -178,6 +195,11 @@ config RT_USING_SPI
                 config RT_SFUD_USING_FLASH_INFO_TABLE
                 bool "Using defined supported flash chip information table"
                 default y
+                
+                config RT_SFUD_USING_QSPI
+                bool "Using QSPI mode support"
+                select RT_USING_QSPI
+                default n
 
                 config RT_DEBUG_SFUD
                 bool "Show more SFUD debug information"
@@ -391,6 +413,23 @@ menu "Using USB"
                     config RT_USB_DEVICE_WINUSB
                         bool "Enable to use device as winusb device"
                         default n
+                endif
+                if RT_USB_DEVICE_CDC
+                    config RT_VCOM_TASK_STK_SIZE
+                        int "virtual com thread stack size"
+                        default 512
+                    config RT_VCOM_TX_USE_DMA
+                        bool "Enable to use dma for vcom tx"
+                        default n
+                    config RT_VCOM_SERNO
+                        string "serial number of virtual com"
+                        default "32021919830108"
+                    config RT_VCOM_SER_LEN
+                        int "serial number length of virtual com"
+                        default 14
+                    config RT_VCOM_TX_TIMEOUT
+                        int "tx timeout(ticks) of virtual com"
+                        default 1000
                 endif
                 if RT_USB_DEVICE_WINUSB
                     config RT_WINUSB_GUID
