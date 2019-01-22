@@ -13,6 +13,7 @@
 #define RT_TICK_PER_SECOND 1000
 #define RT_USING_OVERFLOW_CHECK
 #define RT_USING_HOOK
+#define RT_USING_IDLE_HOOK
 #define RT_IDEL_HOOK_LIST_SIZE 4
 #define IDLE_THREAD_STACK_SIZE 1024
 #define RT_DEBUG
@@ -40,6 +41,7 @@
 #define RT_USING_CONSOLE
 #define RT_CONSOLEBUF_SIZE 128
 #define RT_CONSOLE_DEVICE_NAME "uart2"
+#define RT_VER_NUM 0x40000
 
 /* RT-Thread Components */
 
@@ -70,8 +72,8 @@
 
 #define RT_USING_DFS
 #define DFS_USING_WORKDIR
-#define DFS_FILESYSTEMS_MAX 2
-#define DFS_FILESYSTEM_TYPES_MAX 6
+#define DFS_FILESYSTEMS_MAX 6
+#define DFS_FILESYSTEM_TYPES_MAX 8
 #define DFS_FD_MAX 32
 #define RT_USING_DFS_ELMFAT
 
@@ -92,6 +94,7 @@
 #define RT_USING_DEVICE_IPC
 #define RT_PIPE_BUFSZ 512
 #define RT_USING_SERIAL
+#define RT_SERIAL_USING_DMA
 #define RT_USING_CAN
 #define RT_CAN_USING_HDR
 #define RT_USING_I2C
@@ -117,6 +120,13 @@
 
 /* Socket abstraction layer */
 
+#define RT_USING_SAL
+
+/* protocol stack implement */
+
+#define SAL_USING_LWIP
+#define SAL_USING_POSIX
+#define SAL_PROTO_FAMILIES_NUM 4
 
 /* light weight TCP/IP stack */
 
@@ -124,6 +134,7 @@
 #define RT_USING_LWIP141
 #define RT_LWIP_IGMP
 #define RT_LWIP_ICMP
+#define RT_LWIP_DNS
 
 /* Static IPv4 Address */
 
@@ -132,6 +143,7 @@
 #define RT_LWIP_MSKADDR "255.255.255.0"
 #define RT_LWIP_UDP
 #define RT_LWIP_TCP
+#define RT_LWIP_RAW
 #define RT_MEMP_NUM_NETCONN 8
 #define RT_LWIP_PBUF_NUM 4
 #define RT_LWIP_RAW_PCB_NUM 4
@@ -139,11 +151,11 @@
 #define RT_LWIP_TCP_PCB_NUM 3
 #define RT_LWIP_TCP_SEG_NUM 40
 #define RT_LWIP_TCP_SND_BUF 4096
-#define RT_LWIP_TCP_WND 4096
-#define RT_LWIP_TCPTHREAD_PRIORITY 10
+#define RT_LWIP_TCP_WND 2048
+#define RT_LWIP_TCPTHREAD_PRIORITY 12
 #define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
 #define RT_LWIP_TCPTHREAD_STACKSIZE 4096
-#define RT_LWIP_ETHTHREAD_PRIORITY 12
+#define RT_LWIP_ETHTHREAD_PRIORITY 14
 #define RT_LWIP_ETHTHREAD_STACKSIZE 512
 #define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
 #define LWIP_NETIF_STATUS_CALLBACK 1
@@ -152,6 +164,8 @@
 #define LWIP_SO_SNDTIMEO 1
 #define LWIP_SO_RCVBUF 1
 #define LWIP_NETIF_LOOPBACK 0
+#define RT_LWIP_DEBUG
+#define RT_LWIP_ICMP_DEBUG
 
 /* Modbus master and slave stack */
 
@@ -172,6 +186,13 @@
 
 /* IoT - internet of things */
 
+#define PKG_USING_WEBCLIENT
+#define WEBCLIENT_NOT_USE_TLS
+#define PKG_USING_WEBCLIENT_LATEST_VERSION
+#define PKG_USING_CJSON
+#define PKG_USING_CJSON_LATEST_VERSION
+#define PKG_USING_EZXML
+#define PKG_USING_EZXML_LATEST_VERSION
 
 /* Wi-Fi */
 
@@ -180,6 +201,9 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_NETUTILS
+#define PKG_NETUTILS_PING
+#define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* IoT Cloud */
 
@@ -189,6 +213,13 @@
 
 /* language packages */
 
+#define PKG_USING_JERRYSCRIPT
+#define PKG_USING_JERRYSCRIPT_LATEST_VERSION
+#define PKG_JMEM_HEAP_SIZE 512
+#define PKG_JERRY_ENABLE_ERROR_MESSAGES
+#define PKG_JERRY_ENABLE_LOGGING
+#define PKG_JMEM_STATS
+#define PKG_CONFIG_DISABLE_ES2015
 #define PKG_USING_MICROPYTHON
 
 /* Hardware Module */
@@ -220,13 +251,15 @@
 /* miscellaneous packages */
 
 
-/* sample package */
-
 /* samples: kernel and components samples */
 
-
-/* example package: hello */
-
+#define PKG_USING_NETWORK_SAMPLES
+#define PKG_USING_NETWORK_SAMPLES_LATEST_VERSION
+#define NETWORK_SAMPLES_USING_TCP_CLIENT
+#define NETWORK_SAMPLES_USING_TCP_SERVER
+#define NETWORK_SAMPLES_USING_UDP_CLIENT
+#define NETWORK_SAMPLES_USING_UDP_SERVER
+#define NETWORK_SAMPLES_USING_TCP_CLIENT_SELECT
 #define RT_USING_UART2
 #define RT_USING_UART1
 #define RT_UART_RX_BUFFER_SIZE 64
@@ -234,7 +267,6 @@
 #define RT_USING_FPU
 #define RT_USING_SPI0
 #define RT_USING_SPI1
-#define RT_USING_I2C1
 #define RT_USING_I2C2
 #define USING_BXCAN0
 #define USING_BXCAN1
