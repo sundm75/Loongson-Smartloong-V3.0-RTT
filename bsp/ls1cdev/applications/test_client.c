@@ -2670,7 +2670,7 @@ void test_sendblock(void)
 void test_client(void)
 {
    int err;
-   struct ip_addr ip;
+   ip_addr_t ip;
    rt_thread_t thread;
    
    /* create a TCP connection */
