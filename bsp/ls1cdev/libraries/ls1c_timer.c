@@ -274,9 +274,9 @@ void timer_int_init(timer_info_t *timer_info, int hrc, int lrc)
      * 为避免计算过程发生溢出，这里采用手动优化上面的计算式，也可以采用浮点运算
      */
     timer_clk = clk_get_apb_rate();
-    l_value = (timer_clk / 1000000) * (timer_info->time_ns / 1000);     // 将1000000000拆分为1000000和1000
+    l_value = (timer_clk / 1000000) * (timer_info->time_ns/1000 );     // 将1000000000拆分为1000000和1000
     l_value = MIN(l_value, TIMER_COUNTER_MAX);
-    h_value = (timer_clk / 1000000) * (timer_info->time_h_ns / 1000);     // 将1000000000拆分为1000000和1000
+    h_value = (timer_clk / 1000000) * (timer_info->time_h_ns/1000 );     // 将1000000000拆分为1000000和1000
     h_value = MIN(h_value, l_value);
 
     // 控制寄存器信息

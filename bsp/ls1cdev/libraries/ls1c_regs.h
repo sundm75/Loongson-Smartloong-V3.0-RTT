@@ -152,6 +152,12 @@
 //RTC寄存器
 #define LS1C_RTC_BASE                       (0xbfe64024)
 
+//NAND寄存器
+#define LS1C_NAND_BASE                      (0xbfe78040)
+
+//DMA寄存器
+#define LS1C_DMA_BASE                       (0xbfd01160)
+
 
 #endif
 

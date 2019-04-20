@@ -39,9 +39,9 @@
 #define RT_USING_DEVICE
 #define RT_USING_INTERRUPT_INFO
 #define RT_USING_CONSOLE
-#define RT_CONSOLEBUF_SIZE 128
+#define RT_CONSOLEBUF_SIZE 256
 #define RT_CONSOLE_DEVICE_NAME "uart2"
-#define RT_VER_NUM 0x40000
+#define RT_VER_NUM 0x40001
 
 /* RT-Thread Components */
 
@@ -52,6 +52,7 @@
 
 /* C++ features */
 
+#define RT_USING_CPLUSPLUS
 
 /* Command shell */
 
@@ -72,8 +73,8 @@
 
 #define RT_USING_DFS
 #define DFS_USING_WORKDIR
-#define DFS_FILESYSTEMS_MAX 6
-#define DFS_FILESYSTEM_TYPES_MAX 8
+#define DFS_FILESYSTEMS_MAX 4
+#define DFS_FILESYSTEM_TYPES_MAX 6
 #define DFS_FD_MAX 32
 #define RT_USING_DFS_ELMFAT
 
@@ -81,8 +82,8 @@
 
 #define RT_DFS_ELM_CODE_PAGE 936
 #define RT_DFS_ELM_WORD_ACCESS
-#define RT_DFS_ELM_USE_LFN_0
-#define RT_DFS_ELM_USE_LFN 0
+#define RT_DFS_ELM_USE_LFN_3
+#define RT_DFS_ELM_USE_LFN 3
 #define RT_DFS_ELM_MAX_LFN 64
 #define RT_DFS_ELM_DRIVES 2
 #define RT_DFS_ELM_MAX_SECTOR_SIZE 512
@@ -95,6 +96,7 @@
 #define RT_PIPE_BUFSZ 512
 #define RT_USING_SERIAL
 #define RT_SERIAL_USING_DMA
+#define RT_SERIAL_RB_BUFSZ 64
 #define RT_USING_CAN
 #define RT_CAN_USING_HDR
 #define RT_USING_I2C
@@ -131,7 +133,7 @@
 /* light weight TCP/IP stack */
 
 #define RT_USING_LWIP
-#define RT_USING_LWIP141
+#define RT_USING_LWIP210
 #define RT_LWIP_IGMP
 #define RT_LWIP_ICMP
 #define RT_LWIP_DNS
@@ -151,21 +153,21 @@
 #define RT_LWIP_TCP_PCB_NUM 3
 #define RT_LWIP_TCP_SEG_NUM 40
 #define RT_LWIP_TCP_SND_BUF 4096
-#define RT_LWIP_TCP_WND 2048
+#define RT_LWIP_TCP_WND 4096
 #define RT_LWIP_TCPTHREAD_PRIORITY 12
 #define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
 #define RT_LWIP_TCPTHREAD_STACKSIZE 4096
 #define RT_LWIP_ETHTHREAD_PRIORITY 14
-#define RT_LWIP_ETHTHREAD_STACKSIZE 512
+#define RT_LWIP_ETHTHREAD_STACKSIZE 1024
 #define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
 #define LWIP_NETIF_STATUS_CALLBACK 1
 #define SO_REUSE 1
 #define LWIP_SO_RCVTIMEO 1
 #define LWIP_SO_SNDTIMEO 1
 #define LWIP_SO_RCVBUF 1
-#define LWIP_NETIF_LOOPBACK 0
-#define RT_LWIP_DEBUG
-#define RT_LWIP_ICMP_DEBUG
+#define RT_LWIP_NETIF_LOOPBACK
+#define LWIP_NETIF_LOOPBACK 1
+#define RT_LWIP_STATS
 
 /* Modbus master and slave stack */
 
@@ -178,6 +180,20 @@
 
 /* Utilities */
 
+#define RT_USING_ULOG
+#define ULOG_OUTPUT_LVL_D
+#define ULOG_OUTPUT_LVL 7
+#define ULOG_USING_ISR_LOG
+#define ULOG_ASSERT_ENABLE
+#define ULOG_LINE_BUF_SIZE 128
+
+/* log format */
+
+#define ULOG_USING_COLOR
+#define ULOG_OUTPUT_LEVEL
+#define ULOG_OUTPUT_TAG
+#define ULOG_OUTPUT_THREAD_NAME
+#define ULOG_BACKEND_USING_CONSOLE
 
 /* RT-Thread RTGUI */
 
@@ -186,13 +202,6 @@
 
 /* IoT - internet of things */
 
-#define PKG_USING_WEBCLIENT
-#define WEBCLIENT_NOT_USE_TLS
-#define PKG_USING_WEBCLIENT_LATEST_VERSION
-#define PKG_USING_CJSON
-#define PKG_USING_CJSON_LATEST_VERSION
-#define PKG_USING_EZXML
-#define PKG_USING_EZXML_LATEST_VERSION
 
 /* Wi-Fi */
 
@@ -201,9 +210,6 @@
 
 /* Wiced WiFi */
 
-#define PKG_USING_NETUTILS
-#define PKG_NETUTILS_PING
-#define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* IoT Cloud */
 
@@ -213,28 +219,6 @@
 
 /* language packages */
 
-#define PKG_USING_JERRYSCRIPT
-#define PKG_USING_JERRYSCRIPT_LATEST_VERSION
-#define PKG_JMEM_HEAP_SIZE 512
-#define PKG_JERRY_ENABLE_ERROR_MESSAGES
-#define PKG_JERRY_ENABLE_LOGGING
-#define PKG_JMEM_STATS
-#define PKG_CONFIG_DISABLE_ES2015
-#define PKG_USING_MICROPYTHON
-
-/* Hardware Module */
-
-
-/* System Module */
-
-
-/* Tools Module */
-
-
-/* Network Module */
-
-#define PKG_MICROPYTHON_HEAP_SIZE 8192
-#define PKG_USING_MICROPYTHON_LATEST_VERSION
 
 /* multimedia packages */
 
@@ -247,26 +231,20 @@
 
 /* peripheral libraries and drivers */
 
+/* sensors drivers */
+
 
 /* miscellaneous packages */
 
 
 /* samples: kernel and components samples */
 
-#define PKG_USING_NETWORK_SAMPLES
-#define PKG_USING_NETWORK_SAMPLES_LATEST_VERSION
-#define NETWORK_SAMPLES_USING_TCP_CLIENT
-#define NETWORK_SAMPLES_USING_TCP_SERVER
-#define NETWORK_SAMPLES_USING_UDP_CLIENT
-#define NETWORK_SAMPLES_USING_UDP_SERVER
-#define NETWORK_SAMPLES_USING_TCP_CLIENT_SELECT
 #define RT_USING_UART2
-#define RT_USING_UART1
 #define RT_UART_RX_BUFFER_SIZE 64
 #define RT_USING_GMAC_INT_MODE
-#define RT_USING_FPU
 #define RT_USING_SPI0
 #define RT_USING_SPI1
+#define RT_USING_I2C1
 #define RT_USING_I2C2
 #define USING_BXCAN0
 #define USING_BXCAN1

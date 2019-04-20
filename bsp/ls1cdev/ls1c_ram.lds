@@ -56,10 +56,27 @@ SECTIONS
     { 
          *(.eh_frame_hdr) 
          *(.eh_frame_entry)
+         *(.eh_frame_entry.*)
     }
     .eh_frame : ONLY_IF_RO { KEEP (*(.eh_frame)) }
 
     . = ALIGN(4);
+    .ctors :
+    {
+        PROVIDE(__ctors_start__ = .);
+        KEEP(*(SORT(.ctors.*)))
+        KEEP(*(.ctors))
+        PROVIDE(__ctors_end__ = .);
+    }
+
+    .dtors :
+    {
+        PROVIDE(__dtors_start__ = .);
+        KEEP(*(SORT(.dtors.*)))
+        KEEP(*(.dtors))
+        PROVIDE(__dtors_end__ = .);
+    }
+    
     .data : 
     {
          *(.data)
