@@ -25,7 +25,7 @@ static void thread1_entry(void* parameter)
         rt_kprintf("thread1: try to recv a mail\n");
 
         /* 从邮箱中收取邮件 */
-        if (rt_mb_recv(&mb, (rt_uint32_t*)&str, RT_WAITING_FOREVER)
+        if (rt_mb_recv(&mb, (rt_ubase_t*)&str, RT_WAITING_FOREVER)
                 == RT_EOK)
         {
             /* 显示邮箱内容 */

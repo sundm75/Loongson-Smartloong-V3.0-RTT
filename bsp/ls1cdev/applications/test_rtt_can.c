@@ -1,11 +1,13 @@
 /*
- * File      : test_can.c
+ * File      : test_rtt_can.c
 测试硬件can0驱动， 在finsh 中运行 
-1. test_rtt_canrev()  测试RTT 的CAN驱动，先初始化CAN,后开启接收线程，每接收一个帧就打印出来。
-2. test_rtt_send(1)  测试发送数据,一共8个
+1. test_rtt_canrev  测试RTT 的CAN0接收，先初始化CAN,后开启接收线程，每接收一个帧就打印出来。
+2. test_rtt_csmsh 0 1  从CAN0测试发送数据,一共8个 ； test_rtt_csmsh 1 1   从CAN1测试发送数据,
  */
-#ifdef RT_USING_CAN
+
 #include <rtthread.h>
+
+#ifdef RT_USING_CAN
 #include <ipc/completion.h>
 #include <drivers/can.h>
 #include <stdlib.h>  
@@ -20,18 +22,28 @@
 static CanRxMsg RxMessage;
 static CanTxMsg TxMessage;
 
-static int canconfig_flag = 0;
-
-static void can_config(void)
+static void can_config(int no)
 {
     rt_uint8_t buf[8] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07};
     rt_int8_t i;
-       struct rt_can_device *can;
-       rt_device_t can_dev ;
-    canconfig_flag = 1;
-    rt_kprintf("Can test thread start...\n");
+    struct rt_can_device *can;
+    rt_device_t can_dev ;
     
+    if(0 == no )
+    {
+      rt_kprintf("Can0 test thread start...\n");
       can_dev = rt_device_find("bxcan0");
+    }
+    else if(1 == no)
+    {
+      rt_kprintf("Can1 test thread start...\n");
+      can_dev = rt_device_find("bxcan1");
+    }
+    else
+    {
+      return;  
+    }
+
       can = (struct rt_can_device *)can_dev;
 
       can->hdr == RT_NULL;
@@ -88,14 +100,26 @@ static void can_config(void)
 }
 
 /*测试发送数据*/
-void test_rtt_cansnd(int num)
+void test_rtt_cansnd(int no, int num)
 {
-    rt_device_t can_dev = rt_device_find("bxcan0");
-       int i;
-      struct rt_can_msg pmsg[1];
+    rt_device_t can_dev ;
+    int i;
+    struct rt_can_msg pmsg[1];
 	  
-	  if(! canconfig_flag)
-		can_config();
+
+    if(0 == no )
+    {
+      can_dev = rt_device_find("bxcan0");
+    }
+    else if(1 == no)
+    {
+      can_dev = rt_device_find("bxcan1");
+    }
+    else
+    {
+      return;  
+    }
+    
 	  
       pmsg[0].id = 0x01;
       pmsg[0].ide = 1;
@@ -115,8 +139,9 @@ void test_rtt_cansnd(int num)
 void test_rev_thread(void *parameter)
 {
     rt_device_t can_dev = rt_device_find("bxcan0");
-       int i;
-      can_config();
+      int i;
+    can_config(0);
+    can_config(1);
 
       struct rt_can_msg pmsg[1];
       rt_size_t size;
@@ -183,15 +208,16 @@ void test_rtt_canrev(void)
 
 void test_rtt_csmsh(int argc, char** argv)
 {
-    unsigned int num1;
-	num1 = strtoul(argv[1], NULL, 0);
-	test_rtt_cansnd(num1);
+  unsigned int no,num;
+	no = strtoul(argv[1], NULL, 0);
+	num = strtoul(argv[2], NULL, 0);
+	test_rtt_cansnd(no, num);
 }
 
 #include  <finsh.h> 
-FINSH_FUNCTION_EXPORT(test_rtt_cansnd, test_rtt_cansnd  e.g.test_rtt_cansnd(1));
-FINSH_FUNCTION_EXPORT(test_rtt_canrev, test_rtt_canrev  e.g.test_rtt_canrev());
+FINSH_FUNCTION_EXPORT(test_rtt_cansnd, test_rtt_cansnd  e.g.test_rtt_cansnd(0,1));
+FINSH_FUNCTION_EXPORT(test_rtt_canrev, test_rtt_canrev  e.g.test_rtt_canrev);
 /* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(test_rtt_csmsh, test_rtt_csmsh 1);
-MSH_CMD_EXPORT(test_rtt_canrev, can rev test);
+MSH_CMD_EXPORT(test_rtt_csmsh, test_rtt_csmsh 0 1);
+MSH_CMD_EXPORT(test_rtt_canrev, can rev test );
 #endif

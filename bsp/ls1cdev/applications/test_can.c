@@ -147,6 +147,60 @@ static void ls1c_can0_irqhandlertest(int irq, void *param)
     }
 }  
 
+
+static void ls1c_can1_irqhandlertest(int irq, void *param)  
+{  
+    CAN_TypeDef* CANx;
+    int i;
+    unsigned char status;
+    CANx =  CAN1;
+    /*读寄存器清除中断*/
+   status = CANx->IR;
+   rt_kprintf("\r\ncan1 int happened!\r\n");
+    /*接收中断*/
+    if (( status & CAN_IR_RI) == CAN_IR_RI) 
+    {
+        /*清除RI 中断*/
+       CAN_Receive(CANx, &RxMessage);
+       CANx->CMR |= CAN_CMR_RRB; 
+       CANx->CMR |= CAN_CMR_CDO; 
+       rt_kprintf("\r\ncan1 receive:\r\n");
+       rt_kprintf(" IDE=%d   RTR = %d DLC=%d  ",RxMessage.IDE, RxMessage.RTR ,RxMessage.DLC);
+       if(RxMessage.IDE == CAN_Id_Standard)
+       {
+         rt_kprintf("\r\n Standard ID= %02X  ",RxMessage.StdId);
+       }
+       else if(RxMessage.IDE == CAN_Id_Extended)
+       {
+         rt_kprintf("\r\n Extended ID= %02X  ",RxMessage.ExtId);
+       }
+
+       if(RxMessage.RTR== CAN_RTR_DATA)
+       {
+         rt_kprintf("\r\ndata= ");
+         for(i=0;i<RxMessage.DLC;i++)
+         {
+           rt_kprintf("0x%02X  ",RxMessage.Data[i]);
+         }
+       }
+       else if(RxMessage.IDE == CAN_RTR_Remote)
+       {
+         rt_kprintf("\r\nCAN_RTR_Remote  no data!");
+       }
+       rt_kprintf("\r\n");
+    }
+    /*发送中断*/
+    else if (( status  & CAN_IR_TI) == CAN_IR_TI) 
+    {
+       rt_kprintf("\r\ncan1 send success! \r\n");
+    }
+    /*数据溢出中断*/
+    else if (( status  & CAN_IR_TI) == CAN_IR_DOI) 
+    {
+       rt_kprintf("\r\ncan1 data over flow! \r\n");
+    }
+}  
+
 void Can_Config(CAN_TypeDef* CANx, Ls1c_CanBPS_t bps)
 {
     unsigned char initresult;
@@ -160,10 +214,10 @@ void Can_Config(CAN_TypeDef* CANx, Ls1c_CanBPS_t bps)
     }
     else if( (CAN_TypeDef* )LS1C_REG_BASE_CAN1 == CANx)
     {
-        pin_set_purpose(56, PIN_PURPOSE_GPIO);
-        pin_set_purpose(57, PIN_PURPOSE_GPIO);
-        pin_set_remap(56, PIN_REMAP_DEFAULT);
-        pin_set_remap(57, PIN_REMAP_DEFAULT);
+        pin_set_purpose(56, PIN_PURPOSE_OTHER);
+        pin_set_purpose(57, PIN_PURPOSE_OTHER);
+        pin_set_remap(56, PIN_REMAP_THIRD);
+        pin_set_remap(57, PIN_REMAP_THIRD);
     }
     
     CAN_InitTypeDef        CAN_InitStructure;
@@ -238,6 +292,12 @@ void Can_Config(CAN_TypeDef* CANx, Ls1c_CanBPS_t bps)
       rt_hw_interrupt_install(LS1C_CAN0_IRQ, ls1c_can0_irqhandlertest, RT_NULL, "can0");  
       rt_hw_interrupt_umask(LS1C_CAN0_IRQ); 
      }
+    if( (CAN_TypeDef* )LS1C_REG_BASE_CAN1 == CANx)
+    {
+       /* 初始化CAN0接收中断*/
+      rt_hw_interrupt_install(LS1C_CAN1_IRQ, ls1c_can1_irqhandlertest, RT_NULL, "can1");  
+      rt_hw_interrupt_umask(LS1C_CAN1_IRQ); 
+     }
 }
 
 void test_cansend(void)
@@ -246,8 +306,10 @@ void test_cansend(void)
     unsigned char initresult;
 
     Can_Config(CAN0, LS1C_CAN100kBaud);
+    Can_Config(CAN1, LS1C_CAN100kBaud);
 
     CAN_SetBps(CAN0, LS1C_CAN250kBaud);
+    CAN_SetBps(CAN1, LS1C_CAN250kBaud);
 
     CAN_FilterInitTypeDef canfilter;
     canfilter.IDE = 1;   /*0: 使用标准标识符1: 使用扩展标识符*/
@@ -264,6 +326,7 @@ void test_cansend(void)
 
     canfilter.IDMASK = 0x0; /*验收屏蔽*/
     CAN_FilterInit(CAN0, &canfilter); 
+    CAN_FilterInit(CAN1, &canfilter); 
 
     int i;
     TxMessage.StdId = 1;
@@ -277,6 +340,7 @@ void test_cansend(void)
       rt_kprintf("%02x ",  TxMessage.Data[i]);
     }
     CAN_Transmit(CAN0, &TxMessage);
+    CAN_Transmit(CAN1, &TxMessage);
     
     TxMessage.StdId = 1;
     TxMessage.ExtId = 2;
@@ -289,6 +353,7 @@ void test_cansend(void)
       rt_kprintf("%02x ",  TxMessage.Data[i]);
     }
     CAN_Transmit(CAN0, &TxMessage);	
+    CAN_Transmit(CAN1, &TxMessage);	
 }
 
 #include  <finsh.h> 

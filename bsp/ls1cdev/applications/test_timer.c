@@ -172,6 +172,7 @@ void test_timer_get(void)
 
 // 测试pwm定时器中断
 #define led_gpio 52
+#define test_pin 6
 
 void ls1c_test_pwm_timer_irqhandler(int irq, void *param)  
 {  
@@ -183,16 +184,18 @@ void ls1c_test_pwm_timer_irqhandler(int irq, void *param)
     timer_reg_base = LS1C_REG_BASE_PWM0 + 0x10 * timer_info.timer ;
     cnt = reg_read_32((volatile unsigned int *)(timer_reg_base + LS1C_PWM_CNTR));
     timer_int_clr(&timer_info);
-    /*进入了低中断*/
+    /*进入了低中断 */
     if (cnt>= reg_read_32((volatile unsigned int *)(timer_reg_base + LS1C_PWM_LRC)))
     {    
         timer_cnt_clr(&timer_info);
         timer_int_clr(&timer_info);
         gpio_set(led_gpio, gpio_level_low ); //点亮
+        gpio_set(test_pin, gpio_level_low ); //点亮
     }
     else /*进入了高中断*/
     {
         gpio_set(led_gpio, gpio_level_high); //熄灭
+        gpio_set(test_pin, gpio_level_high); //熄灭
     }
 }  
 
@@ -209,6 +212,8 @@ void test_pwm_int(int pwm_n, int period, int time_width)
 
     gpio_init(led_gpio, gpio_mode_output);
     gpio_set(led_gpio, gpio_level_low );
+    gpio_init(test_pin, gpio_mode_output);
+    gpio_set(test_pin, gpio_level_low );
     rt_thread_delay(10);
 
     timer_info.timer = pwm_n;  
@@ -345,6 +350,6 @@ FINSH_FUNCTION_EXPORT(test_pwm_int, test_pwm_int e.g.test_pwm_int(1,100000,50000
 FINSH_FUNCTION_EXPORT(test_timer_poll, test_timer_poll e.g.test_timer_poll());
 FINSH_FUNCTION_EXPORT(test_timer_get, test_timer_get e.g.test_timer_get());
 
-MSH_CMD_EXPORT(test_pwmint_msh, test_pwmint_msh 1 100000 50000);
+MSH_CMD_EXPORT(test_pwmint_msh, test_pwmint_msh 1 100000 50000);// PWM号： 0~3， 周期：10~133000 us  高中断时间： 大于10小于周期
 MSH_CMD_EXPORT(test_timer_poll, test_timer_poll time out );
 MSH_CMD_EXPORT(test_timer_get, test_timer_get time  );

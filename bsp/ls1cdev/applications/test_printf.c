@@ -57,4 +57,6 @@ void test_printf(void)
 
 	rt_kprintf("\n");
 }
+
+#include  <finsh.h> 
 MSH_CMD_EXPORT(test_printf, test_printf );

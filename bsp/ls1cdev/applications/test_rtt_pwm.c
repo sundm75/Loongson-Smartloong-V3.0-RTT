@@ -5,6 +5,7 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 
+#ifdef RT_USING_pwm
 #include "ls1c_pwm.h"
 
 rt_err_t test_rtt_pwm(int argc, char** argv)
@@ -96,3 +97,4 @@ _exit:
 #include <finsh.h>
 
 MSH_CMD_EXPORT(test_rtt_pwm, test_rtt_pwm pwm );
+#endif
