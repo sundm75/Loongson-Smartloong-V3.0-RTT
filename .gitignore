@@ -12,6 +12,7 @@
 *.old
 build
 Debug
+.vscode/
 documentation/html
 *~
 *.o

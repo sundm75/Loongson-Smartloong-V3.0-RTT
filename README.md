@@ -1,8 +1,12 @@
 # RT-Thread #
 
-这个仓库放了基于Loongson 1C CPU的RTT 内核源码和示例。 网盘中存放了 内核源码、必要的工具链、学习视频、电路图等 。 龙芯官方ftp：ftp://ftp.loongnix.org/loongsonpi/os/RTThread/ 
+这个仓库放了基于Loongson 1C CPU的RTT 内核源码和示例。 网盘中存放了 内核源码、必要的工具链、学习视频、电路图等 。
+ 
+[龙芯官方ftp](ftp：ftp://ftp.loongnix.org/loongsonpi/os/RTThread/ )
 
-百度网盘： https://pan.baidu.com/s/1m21e8TwbemOu033U85uH1g
+[百度网盘](https://pan.baidu.com/s/1m21e8TwbemOu033U85uH1g)
+
+[关于编译器的说明](./bsp/ls1cdev/docs/20190419complier_cfg/编译环境配置.md)
 
 嵌入式系统设计大赛录制的相关视频 ：　http://www.socchina.net/video
 [中文页](README_zh.md) |
@@ -57,10 +61,6 @@ RT-Thread is Open Source software under the Apache License 2.0 since RT-Thread v
      */
 
 Since 9th of September 2018, PRs submitted by the community may be merged into the main line only after signing the Contributor License Agreement(CLA).
-
-NOTE:
-
-RT-Thread using the Apache license v2.0 is only launched after the release of v3.1.1, and is still in preparation right now.
 
 ## Usage ##
 
