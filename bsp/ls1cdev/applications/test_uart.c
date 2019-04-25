@@ -39,10 +39,30 @@ void test_uart_irqhandler(int IRQn, void *param)
         {
             uart_putc(uartx, reg_read_8(uart_base + LS1C_UART_DAT_OFFSET));
         }
-    }
-    
+    }    
     return ;
 }
+
+void test_uart3_irqhandler(int IRQn, void *param)
+{
+    char ch;
+    ls1c_uart_t uartx = uart_irqn_to_uartx(IRQn);
+    void *uart_base = uart_get_base(uartx);
+   unsigned char iir = reg_read_8(uart_base + LS1C_UART_IIR_OFFSET);
+    // 判断是否为接收超时或接收到有效数据
+    if ((IIR_RXTOUT & iir) || (IIR_RXRDY & iir))
+    {
+        // 是，则读取数据，并原样发送回去
+        while (LSR_RXRDY & reg_read_8(uart_base + LS1C_UART_LSR_OFFSET))
+        {
+            ch = reg_read_8(uart_base + LS1C_UART_DAT_OFFSET);
+            uart_putc(uartx, ch);
+            uart_putc(LS1C_UART2, ch);
+        }
+    }    
+    return ;
+}
+
 
 void test_uart(rt_uint8_t uart_num)  
 {
@@ -99,9 +119,11 @@ void test_uart(rt_uint8_t uart_num)
         pin_set_remap(rx_gpio, PIN_REMAP_FOURTH);
         uart_info.UARTx = uart_num;
         uart_info.baudrate = 115200;
-        uart_info.rx_enable = FALSE;  
+        uart_info.rx_enable = TRUE;  
         uart_init(&uart_info);
+        rt_hw_interrupt_umask(LS1C_UART3_IRQ);		
         uart_print(uart_num, "\r\nThis is uart3 sending string.\r\n");
+        rt_hw_interrupt_install(LS1C_UART3_IRQ, test_uart3_irqhandler, RT_NULL, "UART3");
     break;
     case LS1C_UART4:
         rx_gpio = 58;

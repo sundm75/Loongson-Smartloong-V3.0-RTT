@@ -10,6 +10,9 @@
 
 
 
+#include <stdio.h>
+#include <string.h>
+
 #include <rtthread.h>
 #ifdef RT_USING_RTGUI
 #include <rtgui/rtgui.h>

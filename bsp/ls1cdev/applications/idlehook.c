@@ -9,6 +9,8 @@
  * 通过修改CPU使用率打印线程中的休眠tick时间可以看到不同的CPU使用率
  */
 
+#include <string.h>
+
 #include <rtthread.h>
 #include <rthw.h>
 

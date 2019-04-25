@@ -26,6 +26,9 @@ extern int test_guidemo(void);
 #ifdef USING_UI_BUTTON
 	ui_button();
 #endif
-#endif	
+#endif
+   
+    rt_thread_delay(15000);
+
     return 0;
 }
