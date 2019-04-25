@@ -1,0 +1,34 @@
+1. 更换到新版本3.1.1 
+2. 修改RTGUI到配置中 改动了 2处的kconfig, 增加了 RT_USING_RTGUI选项。
+3. 添加guidemo选项 RTGUI_USING_DEMO 可选择2个开机的例子。
+4. 修改配置 使用lwip 2.0.2
+5. 修改编译条件 RT_USING_LWIP 选择性编译 net文件夹中文件
+6. lwip去除后，触屏反应极慢
+
+201902
+1. LWIP 为1.4.1 调试通过 sal  mpy
+2. 触摸屏 修改增加bak
+gt9xx_bak_config 将已经配置好的参数放到gt9xx_config
+gt9xx_write_config 将gt9xx_config 写入 i2c 寄存器
+gt9xx_read_config 读配置添加一句：rt_memset(gt9xx_config,0x00, 186);
+
+20190407
+1. 将 lwip v 1.4.1 升级至 v 2.1.0, synopGMAC.c 中添加语句：
+eth_device_linkchange(&eth_dev.parent, RT_TRUE); 
+2. 显示驱动更新使用官方最新的
+3. 编译使用 mips-sde-elf ，为 MIPS 版本 ，windows 平台。
+
+20190420
+1. 将编译器与浮点运算进行整理，详见 docs 下的文档。
+2. 整理了柿饼工程。
+
+1. 3个月前配置完成的 esp8266 。现在重新编译，多了个 tls 选择，是mbed 还是sal . 结果是 mbed
+
+2019.4.21
+2019.4.21 再调试 esp8266 , .c 文件 缺  netdev.h。 更换了2018.12 的.c文件后， OK. 编译器要用  mipsel-none-elf- 不能用c++
+
+GUI 一定要用软浮点 mips-sde-elf- 用 c++
+
+at_device_latest包有点问题 导致不过去，用的是以前的包
+
+
