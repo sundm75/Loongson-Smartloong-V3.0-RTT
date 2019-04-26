@@ -177,26 +177,26 @@ static rt_err_t rt_dc_control(rt_device_t dev, int cmd, void *args)
     switch (cmd)
     {
     case RTGRAPHIC_CTRL_RECT_UPDATE:
-	{
-		if (fb_index == 0)
-		{
-		  DC_FB_BUFFER_ADDR0 = (rt_uint32_t)_rt_framebuffer1 - 0x80000000;
-          DC_FB_BUFFER_ADDR1 = (rt_uint32_t)_rt_framebuffer1 - 0x80000000;
-		  rt_memcpy((void *)_rt_framebuffer1, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
-		  rt_memcpy((void *)_rt_framebuffer1, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
-		  fb_index =1;
-		}
-       else
-	    {
-		  DC_FB_BUFFER_ADDR0 = (rt_uint32_t)_rt_framebuffer0 - 0x80000000;
-          DC_FB_BUFFER_ADDR1 = (rt_uint32_t)_rt_framebuffer0 - 0x80000000;
-		  rt_memcpy((void *)_rt_framebuffer0, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
-		  rt_memcpy((void *)_rt_framebuffer0, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
-		  fb_index =0;
-		}		
-		break;
-	}
-	
+    {
+        if (fb_index == 0)
+        {
+            DC_FB_BUFFER_ADDR0 = (rt_uint32_t)_rt_framebuffer1 - 0x80000000;
+            DC_FB_BUFFER_ADDR1 = (rt_uint32_t)_rt_framebuffer1 - 0x80000000;
+            rt_memcpy((void *)_rt_framebuffer1, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
+            rt_memcpy((void *)_rt_framebuffer1, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
+            fb_index =1;
+        }
+        else
+        {
+            DC_FB_BUFFER_ADDR0 = (rt_uint32_t)_rt_framebuffer0 - 0x80000000;
+            DC_FB_BUFFER_ADDR1 = (rt_uint32_t)_rt_framebuffer0 - 0x80000000;
+            rt_memcpy((void *)_rt_framebuffer0, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
+            rt_memcpy((void *)_rt_framebuffer0, (const void *)_rt_framebuffer, sizeof(_rt_framebuffer));
+            fb_index =0;
+        }
+        break;
+    }
+    
     case RTGRAPHIC_CTRL_POWERON:
         break;
     case RTGRAPHIC_CTRL_POWEROFF:
