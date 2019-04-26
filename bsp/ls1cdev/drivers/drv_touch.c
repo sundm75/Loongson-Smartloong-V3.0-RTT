@@ -12,7 +12,6 @@
  
 #include "drv_touch.h"
 
-
 #define TOUCH_I2C_NAME  "i2c1"
 
 #ifndef TOUCH_SAMPLE_HZ

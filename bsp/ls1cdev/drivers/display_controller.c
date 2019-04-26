@@ -196,7 +196,6 @@ static rt_err_t rt_dc_control(rt_device_t dev, int cmd, void *args)
         }
         break;
     }
-    
     case RTGRAPHIC_CTRL_POWERON:
         break;
     case RTGRAPHIC_CTRL_POWEROFF:
