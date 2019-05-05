@@ -10,8 +10,6 @@
  *  
  */
 
-
-
 #include <rtthread.h>
 
 #define SAMPLE_UART_NAME       "uart3"

@@ -2,7 +2,7 @@
  * file: test_rtt_uart_mq.c
  * 基于uart设备框架测试uart驱动， 在finsh 中运行
  
- * 程序清单：串口设备操作例程，uar3 使用 GPIO0、1 ，第四复用
+ * 程序清单：串口设备操作例程，uart3 使用 GPIO0、1 ，第四复用
  *
  * 在这个例程中，将启动一个devt线程，然后打开指定的串口 
  * 当串口有输入时，发送消息，线程将读取其中的输入数据然后写入到
@@ -76,7 +76,7 @@ static void device_thread_entry(void* parameter)
                     rx_length);
             uart_rx_buffer[rx_length] = '\0';
 
-            /* 写到写设备中*/
+            /* 读取到的数据通过串口输出 */
             if (serial != RT_NULL)
                 rt_device_write(serial, 0, &uart_rx_buffer[0],
                         rx_length);
