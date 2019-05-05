@@ -134,7 +134,7 @@ void sscanf_test(void)
 
     /*
     **执行结果:
-    **11.android wp7
+    **11.
     */
 }
 

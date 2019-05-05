@@ -1,6 +1,6 @@
 ﻿/*
 调用方法，在msh中运行以下命令
-1. baidu_indentify onblue  //将存放在SD卡根目录上的 onblue.pcm 发送到百度语音api并识别，返回识别的词语
+1. baidu_identify onblue  //将存放在SD卡根目录上的 onblue.pcm 发送到百度语音api并识别，返回识别的词语
 */
 
 #include <string.h>
