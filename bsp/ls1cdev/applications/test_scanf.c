@@ -1,4 +1,3 @@
-#include <rtthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,7 +9,7 @@ void sscanf_test(void)
     int  digit;
     char buf1[255];
     char buf2[255];
-    char buf3[255];
+    char buf3[255]; 
     char buf4[255];
 
     /*1.最简单的用法*/
@@ -120,21 +119,28 @@ void sscanf_test(void)
     **10.android wp7
     */
 
-    /*11.重新组合,
-    **
+    /*
+    **11:从字符串中抽取16进制数
+    ** 
     */
-    rt_uint8_t mac_addr[6];
-    string = "a0:20:a6:0d:64:2a";
-    sscanf(string, "%x:%x:%x:%x:%x:%x", (rt_uint32_t *)&mac_addr[0], (rt_uint32_t *)&mac_addr[1], (rt_uint32_t *)&mac_addr[2], (rt_uint32_t *)&mac_addr[3], (rt_uint32_t *)&mac_addr[4], (rt_uint32_t *)&mac_addr[5]);
-    for(int i = 0; i<6; i++)
+    string = "a0:20:a6:0d:64:2a";          
+	unsigned int  mac_addr[6]=   {0};              
+	sscanf(string,"%x:%x:%x:%x:%x:%x",&mac_addr[0], &mac_addr[1], &mac_addr[2], &mac_addr[3], &mac_addr[4], &mac_addr[5]);          
+	printf("\r\n11.");
+    for(int i=0;i<6;i++)
     {
-        printf("mac_addr[%d] = %x", i, mac_addr[i]);
+        printf("\r\n mac_addr %d = 0x%x",i, mac_addr[i]);   
+        printf("  %d",mac_addr[i]); 
     }
-    printf("11.float = %f\n", 3.145926);
-
     /*
     **执行结果:
     **11.
+    mac_addr 0 = 0xa0  160
+    mac_addr 1 = 0x20  32
+    mac_addr 2 = 0xa6  166
+    mac_addr 3 = 0xd  13
+    mac_addr 4 = 0x64  100
+    mac_addr 5 = 0x2a  42
     */
 }
 
