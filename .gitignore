@@ -12,7 +12,7 @@
 *.old
 build
 Debug
-./bsp/ls1cdev/bakproject
+bakproject
 .vscode/
 documentation/html
 *~
