@@ -8,8 +8,8 @@
 * ------------------------
 * 对应连接智龙开发板引脚：
 * -------------------------
-* |74 *  59 *  63 65 67 * |
-* |76 75 58 60 62 64 66 68|
+* |74 77N 59 61N 63 65 67 69N|
+* |76 75  58 60  62 64 66 68 |
 * -------------------------
 * 测试流程，在msh中运行
 * 1. test_led_start 端口初始化 打开定时扫描
@@ -618,6 +618,14 @@ void GPIO_Init(void)
     gpio_set (B2      , gpio_level_high); 
     gpio_set (led1_gpio    , gpio_level_high); 
     gpio_set (led2_gpio    , gpio_level_high); 
+
+    gpio_init(77   , gpio_mode_output);	
+    gpio_set (77   , gpio_level_low); 
+    gpio_init(61   , gpio_mode_output);	
+    gpio_set (61   , gpio_level_low); 
+    gpio_init(69   , gpio_mode_output);	
+    gpio_set (69   , gpio_level_low); 
+
 }
 
 void disp_background(unsigned char index,ColorDef c)
@@ -954,7 +962,7 @@ void test_led_start(void)
     int i;
     GPIO_Init();
     color_init();
-    Timer_Init(1, 200, 190); 
+    Timer_Init(1, 200, 190); //周期 200 us 高中断（点亮）时间190us
     /* create thread */
     tid_shift = rt_thread_create("ledmatrix", led_thread_entry, RT_NULL,
     

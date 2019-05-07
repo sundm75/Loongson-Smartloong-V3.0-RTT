@@ -66,7 +66,6 @@ void Timer_Init(int pwm_n, int period, int time_width)
 
     timer_info.timer = pwm_n;  
     timer_info.time_ns = period * 1000;       //133152 us 周期最大 = 133ms
-    timer_info.timer = pwm_n;  
     timer_info.time_h_ns = time_width * 1000;       
     timer_int_init(&timer_info, 1, 1); //
     

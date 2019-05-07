@@ -187,8 +187,8 @@ void ls1c_test_pwm_timer_irqhandler(int irq, void *param)
     /*进入了低中断 */
     if (cnt>= reg_read_32((volatile unsigned int *)(timer_reg_base + LS1C_PWM_LRC)))
     {    
-        timer_cnt_clr(&timer_info);
-        timer_int_clr(&timer_info);
+        timer_cnt_clr(&timer_info); //在低中断时清计数
+        timer_int_clr(&timer_info); //在低中断时清中断
         gpio_set(led_gpio, gpio_level_low ); //点亮
         gpio_set(test_pin, gpio_level_low ); //点亮
     }
@@ -218,7 +218,6 @@ void test_pwm_int(int pwm_n, int period, int time_width)
 
     timer_info.timer = pwm_n;  
     timer_info.time_ns = period * 1000;       //133152 us 周期最大 = 133ms
-    timer_info.timer = pwm_n;  
     timer_info.time_h_ns = time_width * 1000;       
     timer_int_init(&timer_info, 1, 1); //
 
