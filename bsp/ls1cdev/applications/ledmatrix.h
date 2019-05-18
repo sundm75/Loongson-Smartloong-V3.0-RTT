@@ -26,27 +26,15 @@ typedef enum
     BLACK
 }ColorDef;
 
-#pragma anon_unions
 
 typedef struct _dat_rgb_t
 {
-    union
-    {
         unsigned char r[32][8];
         unsigned long r32[32][2];
-    };
-
-    union
-    {
         unsigned char g[32][8];
         unsigned long g32[32][2];
-    };
-
-    union
-    {
         unsigned char b[32][8];
         unsigned long b32[32][2];
-    };
     
     unsigned char move_buf[16][MOVE_BUFF];  //display buff for move
     ColorDef color;    // 0~6 color

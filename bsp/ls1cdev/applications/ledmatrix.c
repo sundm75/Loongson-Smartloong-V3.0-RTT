@@ -55,6 +55,7 @@
 #define ROW_B       63
 #define ROW_C       64
 #define ROW_D       65
+#define ROW_E       61
 #define LED_CLK     66
 #define LED_LOCK    67
 #define LED_OE      68
@@ -403,7 +404,6 @@ static void shift_dat(unsigned char row)
     static unsigned long datr_shit1,datr_shit2;
     static unsigned long datg_shit1,datg_shit2;
     static unsigned long datb_shit1,datb_shit2;
-
     for(i=0; i<2; i++)
     {
         datr_shit1 = dat.r32[row][i];
@@ -480,11 +480,10 @@ static void shift_dat(unsigned char row)
     CTRL_CLK(gpio_level_low);
 }
 
-/* TIM 800 ns */
+/* TIM 200 us */
 void led_scan(void)
 {
     static unsigned char index = 0;
-
     shift_dat(index);
 
     LAT_LE_H;
@@ -492,6 +491,7 @@ void led_scan(void)
     {
         case 0x0:
             ROW_0;
+            
             break;
 
         case 0x1:
@@ -849,7 +849,9 @@ long led(unsigned char argc, char **argv)
         if (!strcmp(cx, "clr"))
         {
             rt_kprintf("clr\r\n");
-            memset(dat.r32,0,sizeof(dat));
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
         }
         else if (!strcmp(cx, "rectr"))
         {
@@ -866,15 +868,75 @@ long led(unsigned char argc, char **argv)
             rt_kprintf("rectb\r\n");
             memcpy(dat.b32,(const void *)&rect[0],sizeof(dat.b32));
         }
-        else if (!strcmp(cx, "ship"))
+
+        else if (!strcmp(cx, "zhufu1"))
         {
-            rt_kprintf("ship\r\n");
+            rt_kprintf("zhufu1\r\n");
+            memcpy(dat.r32,(const void *)&zhufu[0],sizeof(dat.r32));
+        }
+        else if (!strcmp(cx, "zhufu2"))
+        {
+            rt_kprintf("zhufu2\r\n");
+            memcpy(dat.g32,(const void *)&zhufu[0],sizeof(dat.r32));
+        }
+        else if (!strcmp(cx, "zhufu3"))
+        {
+            rt_kprintf("zhufu3\r\n");
+            memcpy(dat.b32,(const void *)&zhufu[0],sizeof(dat.r32));
+        }    
+
+
+        else if (!strcmp(cx, "ship1"))
+        {
+            rt_kprintf("ship1\r\n");
+            memcpy(dat.r32,(const void *)&ship[0],sizeof(dat.r32));
+        }
+        else if (!strcmp(cx, "ship2"))
+        {
+            rt_kprintf("ship2\r\n");
+            memcpy(dat.g32,(const void *)&ship[0],sizeof(dat.r32));
+        }
+        else if (!strcmp(cx, "ship3"))
+        {
+            rt_kprintf("ship3\r\n");
             memcpy(dat.b32,(const void *)&ship[0],sizeof(dat.r32));
         }
+
+        else if (!strcmp(cx, "loongson"))
+        {
+            rt_kprintf("loongson\r\n");
+            memcpy(dat.r32,(const void *)&loongson[0],sizeof(dat.r32));
+        }
+                
+        else if (!strcmp(cx, "solid1"))
+        {
+            rt_kprintf("solid1\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.r32,(const void *)&solid[0],sizeof(dat.r32));
+        }
+        else if (!strcmp(cx, "solid2"))
+        {
+            rt_kprintf("solid2\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.g32,(const void *)&solid[0],sizeof(dat.r32));
+        }
+        else if (!strcmp(cx, "solid3"))
+        {
+            rt_kprintf("solid3\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.b32,(const void *)&solid[0],sizeof(dat.r32));
+        }
+        
         else if (!strcmp(cx, "move"))
         {
             rt_kprintf("move\r\n");
-            move_effect(RED);
+            move_effect(BLUE);
         }
         else if (!strcmp(cx, "size"))
         {
@@ -962,7 +1024,7 @@ void test_led_start(void)
     int i;
     GPIO_Init();
     color_init();
-    Timer_Init(1, 200, 190); //周期 200 us 高中断（点亮）时间190us
+    Timer_Init(1, 200, 30); //周期 200 us 高中断（点亮）时间190us
     /* create thread */
     tid_shift = rt_thread_create("ledmatrix", led_thread_entry, RT_NULL,
     
@@ -986,3 +1048,164 @@ void test_led_start(void)
 
 }
 MSH_CMD_EXPORT(test_led_start, gpio init and led open);
+
+/*-----------------------------------------------------------------*/
+
+void leds(int index)
+{
+    
+        if (index == 0)
+        {
+            rt_kprintf("rectb\r\n");
+            memcpy(dat.b32,(const void *)&rect[0],sizeof(dat.b32));
+        }
+
+        else if (index == 1)
+        {
+            rt_kprintf("loongson\r\n");
+            memset(dat.g32,0,sizeof(dat.r32));
+            memcpy(dat.b32,(const void *)&rect[0],sizeof(dat.b32));
+            memcpy(dat.r32,(const void *)&loongson[0],sizeof(dat.r32));
+        }
+        else if (index == 2)
+        {
+            rt_kprintf("zhilongzhuban\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.r32,(const void *)&rect[0],sizeof(dat.b32));
+            memcpy(dat.g32,(const void *)&zhilongzhuban[0],sizeof(dat.r32));
+        }
+        else if (index == 3)
+        {
+            rt_kprintf("zhilongshiyan\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.g32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.b32,(const void *)&zhilongshiyan[0],sizeof(dat.r32));
+        } 
+
+        else if (index == 4)
+        {
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            rt_kprintf("ship1\r\n");
+            memcpy(dat.g32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.r32,(const void *)&ship[0],sizeof(dat.r32));
+        }
+        else if (index == 5)
+        {
+            rt_kprintf("ship2\r\n");
+            memcpy(dat.r32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.g32,(const void *)&ship[0],sizeof(dat.r32));
+        }
+        else if (index == 6)
+        {
+            rt_kprintf("ship3\r\n");
+            memcpy(dat.b32,(const void *)&ship[0],sizeof(dat.r32));
+        }
+
+        else if (index == 7)
+        {
+            rt_kprintf("loongsonzhongke\r\n");
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.g32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.r32,(const void *)&loongsonzhongke[0],sizeof(dat.r32));
+        }
+                
+        else if (index ==8)
+        {
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            rt_kprintf("rttzi\r\n");
+            memcpy(dat.g32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.r32,(const void *)&rttzi[0],sizeof(dat.r32));
+        }
+        else if (index == 9)
+        {
+            rt_kprintf("solid2\r\n");
+            memcpy(dat.r32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.g32,(const void *)&rttzi[0],sizeof(dat.r32));
+        }
+        else if (index == 10)
+        {
+            rt_kprintf("loongpi\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.r32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.g32,(const void *)&loongpi[0],sizeof(dat.r32));
+        }
+        else if (index == 11)
+        {
+            rt_kprintf("loongdiannao\r\n");
+            memset(dat.g32,0,sizeof(dat.r32));
+            memcpy(dat.b32,(const void *)&rect[0],sizeof(dat.g32));
+            memcpy(dat.b32,(const void *)&loongdiannao[0],sizeof(dat.r32));
+        }
+        else if (index == 12)
+        {
+            rt_kprintf("solid3\r\n");
+            memset(dat.r32,0,sizeof(dat.r32));
+            memset(dat.g32,0,sizeof(dat.r32));
+            memset(dat.b32,0,sizeof(dat.r32));
+            memcpy(dat.b32,(const void *)&solid[0],sizeof(dat.r32));
+        }
+        
+        
+}
+
+#include <rtthread.h>
+
+#define THREAD_PRIORITY         25
+#define THREAD_STACK_SIZE       512
+#define THREAD_TIMESLICE        5
+
+/*  静态线程1 的对象和运行时用到的栈 */  
+static struct rt_thread thread1;
+static rt_uint8_t thread1_stack[THREAD_STACK_SIZE]; 
+
+/*  线程 1入口  */  
+static void thread_led_flash (void* parameter) 
+{ 
+    int  count = 0; 
+    
+    test_led_start();
+    rt_thread_delay(RT_TICK_PER_SECOND*2); 
+
+    while (1) 
+    { 
+        leds(count);
+        rt_thread_delay(RT_TICK_PER_SECOND*2); 
+        rt_kprintf("\r\ncount = %d ",count);
+        count ++;
+        if(count == 12)
+            count = 0;
+    } 
+} 
+
+
+void test_led_flash(void)
+{
+	rt_err_t result; 
+
+	/*  初始化线程1 */ 
+	/*  线程的入口是thread1_entry ，参数是RT_NULL 
+	 *  线程栈是thread1_stack 栈空间是512 ，  
+	 *  优先级是25 ，时间片是5个OS Tick 
+	 */  
+	result = rt_thread_init(&thread1, "led_flash", 
+			thread_led_flash, RT_NULL, 
+			&thread1_stack[0], sizeof(thread1_stack), 
+			THREAD_PRIORITY, THREAD_TIMESLICE); 
+
+	/*  启动线程1 */  
+	if (result == RT_EOK) rt_thread_startup(&thread1); 
+
+}
+#include <finsh.h>
+/* 导出到 msh 命令列表中 */
+MSH_CMD_EXPORT(test_led_flash, thread led change);

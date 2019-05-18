@@ -13,6 +13,7 @@
 #include "ledmatrix.h"
 
 #define led2_gpio 53
+#define led1_gpio 52
 
 
 /**
@@ -34,15 +35,15 @@ void pwm_timer_irqhandler(int irq, void *param)
     /*进入了低中断*/
     if (cnt>= reg_read_32((volatile unsigned int *)(timer_reg_base + LS1C_PWM_LRC)))
     {    
-        gpio_set(led2_gpio, gpio_level_high); //熄灭
         timer_cnt_clr(&timer_info);
         timer_int_clr(&timer_info);
+        gpio_set(led1_gpio, gpio_level_high); //熄灭
         OE_LED_DIS;
         led_scan();
     }
     else /*进入了高中断*/
     {
-        gpio_set(led2_gpio, gpio_level_low ); //点亮
+        gpio_set(led1_gpio, gpio_level_low ); //点亮
         OE_LED_EN;
     }
 }
@@ -61,8 +62,9 @@ void Timer_Init(int pwm_n, int period, int time_width)
     int pwm_timer_irq = LS1C_PWM0_IRQ + pwm_n; 
 
     gpio_init(led2_gpio, gpio_mode_output);
-    gpio_set(led2_gpio, gpio_level_low );
-    rt_thread_delay(10);
+    gpio_set(led2_gpio, gpio_level_high );
+    gpio_init(led1_gpio, gpio_mode_output);
+    gpio_set(led1_gpio, gpio_level_high );
 
     timer_info.timer = pwm_n;  
     timer_info.time_ns = period * 1000;       //133152 us 周期最大 = 133ms
