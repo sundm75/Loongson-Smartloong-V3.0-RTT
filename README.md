@@ -1,17 +1,5 @@
 # RT-Thread #
 
-这个仓库放了基于Loongson 1C CPU的RTT 内核源码和示例。 网盘中存放了 内核源码、必要的工具链、学习视频、电路图等 。
- 
-[龙芯官方ftp](ftp：ftp://ftp.loongnix.org/loongsonpi/os/RTThread/) 
-```ftp://ftp.loongnix.org/loongsonpi/os/RTThread/```
-
-[百度网盘](https://pan.baidu.com/s/1m21e8TwbemOu033U85uH1g)
-```https://pan.baidu.com/s/1m21e8TwbemOu033U85uH1g```
-
-[关于编译器的说明](./bsp/ls1cdev/docs/20190419complier_cfg/编译环境配置.md)
-
-嵌入式系统设计大赛录制的相关视频 ：　http://www.socchina.net/video
-
 [中文页](README_zh.md) |
 
 [![GitHub](https://img.shields.io/github/license/RT-Thread/rt-thread.svg)](https://github.com/RT-Thread/rt-thread/blob/master/LICENSE)
@@ -29,13 +17,13 @@ RT-Thread RTOS like a traditional real-time operating system. The kernel has rea
 
 * Device Driver;
 * Component;
-* Dyanmic Module
+* Dynamic Module
 
 The device driver is more like a driver framework, UART, IIC, SPI, SDIO, USB device/host, EMAC, MTD NAND etc. The developer can easily add low level driver and board configuration, then combined with the upper framework, he/she can use lots of features.
 
 The Component is a software concept upon RT-Thread kernel, for example a shell (finsh/msh shell), virtual file system (FAT, YAFFS, UFFS, ROM/RAM file system etc), TCP/IP protocol stack (lwIP), POSIX (thread) interface etc. One component must be a directory under RT-Thread/Components and one component can be descripted by a SConscript file (then be compiled and linked into the system).
 
-The Dyanmic Module, formerly named as User Applicaion (UA) is a dyanmic loaded module or library, it can be compiled standalone without Kernel. Each Dyanmic Module has its own object list to manage thread/semaphore/kernel object which was created or initialized inside this UA. More information about UA, please visit another [git repo](https://github.com/RT-Thread/rtthread-apps).
+The Dynamic Module, formerly named as User Applicaion (UA) is a dynamic loaded module or library, it can be compiled standalone without Kernel. Each Dynamic Module has its own object list to manage thread/semaphore/kernel object which was created or initialized inside this UA. More information about UA, please visit another [git repo](https://github.com/RT-Thread/rtthread-apps).
 
 ## Board Support Package ##
 

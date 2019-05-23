@@ -8,9 +8,9 @@ CROSS_TOOL  = 'gcc'
 
 # 使用硬浮点必须在 .config 中定义 RT_USING_DFP;
 # 普通工程(不用C++)用  mipsel-none-elf- 可用 软浮点 + devfs ;可用 硬浮点 + devfs; 只可用 gcc 链接 ;不可定义 RT_USING_CPLUSPLUS ; 显示gui demo 不可用RT_USING_DFP
-#PLATFORM_SEL = 'cc' 
+PLATFORM_SEL = 'cc' 
 # 柿饼工程(用C++)用  mips-sde-elf- 可用 软浮点 + devfs ; 不可用硬浮点+ devfs (如果用了就卡死); 只能用 g++ 链接;
-PLATFORM_SEL = 'c++'    
+#PLATFORM_SEL = 'c++'    
 
 if os.getenv('RTT_CC'):
 	CROSS_TOOL = os.getenv('RTT_CC')

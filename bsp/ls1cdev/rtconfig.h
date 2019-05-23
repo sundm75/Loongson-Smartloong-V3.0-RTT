@@ -41,7 +41,7 @@
 #define RT_USING_CONSOLE
 #define RT_CONSOLEBUF_SIZE 256
 #define RT_CONSOLE_DEVICE_NAME "uart2"
-#define RT_VER_NUM 0x40001
+#define RT_VER_NUM 0x40002
 
 /* RT-Thread Components */
 
@@ -52,7 +52,6 @@
 
 /* C++ features */
 
-#define RT_USING_CPLUSPLUS
 
 /* Command shell */
 
@@ -119,6 +118,7 @@
 
 #define RT_USING_LIBC
 #define RT_USING_PTHREADS
+#define PTHREAD_NUM_MAX 8
 #define RT_USING_POSIX
 
 /* Network */
@@ -129,7 +129,7 @@
 
 /* protocol stack implement */
 
-#define SAL_USING_LWIP
+#define SAL_USING_AT
 #define SAL_USING_POSIX
 
 /* Network interface device */
@@ -138,53 +138,25 @@
 #define NETDEV_USING_IFCONFIG
 #define NETDEV_USING_PING
 #define NETDEV_USING_NETSTAT
+#define NETDEV_USING_AUTO_DEFAULT
 
 /* light weight TCP/IP stack */
 
-#define RT_USING_LWIP
-#define RT_USING_LWIP210
-#define RT_LWIP_IGMP
-#define RT_LWIP_ICMP
-#define RT_LWIP_DNS
-
-/* Static IPv4 Address */
-
-#define RT_LWIP_IPADDR "193.169.2.230"
-#define RT_LWIP_GWADDR "193.169.2.1"
-#define RT_LWIP_MSKADDR "255.255.255.0"
-#define RT_LWIP_UDP
-#define RT_LWIP_TCP
-#define RT_LWIP_RAW
-#define RT_MEMP_NUM_NETCONN 8
-#define RT_LWIP_PBUF_NUM 4
-#define RT_LWIP_RAW_PCB_NUM 4
-#define RT_LWIP_UDP_PCB_NUM 4
-#define RT_LWIP_TCP_PCB_NUM 3
-#define RT_LWIP_TCP_SEG_NUM 40
-#define RT_LWIP_TCP_SND_BUF 4096
-#define RT_LWIP_TCP_WND 4096
-#define RT_LWIP_TCPTHREAD_PRIORITY 12
-#define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
-#define RT_LWIP_TCPTHREAD_STACKSIZE 4096
-#define RT_LWIP_ETHTHREAD_PRIORITY 14
-#define RT_LWIP_ETHTHREAD_STACKSIZE 1024
-#define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
-#define LWIP_NETIF_STATUS_CALLBACK 1
-#define LWIP_NETIF_LINK_CALLBACK 1
-#define SO_REUSE 1
-#define LWIP_SO_RCVTIMEO 1
-#define LWIP_SO_SNDTIMEO 1
-#define LWIP_SO_RCVBUF 1
-#define RT_LWIP_NETIF_LOOPBACK
-#define LWIP_NETIF_LOOPBACK 1
-#define RT_LWIP_STATS
-#define RT_LWIP_USING_PING
 
 /* Modbus master and slave stack */
 
 
 /* AT commands */
 
+#define RT_USING_AT
+#define AT_DEBUG
+#define AT_USING_CLIENT
+#define AT_CLIENT_NUM_MAX 1
+#define AT_USING_SOCKET
+#define AT_USING_CLI
+#define AT_PRINT_RAW_CMD
+#define AT_CMD_MAX_LEN 128
+#define AT_SW_VERSION_NUM 0x10200
 
 /* VBUS(Virtual Software BUS) */
 
@@ -194,16 +166,15 @@
 #define RT_USING_ULOG
 #define ULOG_OUTPUT_LVL_D
 #define ULOG_OUTPUT_LVL 7
-#define ULOG_USING_ISR_LOG
 #define ULOG_ASSERT_ENABLE
 #define ULOG_LINE_BUF_SIZE 128
 
 /* log format */
 
 #define ULOG_USING_COLOR
+#define ULOG_OUTPUT_TIME
 #define ULOG_OUTPUT_LEVEL
 #define ULOG_OUTPUT_TAG
-#define ULOG_OUTPUT_THREAD_NAME
 #define ULOG_BACKEND_USING_CONSOLE
 
 /* RT-Thread RTGUI */
@@ -213,6 +184,18 @@
 
 /* IoT - internet of things */
 
+#define PKG_USING_PAHOMQTT
+#define PAHOMQTT_PIPE_MODE
+#define PKG_USING_PAHOMQTT_EXAMPLE
+#define PKG_USING_PAHOMQTT_TEST
+#define RT_PKG_MQTT_THREAD_STACK_SIZE 4096
+#define PKG_PAHOMQTT_SUBSCRIBE_HANDLERS 1
+#define MQTT_DEBUG
+#define PKG_USING_PAHOMQTT_LATEST
+#define PKG_USING_WEBCLIENT
+#define WEBCLIENT_USING_SAMPLES
+#define WEBCLIENT_NOT_USE_TLS
+#define PKG_USING_WEBCLIENT_LATEST_VERSION
 
 /* Wi-Fi */
 
@@ -221,6 +204,16 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_AT_DEVICE
+#define PKG_AT_INIT_BY_THREAD
+#define AT_DEVICE_ESP8266
+#define AT_DEVICE_SOCKETS_NUM 5
+#define AT_DEVICE_NAME "uart1"
+#define AT_DEVICE_RECV_BUFF_LEN 512
+#define AT_DEVICE_WIFI_SSID "rtthread"
+#define AT_DEVICE_WIFI_PASSWORD "12345678"
+#define PKG_USING_AT_DEVICE_LATEST_VERSION
+#define PKG_AT_DEVICE_VER_NUM 0x99999
 
 /* IoT Cloud */
 
@@ -242,8 +235,6 @@
 
 /* peripheral libraries and drivers */
 
-/* sensors drivers */
-
 
 /* miscellaneous packages */
 
@@ -251,18 +242,19 @@
 /* samples: kernel and components samples */
 
 #define PKG_USING_NETWORK_SAMPLES
-#define PKG_USING_NETWORK_SAMPLES_LATEST_VERSION
+#define PKG_USING_NETWORK_SAMPLES_V030
 #define NETWORK_SAMPLES_USING_TCP_CLIENT
 #define NETWORK_SAMPLES_USING_TCP_SERVER
 #define NETWORK_SAMPLES_USING_UDP_CLIENT
 #define NETWORK_SAMPLES_USING_UDP_SERVER
 #define NETWORK_SAMPLES_USING_TCP_CLIENT_SELECT
 #define RT_USING_UART2
+#define RT_USING_UART1
+#define RT_USING_UART3
 #define RT_UART_RX_BUFFER_SIZE 64
 #define RT_USING_GMAC_INT_MODE
 #define RT_USING_SPI0
 #define RT_USING_SPI1
-#define RT_USING_I2C1
 #define RT_USING_I2C2
 #define USING_BXCAN0
 #define USING_BXCAN1
