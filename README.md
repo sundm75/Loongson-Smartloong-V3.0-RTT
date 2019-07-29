@@ -8,6 +8,8 @@
 
 嵌入式系统设计大赛录制的相关视频 ：　http://www.socchina.net/video
 
+[编译器相关说明](https://github.com/sundm75/Loongson-Smartloong-V3.0-RTT/blob/master/bsp/ls1cdev/docs/20190419complier_cfg/编译环境配置.md)
+
 [中文页](README_zh.md) |
 
 [![GitHub](https://img.shields.io/github/license/RT-Thread/rt-thread.svg)](https://github.com/RT-Thread/rt-thread/blob/master/LICENSE)
