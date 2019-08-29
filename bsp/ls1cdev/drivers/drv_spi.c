@@ -240,11 +240,15 @@ int ls1c_hw_spi_init(void)
     pin_set_purpose(46, PIN_PURPOSE_OTHER);
     pin_set_purpose(47, PIN_PURPOSE_OTHER);
     pin_set_purpose(48, PIN_PURPOSE_OTHER);
-    pin_set_purpose(49, PIN_PURPOSE_OTHER);//CS0 - touch screen
+    pin_set_purpose(49, PIN_PURPOSE_OTHER);//CS0 - w25Q128
+    pin_set_purpose(50, PIN_PURPOSE_OTHER);//CS1 - rw007
+    pin_set_purpose(51, PIN_PURPOSE_OTHER);//CS2 - 
     pin_set_remap(46, PIN_REMAP_THIRD);
     pin_set_remap(47, PIN_REMAP_THIRD);
     pin_set_remap(48, PIN_REMAP_THIRD);
-    pin_set_remap(49, PIN_REMAP_THIRD);//CS0 - touch screen
+    pin_set_remap(49, PIN_REMAP_THIRD);//CS0 - w25Q128
+    pin_set_remap(50, PIN_REMAP_THIRD);//CS1 - rw007
+    pin_set_remap(51, PIN_REMAP_THIRD);//CS2 - 
     ls1c_spi_bus_register(LS1C_SPI_1,"spi1");
 
 #endif
@@ -269,12 +273,18 @@ int ls1c_hw_spi_init(void)
 #endif
 #ifdef RT_USING_SPI1    
     {
-        static struct rt_spi_device spi_device;
+        static struct rt_spi_device spi_device0;
+        static struct rt_spi_device spi_device1;
+        static struct rt_spi_device spi_device2;
         static struct ls1c_spi_cs  spi_cs;
 
-        /* spi10: CS0  Touch*/
+        /* spi10: CS0  w25Q128*/
         spi_cs.cs = LS1C_SPI_CS_0;
-       rt_spi_bus_attach_device(&spi_device, "spi10", "spi1", (void*)&spi_cs);
+       rt_spi_bus_attach_device(&spi_device0, "spi10", "spi1", (void*)&spi_cs);
+        spi_cs.cs = LS1C_SPI_CS_1;
+       rt_spi_bus_attach_device(&spi_device1, "spi11", "spi1", (void*)&spi_cs);
+        spi_cs.cs = LS1C_SPI_CS_2;
+       rt_spi_bus_attach_device(&spi_device2, "spi12", "spi1", (void*)&spi_cs);
     }
 #endif
 }

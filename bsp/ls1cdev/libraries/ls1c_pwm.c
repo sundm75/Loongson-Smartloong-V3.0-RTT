@@ -42,11 +42,13 @@ unsigned int pwm_get_reg_base(unsigned int gpio)
 
         case LS1C_PWM2_GPIO52:
         case LS1C_PWM2_GPIO46:
+        case LS1C_PWM2_GPIO74:
             reg_base = LS1C_REG_BASE_PWM2;
             break;
 
         case LS1C_PWM3_GPIO47:
         case LS1C_PWM3_GPIO53:
+        case LS1C_PWM3_GPIO75:
             reg_base = LS1C_REG_BASE_PWM3;
             break;
     }
@@ -168,6 +170,10 @@ void pwm_init(pwm_info_t *pwm_info)
             pin_set_remap(LS1C_PWM2_GPIO46, PIN_REMAP_FOURTH);
             break;
 
+        case LS1C_PWM2_GPIO74:          // gpio74的第三复用
+            pin_set_remap(LS1C_PWM2_GPIO74, PIN_REMAP_THIRD);
+            break;
+
         case LS1C_PWM3_GPIO47:          // gpio47的第四复用
             pin_set_remap(LS1C_PWM3_GPIO47, PIN_REMAP_FOURTH);
             break;
@@ -175,6 +181,11 @@ void pwm_init(pwm_info_t *pwm_info)
         case LS1C_PWM3_GPIO53:          // gpio53的第四复用
             pin_set_remap(LS1C_PWM3_GPIO53, PIN_REMAP_FOURTH);
             break;
+
+        case LS1C_PWM3_GPIO75:          // gpio75的第三复用
+            pin_set_remap(LS1C_PWM3_GPIO75, PIN_REMAP_THIRD);
+            break;
+
 
         default:
             break;

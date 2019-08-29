@@ -126,7 +126,48 @@ void test_pwm_max_period(void)
         ;
 }
 
+void test_pwm(rt_uint8_t gpio, rt_uint8_t num)
+{
+    pwm_info_t pwm_info;
+
+    pwm_info.gpio = gpio;                           // pwm引脚位gpio
+    pwm_info.mode = PWM_MODE_NORMAL;                // 正常模式--连续输出pwm波形
+    pwm_info.duty = (float)num/100;                           // pwm占空比
+    pwm_info.period_ns = 5*1000*1000;               // pwm周期5ms
+
+    // pwm初始化，初始化后立即产生pwm波形
+    pwm_init(&pwm_info);
+
+    //while (1)
+    {
+        // 延时1s
+        rt_thread_delay(RT_TICK_PER_SECOND*2);
+
+        // 禁止pwm
+        pwm_disable(&pwm_info);
+
+        // 延时1s
+         rt_thread_delay(RT_TICK_PER_SECOND*2);
+
+        // 使能pwm
+        pwm_enable(&pwm_info);
+    }
+
+    return ;
+}
+
+void test_pwm_msh(int argc, char** argv)
+{
+    unsigned int num, num1;
+	num = strtoul(argv[1], NULL, 0);
+	num1 = strtoul(argv[2], NULL, 0);
+	test_pwm(num,num1);
+}
+
 #include  <finsh.h> 
+FINSH_FUNCTION_EXPORT(test_pwm, test_pwm gpio e.g.test_pwm (6,65));
+MSH_CMD_EXPORT(test_pwm_msh, test_pwm_msh e.g.test_pwm_msh 6 65);
+
 FINSH_FUNCTION_EXPORT(test_pwm_normal, test_pwm_normal e.g.test_pwm_normal());
 FINSH_FUNCTION_EXPORT(test_pwm_pulse, test_pwm_pulse e.g.test_pwm_pulse());
 FINSH_FUNCTION_EXPORT(test_pwm_gpio04_gpio06, test_pwm_gpio04_gpio06 e.g.test_pwm_gpio04_gpio06());

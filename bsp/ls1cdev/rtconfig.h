@@ -17,6 +17,7 @@
 #define RT_IDEL_HOOK_LIST_SIZE 4
 #define IDLE_THREAD_STACK_SIZE 1024
 #define RT_DEBUG
+#define RT_DEBUG_COLOR
 
 /* Inter-Thread communication */
 
@@ -52,6 +53,7 @@
 
 /* C++ features */
 
+#define RT_USING_CPLUSPLUS
 
 /* Command shell */
 
@@ -107,9 +109,7 @@
 #define RT_USING_RTC
 #define RT_USING_SPI
 #define RT_USING_SPI_MSD
-
-/* Using WiFi */
-
+#define RT_USING_WDT
 
 /* Using USB */
 
@@ -129,7 +129,7 @@
 
 /* protocol stack implement */
 
-#define SAL_USING_AT
+#define SAL_USING_LWIP
 #define SAL_USING_POSIX
 
 /* Network interface device */
@@ -139,24 +139,52 @@
 #define NETDEV_USING_PING
 #define NETDEV_USING_NETSTAT
 #define NETDEV_USING_AUTO_DEFAULT
+#define NETDEV_IPV4 1
+#define NETDEV_IPV6 0
 
 /* light weight TCP/IP stack */
 
+#define RT_USING_LWIP
+#define RT_USING_LWIP210
+#define RT_LWIP_IGMP
+#define RT_LWIP_ICMP
+#define RT_LWIP_SNMP
+#define RT_LWIP_DNS
 
-/* Modbus master and slave stack */
+/* Static IPv4 Address */
 
+#define RT_LWIP_IPADDR "193.169.2.230"
+#define RT_LWIP_GWADDR "193.169.2.1"
+#define RT_LWIP_MSKADDR "255.255.255.0"
+#define RT_LWIP_UDP
+#define RT_LWIP_TCP
+#define RT_LWIP_RAW
+#define RT_MEMP_NUM_NETCONN 8
+#define RT_LWIP_PBUF_NUM 4
+#define RT_LWIP_RAW_PCB_NUM 4
+#define RT_LWIP_UDP_PCB_NUM 4
+#define RT_LWIP_TCP_PCB_NUM 3
+#define RT_LWIP_TCP_SEG_NUM 40
+#define RT_LWIP_TCP_SND_BUF 4096
+#define RT_LWIP_TCP_WND 4096
+#define RT_LWIP_TCPTHREAD_PRIORITY 12
+#define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
+#define RT_LWIP_TCPTHREAD_STACKSIZE 4096
+#define RT_LWIP_ETHTHREAD_PRIORITY 14
+#define RT_LWIP_ETHTHREAD_STACKSIZE 1024
+#define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
+#define LWIP_NETIF_STATUS_CALLBACK 1
+#define LWIP_NETIF_LINK_CALLBACK 1
+#define SO_REUSE 1
+#define LWIP_SO_RCVTIMEO 1
+#define LWIP_SO_SNDTIMEO 1
+#define LWIP_SO_RCVBUF 1
+#define LWIP_NETIF_LOOPBACK 0
+#define RT_LWIP_STATS
+#define RT_LWIP_USING_PING
 
 /* AT commands */
 
-#define RT_USING_AT
-#define AT_DEBUG
-#define AT_USING_CLIENT
-#define AT_CLIENT_NUM_MAX 1
-#define AT_USING_SOCKET
-#define AT_USING_CLI
-#define AT_PRINT_RAW_CMD
-#define AT_CMD_MAX_LEN 128
-#define AT_SW_VERSION_NUM 0x10200
 
 /* VBUS(Virtual Software BUS) */
 
@@ -184,18 +212,12 @@
 
 /* IoT - internet of things */
 
-#define PKG_USING_PAHOMQTT
-#define PAHOMQTT_PIPE_MODE
-#define PKG_USING_PAHOMQTT_EXAMPLE
-#define PKG_USING_PAHOMQTT_TEST
-#define RT_PKG_MQTT_THREAD_STACK_SIZE 4096
-#define PKG_PAHOMQTT_SUBSCRIBE_HANDLERS 1
-#define MQTT_DEBUG
-#define PKG_USING_PAHOMQTT_LATEST
 #define PKG_USING_WEBCLIENT
 #define WEBCLIENT_USING_SAMPLES
 #define WEBCLIENT_NOT_USE_TLS
 #define PKG_USING_WEBCLIENT_LATEST_VERSION
+#define PKG_USING_CJSON
+#define PKG_USING_CJSON_V102
 
 /* Wi-Fi */
 
@@ -204,31 +226,68 @@
 
 /* Wiced WiFi */
 
-#define PKG_USING_AT_DEVICE
-#define PKG_AT_INIT_BY_THREAD
-#define AT_DEVICE_ESP8266
-#define AT_DEVICE_SOCKETS_NUM 5
-#define AT_DEVICE_NAME "uart1"
-#define AT_DEVICE_RECV_BUFF_LEN 512
-#define AT_DEVICE_WIFI_SSID "rtthread"
-#define AT_DEVICE_WIFI_PASSWORD "12345678"
-#define PKG_USING_AT_DEVICE_LATEST_VERSION
-#define PKG_AT_DEVICE_VER_NUM 0x99999
 
 /* IoT Cloud */
 
+#define PKG_USING_LSSDP
+#define PKG_USING_LSSDP_LATEST_VERSION
 
 /* security packages */
 
+#define PKG_USING_TINYCRYPT
+#define PKG_USING_TINYCRYPT_V100
+#define TINY_CRYPT_MD5
+#define TINY_CRYPT_BASE64
+#define TINY_CRYPT_AES
+#define TINY_CRYPT_AES_ROM_TABLES
+#define TINY_CRYPT_SHA1
+#define TINY_CRYPT_SHA256
 
 /* language packages */
 
+#define PKG_USING_MICROPYTHON
+
+/* Hardware Module */
+
+#define MICROPYTHON_USING_MACHINE_I2C
+#define MICROPYTHON_USING_MACHINE_SPI
+#define MICROPYTHON_USING_MACHINE_UART
+#define MICROPYTHON_USING_MACHINE_RTC
+#define MICROPYTHON_USING_MACHINE_PWM
+#define MICROPYTHON_USING_MACHINE_WDT
+
+/* System Module */
+
+
+/* Tools Module */
+
+
+/* Network Module */
+
+#define MICROPYTHON_USING_USOCKET
+#define PKG_MICROPYTHON_HEAP_SIZE 8192
+#define PKG_USING_MICROPYTHON_LATEST_VERSION
+#define PKG_MICROPYTHON_VER_NUM 0x99999
 
 /* multimedia packages */
 
 
 /* tools packages */
 
+#define PKG_USING_ADBD
+#define ADB_TR_TCPIP_ENABLE
+#define ADB_TR_STACK_SIZE 1280
+#define ADB_SERVICE_SHELL_ENABLE
+#define ADB_SERVICE_FILE_ENABLE
+#define ADB_FILESYNC_STACK_SIZE 2304
+#define ADB_FILESYNC_RECV_TIMEOUT 2000
+#define ADB_EXTERNAL_MOD_ENABLE
+#define ADB_FILESYNC_MOD_ENABLE
+#define ADB_FILELIST_MOD_ENABLE
+#define ADB_FILELIST_SUP_MODE
+#define ADB_FILELIST_SUP_SIZE
+#define ADB_USING_SSDP
+#define PKG_USING_ADBD_LATEST_VERSION
 
 /* system packages */
 

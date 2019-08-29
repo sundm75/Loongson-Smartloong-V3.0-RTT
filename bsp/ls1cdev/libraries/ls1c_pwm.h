@@ -22,6 +22,8 @@
 #define LS1C_PWM2_GPIO46                    (46)        // gpio46复用为pwm2
 #define LS1C_PWM3_GPIO47                    (47)        // gpio47复用为pwm3
 #define LS1C_PWM3_GPIO53                    (53)        // gpio53复用为pwm3
+#define LS1C_PWM2_GPIO74                    (74)        // gpio74复用为pwm2
+#define LS1C_PWM3_GPIO75                    (75)        // gpio75复用为pwm3
 // ...还有一些gpio可以复用为gpio的，有需要可以自己添加
 
 

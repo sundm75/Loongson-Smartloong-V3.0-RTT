@@ -91,7 +91,7 @@ void test_websrv(void)
 	rt_thread_t tid;
 
 	tid = rt_thread_create("websrv", lw_thread, RT_NULL,
-		1024, 25, 5);
+		4096, 25, 5);
 	if (tid != RT_NULL) rt_thread_startup(tid);
 }
 

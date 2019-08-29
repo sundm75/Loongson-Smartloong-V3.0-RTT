@@ -2696,7 +2696,7 @@ void test_client(void)
 
       /* create a new thread */
       thread = rt_thread_create("rx", nw_thread, RT_NULL,
-         1024, 20, 20);
+         4096, 20, 20);
       if (thread != RT_NULL)
          rt_thread_startup(thread);
    }
