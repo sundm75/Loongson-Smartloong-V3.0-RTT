@@ -16,18 +16,23 @@ static rt_thread_t tid2 = RT_NULL;
 #define THREAD_TIMESLICE        5
 
 /*定义共享变量*/
-static int share_var;
+int share_var;
+/*使用中断锁时的定义变量*/
+rt_uint32_t level;
 
 static void thread1_entry(void* parameter)
 {
     int i;
     share_var = 0;
+    /* 使用中断锁关闭中断 */
+    level = rt_hw_interrupt_disable();
     rt_kprintf("share_var = %d\n", share_var);
     for(i=0; i<100000; i++)
     {
         share_var ++;
     }
     rt_kprintf("\r\nshare_var = %d\n", share_var);
+    rt_hw_interrupt_enable(level);
 }
 
 static void thread2_entry(void* parameter)

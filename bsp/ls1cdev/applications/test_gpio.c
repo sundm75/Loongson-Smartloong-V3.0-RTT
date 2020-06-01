@@ -1,12 +1,8 @@
 /*
  * File      : test_gpio.c
 测试gpio接口在finsh中运行
-1. test_output()
-2. test_delay_1us()
-3. test_delay_1s()
-4. print_clk()  将当前的分频的所有时钟都打印出来
-5. test_rtdelay_1s 调用RT_TICK_PER_SECOND实现1s 延时测试
-6. mem_read(***) 读取***寄存器中32位数据并打印
+1. test_output   led1闪烁10次
+2. test_input 检测按键，按下key1 或 key2 则LED1亮，
  */
 
 
@@ -16,7 +12,8 @@
 #include "../libraries/ls1c_gpio.h"
 #include "../libraries/ls1c_delay.h"
 #define led_gpio 52
-#define key_gpio 85
+#define key1_gpio 85
+#define key2_gpio 86
 
 /*
  * 测试库中gpio作为输出时的相关接口
@@ -52,24 +49,25 @@ void test_input(void)
 
     // 初始化
     gpio_init(led_gpio, gpio_mode_output);
-    gpio_init(key_gpio, gpio_mode_input);
+    gpio_init(key1_gpio, gpio_mode_input);
+    gpio_init(key2_gpio, gpio_mode_input);
     gpio_set(led_gpio, gpio_level_high);        // 指示灯默认熄灭
 
     while (1)
     {
-        if (gpio_level_low != gpio_get(key_gpio))
+        if (gpio_level_low != (gpio_get(key1_gpio) && gpio_get(key2_gpio)))
             continue;       // 按键没有按下
 
         // 延时(软件消抖)后再次确认按键是否按下
         delay_ms(10);
-        if (gpio_level_low != gpio_get(key_gpio))
+        if (gpio_level_low != (gpio_get(key1_gpio) && gpio_get(key2_gpio)))
             continue;       // 按键没有按下
 
         // 点亮指示灯
         gpio_set(led_gpio, gpio_level_low);
 
         // 等待释放按键
-        while (gpio_level_high != gpio_get(key_gpio))
+        while (gpio_level_high != (gpio_get(key1_gpio) && gpio_get(key2_gpio)))
             ;
         delay_ms(10);
 

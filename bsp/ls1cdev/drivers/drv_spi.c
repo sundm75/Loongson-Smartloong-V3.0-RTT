@@ -221,7 +221,7 @@ rt_err_t ls1c_spi_bus_register(rt_uint8_t SPI, const char *spi_bus_name)
 
 int ls1c_hw_spi_init(void)
 {
-#ifdef RT_USING_SPI0
+#ifdef RT_USING_SPI0                        //CS0 W25Q40
     pin_set_purpose(78, PIN_PURPOSE_OTHER);
     pin_set_purpose(79, PIN_PURPOSE_OTHER);
     pin_set_purpose(80, PIN_PURPOSE_OTHER);
@@ -231,6 +231,7 @@ int ls1c_hw_spi_init(void)
     pin_set_remap(78, PIN_REMAP_FOURTH);
     pin_set_remap(79, PIN_REMAP_FOURTH);
     pin_set_remap(80, PIN_REMAP_FOURTH);
+    pin_set_remap(84, PIN_REMAP_FOURTH);//cs3 - TM7705
     pin_set_remap(83, PIN_REMAP_FOURTH);//cs2 - SD card
     pin_set_remap(82, PIN_REMAP_FOURTH);//cs1 
     ls1c_spi_bus_register(LS1C_SPI_0,"spi0");
@@ -240,13 +241,13 @@ int ls1c_hw_spi_init(void)
     pin_set_purpose(46, PIN_PURPOSE_OTHER);
     pin_set_purpose(47, PIN_PURPOSE_OTHER);
     pin_set_purpose(48, PIN_PURPOSE_OTHER);
-    pin_set_purpose(49, PIN_PURPOSE_OTHER);//CS0 - w25Q128
+    pin_set_purpose(49, PIN_PURPOSE_OTHER);//CS0 - w25Q256
     pin_set_purpose(50, PIN_PURPOSE_OTHER);//CS1 - rw007
     pin_set_purpose(51, PIN_PURPOSE_OTHER);//CS2 - 
     pin_set_remap(46, PIN_REMAP_THIRD);
     pin_set_remap(47, PIN_REMAP_THIRD);
     pin_set_remap(48, PIN_REMAP_THIRD);
-    pin_set_remap(49, PIN_REMAP_THIRD);//CS0 - w25Q128
+    pin_set_remap(49, PIN_REMAP_THIRD);//CS0 - w25Q256
     pin_set_remap(50, PIN_REMAP_THIRD);//CS1 - rw007
     pin_set_remap(51, PIN_REMAP_THIRD);//CS2 - 
     ls1c_spi_bus_register(LS1C_SPI_1,"spi1");
@@ -259,14 +260,20 @@ int ls1c_hw_spi_init(void)
     {
         static struct rt_spi_device spi_device1;
         static struct rt_spi_device spi_device2;
-        static struct ls1c_spi_cs  spi_cs1;
-        static struct ls1c_spi_cs  spi_cs2;
+        static struct rt_spi_device spi_device3;
+        static struct ls1c_spi_cs  spi_cs01;
+        static struct ls1c_spi_cs  spi_cs02;
+        static struct ls1c_spi_cs  spi_cs03;
 
+        /* spi03: CS3 w25Q256*/
+        spi_cs03.cs = LS1C_SPI_CS_3;
+        rt_spi_bus_attach_device(&spi_device3, "spi03", "spi0", (void*)&spi_cs03);
         /* spi02: CS2  SD Card*/
-        spi_cs2.cs = LS1C_SPI_CS_2;
-        rt_spi_bus_attach_device(&spi_device2, "spi02", "spi0", (void*)&spi_cs2);
-        spi_cs1.cs = LS1C_SPI_CS_1;
-        rt_spi_bus_attach_device(&spi_device1, "spi01", "spi0", (void*)&spi_cs1);
+        spi_cs02.cs = LS1C_SPI_CS_2;
+        rt_spi_bus_attach_device(&spi_device2, "spi02", "spi0", (void*)&spi_cs02);
+        /* spi01: CS1 */
+        spi_cs01.cs = LS1C_SPI_CS_1;
+        rt_spi_bus_attach_device(&spi_device1, "spi01", "spi0", (void*)&spi_cs01);
         
         msd_init("sd0", "spi02");
     }
@@ -276,24 +283,28 @@ int ls1c_hw_spi_init(void)
         static struct rt_spi_device spi_device0;
         static struct rt_spi_device spi_device1;
         static struct rt_spi_device spi_device2;
-        static struct ls1c_spi_cs  spi_cs;
+        static struct ls1c_spi_cs  spi_cs10;
+        static struct ls1c_spi_cs  spi_cs11;
+        static struct ls1c_spi_cs  spi_cs12;
 
-        /* spi10: CS0  w25Q128*/
-        spi_cs.cs = LS1C_SPI_CS_0;
-       rt_spi_bus_attach_device(&spi_device0, "spi10", "spi1", (void*)&spi_cs);
-        spi_cs.cs = LS1C_SPI_CS_1;
-       rt_spi_bus_attach_device(&spi_device1, "spi11", "spi1", (void*)&spi_cs);
-        spi_cs.cs = LS1C_SPI_CS_2;
-       rt_spi_bus_attach_device(&spi_device2, "spi12", "spi1", (void*)&spi_cs);
+        /* spi10: CS0  w25Q256*/
+        spi_cs10.cs = LS1C_SPI_CS_0;
+       rt_spi_bus_attach_device(&spi_device0, "spi10", "spi1", (void*)&spi_cs10);
+        spi_cs11.cs = LS1C_SPI_CS_1;
+       rt_spi_bus_attach_device(&spi_device1, "spi11", "spi1", (void*)&spi_cs11);
+        spi_cs12.cs = LS1C_SPI_CS_2;
+       rt_spi_bus_attach_device(&spi_device2, "spi12", "spi1", (void*)&spi_cs12);
     }
 #endif
 }
 
 INIT_BOARD_EXPORT(ls1c_hw_spi_init);
 
+
 static int board_sd_init(void)
 {
     #if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
+
         /* mount sd card fat partition 1 as root directory */
         if( dfs_mount("sd0", "/", "elm", 0, 0) == 0)
         {
@@ -306,7 +317,23 @@ static int board_sd_init(void)
     #endif /* RT_USING_DFS && RT_USING_DFS_ELMFAT */
 }
 
-INIT_APP_EXPORT(board_sd_init);
+INIT_ENV_EXPORT(board_sd_init);
+
+#ifdef RT_USING_SFUD
+#include "spi_flash_sfud.h"
+static int rt_hw_spi_flash_init(void)
+{
+
+    if (RT_NULL == rt_sfud_flash_probe("W25Q256", "spi10"))
+    {
+        return -RT_ERROR;
+    };
+
+    return RT_EOK;
+}
+INIT_COMPONENT_EXPORT(rt_hw_spi_flash_init);
+
+#endif
 
 #endif
 

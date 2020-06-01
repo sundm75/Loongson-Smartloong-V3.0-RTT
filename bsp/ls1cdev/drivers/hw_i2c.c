@@ -131,6 +131,7 @@ int ls1c_hw_i2c_init(void)
     pin_set_purpose(50, PIN_PURPOSE_OTHER);
     pin_set_remap(51, PIN_REMAP_FOURTH);
     pin_set_remap(50, PIN_REMAP_FOURTH);
+
 #endif
 
 

@@ -1,6 +1,6 @@
 /*
 file: test_pin.c
-测试uart驱动， 在finsh 中运行
+测试uart驱动， 在finsh 或者 msh 中运行
 1. test_uart(0)   GPIO74,75  uart00 第2 复用
 2. test_uart(1)   GPIO74,75  uart01 第2 复用 接收键盘输入后再发出去
 3. test_uart(2)   GPIO2,3      uart1 第4 复用

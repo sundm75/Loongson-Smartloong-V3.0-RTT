@@ -28,7 +28,7 @@ void test_at24(rt_int8_t ic_no, rt_int8_t num )
 {  
     int i;
     ls1c_i2c_info_t i2c_info;  
-    int slave_addr = 0xA0 >> 1;    
+    int slave_addr = 0xAE >> 1;    
     unsigned char send_buff[64] = {0};  
     unsigned char recv_buff[64] = {0};  
       

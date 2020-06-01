@@ -5,7 +5,7 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 
-#ifdef RT_USING_pwm
+#ifdef RT_USING_PWM
 #include "ls1c_pwm.h"
 
 rt_err_t test_rtt_pwm(int argc, char** argv)

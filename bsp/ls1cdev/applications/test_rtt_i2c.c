@@ -1,8 +1,9 @@
 /*
  * File      : test_rtt_i2c.c
-测试rtt 硬件i2c2驱动， 在finsh 中运行 test_at24c32()
+测试rtt 硬件i2c2 或者i2c1 驱动， 在finsh 中运行 test_at24c32(2) test_at24c32(1)
 1. 每运行一次,读出地址1的数据,打印 AT24c32_I2C_BUS_NAME定义所使用的i2c总线
-2. 该数据+1 后，再写入地址1的寄存器
+2. 该数据+1 后，再写入地址1的寄存器 
+3. test_at24c32 1 使用i2c1  test_at24c32 2 使用i2c2 (51 50) 
  */
 
 #include <rtthread.h>
@@ -10,9 +11,10 @@
 #include <drivers/i2c.h>
 #include "../drivers/drv_i2c.h"
 
-#define AT24c32_I2C_BUS_NAME                ("i2c2")        // 注意与i2c bus初始化函数中的bus name保持一致
+//#define AT24c32_I2C_BUS_NAME                ("i2c2")        // 注意与i2c bus初始化函数中的bus name保持一致
+const char * AT24c32_I2C_BUS_NAME[2] = {"i2c1", "i2c2"};
 struct rt_i2c_bus_device *at24c32_i2c_bus = RT_NULL;
-int at24c32_addr = 0xA0 >> 1;               // 地址前7位
+int at24c32_addr = 0xAE >> 1;               // 地址前7位
 
 /*
  * 从指定地址读出一个字节
@@ -64,13 +66,15 @@ void at24c32_write_byte(unsigned char write_addr, unsigned char data)
     return ;
 }
 // 测试用的线程的入口  
-void test_at24c32(void )  
+void test_at24c32(int argc, char** argv) 
 {
     unsigned char read_addr = 1;    // 地址
     unsigned char count = 0;        // 用于计数的变量
 
-    // find设备
-    at24c32_i2c_bus = (struct rt_i2c_bus_device *)rt_device_find(AT24c32_I2C_BUS_NAME);
+     unsigned int num1;
+	num1 = strtoul(argv[1], NULL, 0);
+   // find设备
+    at24c32_i2c_bus = (struct rt_i2c_bus_device *)rt_device_find(AT24c32_I2C_BUS_NAME[num1-1]);
     if (RT_NULL == at24c32_i2c_bus)
     {
         rt_kprintf("[%s] no i2c device -- at24c32!\n", __FUNCTION__);
@@ -94,4 +98,4 @@ void test_at24c32(void )
  #include  <finsh.h>
  FINSH_FUNCTION_EXPORT(test_at24c32, test_at24c32  e.g.test_at24c32());
 /* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(test_at24c32, test_at24c32);
+MSH_CMD_EXPORT(test_at24c32, test_at24c32 1);

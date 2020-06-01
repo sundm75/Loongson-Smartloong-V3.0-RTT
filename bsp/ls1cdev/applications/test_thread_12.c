@@ -11,7 +11,7 @@ static rt_thread_t tid2 = RT_NULL;
 static void thread1_entry(void* parameter)
 {
     rt_uint8_t i;
-    for(i = 0; i < 6; i ++)
+    for(i = 0; i < 20; i ++)
     {
         rt_kprintf("THREAD1:%d\n\r",i);
         rt_kprintf("THIS IS \n");
@@ -24,7 +24,7 @@ static void thread1_entry(void* parameter)
 static void thread2_entry(void* parameter)
 {
     rt_uint8_t i;
-    for(i = 0; i < 60; i ++)
+    for(i = 0; i < 10; i ++)
     {
         rt_kprintf("thread2:%d\n\r",i);
         rt_kprintf("this is \n");

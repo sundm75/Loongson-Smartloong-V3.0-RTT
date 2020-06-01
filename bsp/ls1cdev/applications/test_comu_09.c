@@ -33,6 +33,7 @@ static void thread1_entry(void *param)
         rt_kprintf("thread1: OR recv event 0x%x\n", event_rev);
     }
     rt_kprintf("thread1 leave.\n");
+    rt_thread_delay(100);
 }
 
 /* 线程 2 入口 */
@@ -41,6 +42,7 @@ static void thread2_entry(void *param)
 rt_kprintf("thread2: send event1\n");
 rt_event_send(&event, (1 << 3));
 rt_kprintf("thread2 leave.\n");
+rt_thread_delay(100);
 }
 
 /* 线程 3 入口 */
@@ -52,6 +54,7 @@ static void thread3_entry(void *param)
     rt_kprintf("thread3: send event2\n");
     rt_event_send(&event, (1 << 5));
     rt_kprintf("thread3 leave.\n");
+    rt_thread_delay(100);
 }
 
 void test_comu_09(void)

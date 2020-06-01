@@ -1,11 +1,11 @@
 /*
  * File      : test_key.c
 测试key接口在finsh中运行
-1. test_key1 测试 key1 下降沿中断   
+1. test_key1/2 测试 key1/2 下降沿中断   
 首先初始化打开按键中断，启动线程不断检测标志位；
 按键按下，进入中断服务程序置位标志位；
 线程检测到标志位后操作蓝灯 LED1闪灯一下。
-2. test_key2 测试 key2 上升沿 和下降沿中断  
+2. test_keydownup 测试 key1 上升沿 和下降沿中断  
 首先初始化打开按键下降中断，启动线程不断检测标志位，打印相关信息；
 按键按下，检测到下降沿后进入中断服务程序置位标志位，更换中断为上升沿；
 按键抬起，检测到上升沿后进入中断服务程序置位标志位，更换中断为下降沿；
@@ -220,3 +220,95 @@ int test_key2(void)
 FINSH_FUNCTION_EXPORT(test_key2, test_key1  e.g.test_key2());
 /* 导出到 msh 命令列表中 */
 MSH_CMD_EXPORT(test_key2, test_key2);
+
+///////////////////////////////////////////////////////
+    
+struct rt_thread thread_test_keydownup;  
+void ls1c_test_key_do_irqhandler(int irq, void *param) ;
+void ls1c_test_key_up_irqhandler(int irq, void *param) ;
+rt_uint8_t thread_testkeydownup_stack[THREAD_TEST_STACK_SIZE]; 
+
+void ls1c_test_key_up_irqhandler(int irq, void *param)  
+{  
+    // 延迟20ms，消抖  
+    rt_thread_delay(RT_TICK_PER_SECOND/50);
+    if(1 == gpio_get(key1_gpio))
+    {
+        int key_irq = LS1C_GPIO_TO_IRQ(key1_gpio);
+        rt_hw_interrupt_mask(key_irq);
+        gpio_set_irq_type(key1_gpio, IRQ_TYPE_EDGE_FALLING);
+        rt_hw_interrupt_install(key_irq, ls1c_test_key_do_irqhandler, RT_NULL, "Key1");    
+        rt_hw_interrupt_umask(key_irq);  
+        rt_kprintf("\r\nkey up \r\n");
+        gpio_set(led_gpio, gpio_level_high ); 
+    }        
+}  
+
+  
+void ls1c_test_key_do_irqhandler(int irq, void *param)  
+{  
+    // 延迟20ms，消抖  
+    rt_thread_delay(RT_TICK_PER_SECOND/50);
+    if(0 == gpio_get(key1_gpio))
+    {
+        int key_irq = LS1C_GPIO_TO_IRQ(key1_gpio);
+        rt_hw_interrupt_mask(key_irq); 
+        gpio_set_irq_type(key1_gpio, IRQ_TYPE_EDGE_RISING); 
+        rt_hw_interrupt_install(key_irq, ls1c_test_key_up_irqhandler, RT_NULL, "Key1");  
+        rt_hw_interrupt_umask(key_irq);  
+
+        rt_kprintf("\r\nkey down \r\n");
+        gpio_set(led_gpio, gpio_level_low);
+    }        
+}  
+
+// 测试用的线程的入口    
+void thread_test_key_down_up_entry(void *parameter)    
+{  
+    int key_irq = LS1C_GPIO_TO_IRQ(key1_gpio);  
+  
+    // 初始化按键中断  
+    gpio_set_irq_type(key1_gpio, IRQ_TYPE_EDGE_FALLING);  
+    rt_hw_interrupt_install(key_irq, ls1c_test_key_do_irqhandler, RT_NULL, "Key1");  
+    rt_hw_interrupt_umask(key_irq);  
+    gpio_init(key1_gpio, gpio_mode_input);  
+    rt_kprintf("\r\nkey_irq = %d \r\n", key_irq);
+  
+    // 初始化led  
+    gpio_init(led_gpio, gpio_mode_output);
+    gpio_set(led_gpio, gpio_level_high);      
+      
+    while (1)    
+    {          
+        rt_thread_delay(RT_TICK_PER_SECOND/2);    
+    }    
+}    
+
+  
+int test_keydownup(void)  
+{  
+    rt_thread_t tid;  
+    rt_err_t result;  
+    // 初始化测试用的线程    
+    result = rt_thread_init(&thread_test_keydownup,     
+                            "test_keydownup",    
+                            thread_test_key_down_up_entry,    
+                            RT_NULL,    
+                            &thread_testkeydownup_stack[0],    
+                            sizeof(thread_testkeydownup_stack),    
+                            THREAD_TEST_PRIORITY,    
+                            THREAD_TEST_TIMESLICE);    
+    if (RT_EOK == result)    
+    {    
+        rt_thread_startup(&thread_test_keydownup);    
+    }    
+    else    
+    {    
+        return -1;    
+    }    
+  
+    return 0;  
+}  
+ #include  <finsh.h> 
+FINSH_FUNCTION_EXPORT(test_keydownup, test_keydownup  e.g.test_keydownup());
+MSH_CMD_EXPORT(test_keydownup, test_keydownup  e.g.test_keydownup());

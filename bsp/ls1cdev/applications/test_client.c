@@ -2677,7 +2677,7 @@ void test_client(void)
    conn = netconn_new(NETCONN_TCP);
 
    /* set ip address */
-   IP4_ADDR(&ip, 193, 169, 2, 215);
+   IP4_ADDR(&ip, 192, 168, 0, 107);
    
    /* connect to server */
    err = netconn_connect(conn, &ip, 9000);

@@ -123,7 +123,7 @@ int webclient_post_file_baidu(const char* URI, const char* filename, const char*
     webclient_header_fields_add(session, "Content-Length: %d\r\n", length);
     webclient_header_fields_add(session, "Content-Type: %s\r\n", form_data);
 
-    rc = webclient_post(session, URI, NULL);
+    rc = webclient_post(session, URI, NULL, 0);
     if (rc < 0)
     {
         rt_kprintf("webclient post data error!\n");

@@ -325,7 +325,7 @@ void test_cansend(void)
 /*rtr 位测试无影响，与手册不同 */	
 
     canfilter.IDMASK = 0x0; /*验收屏蔽*/
-    CAN_FilterInit(CAN0, &canfilter); 
+    //CAN_FilterInit(CAN0, &canfilter); 
     CAN_FilterInit(CAN1, &canfilter); 
 
     int i;
@@ -339,8 +339,8 @@ void test_cansend(void)
       TxMessage.Data[i] = i+1;
       rt_kprintf("%02x ",  TxMessage.Data[i]);
     }
-    CAN_Transmit(CAN0, &TxMessage);
-    CAN_Transmit(CAN1, &TxMessage);
+    CAN_Transmit(CAN0, &TxMessage);   
+    CAN_Transmit(CAN1, &TxMessage);   
     
     TxMessage.StdId = 1;
     TxMessage.ExtId = 2;
@@ -352,7 +352,7 @@ void test_cansend(void)
       TxMessage.Data[i] = i+1;
       rt_kprintf("%02x ",  TxMessage.Data[i]);
     }
-    CAN_Transmit(CAN0, &TxMessage);	
+    CAN_Transmit(CAN0, &TxMessage);	   
     CAN_Transmit(CAN1, &TxMessage);	
 }
 

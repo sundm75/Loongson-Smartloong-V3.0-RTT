@@ -16,7 +16,7 @@ static void thread1_entry(void* parameter)
         {
             /* 线程1采用低优先级运行，一直打印计数值 */
             rt_kprintf("thread count: %d\n", count ++);
-            rt_thread_delay(RT_TICK_PER_SECOND);
+            //rt_thread_delay(RT_TICK_PER_SECOND);
         }
 }
 

@@ -93,7 +93,7 @@ static void can_config(int no)
       	{
                 pmsg[0].data[i] = i+3;
       	}
-      rt_device_write(can_dev, 0,&pmsg[0], 1*sizeof(struct rt_can_msg));
+    //  rt_device_write(can_dev, 0,&pmsg[0], 1*sizeof(struct rt_can_msg));
 
      // rt_device_close(can_dev);
 
@@ -119,8 +119,10 @@ void test_rtt_cansnd(int no, int num)
     {
       return;  
     }
-    
-	  
+
+      can_config(0);
+      can_config(1);
+      
       pmsg[0].id = 0x01;
       pmsg[0].ide = 1;
       pmsg[0].rtr = 0;
@@ -132,6 +134,8 @@ void test_rtt_cansnd(int no, int num)
       {
                 pmsg[0].data[i] = i+num;
       }
+      
+      rt_thread_mdelay(200);
       rt_device_write(can_dev, 0,&pmsg[0], 1*sizeof(struct rt_can_msg));
 }
 
@@ -140,8 +144,9 @@ void test_rev_thread(void *parameter)
 {
     rt_device_t can_dev = rt_device_find("bxcan0");
       int i;
-    can_config(0);
-    can_config(1);
+      
+      can_config(0);
+      can_config(1);
 
       struct rt_can_msg pmsg[1];
       rt_size_t size;
@@ -163,7 +168,7 @@ void test_rev_thread(void *parameter)
 
          if(size>0)
          {
-           rt_kprintf("\r\n Size rev = %d .\r\n",size);
+           rt_kprintf("\r\n RTT Size rev = %d .\r\n",size);
            rt_kprintf(" IDE=%d   RTR = %d DLC=%d  ",pmsg[0].ide, pmsg[0].rtr , pmsg[0].len);
            if(pmsg[0].ide  == CAN_Id_Standard)
            {

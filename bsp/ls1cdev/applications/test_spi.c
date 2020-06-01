@@ -50,7 +50,7 @@ void test_spi01(void)
     // baudrate
     ls1c_spi_set_clock(spi_base, 100*1000);
     // 设置通信模式(时钟极性和相位)
-    ls1c_spi_set_mode(spi_base, SPI_CPOL_1, SPI_CPHA_1);
+    ls1c_spi_set_mode(spi_base, SPI_CPOL_0, SPI_CPHA_0);
     
     delay_us(1);
     for( i=0; i<16; i++)
@@ -94,7 +94,7 @@ void test_spi10(void)
     // baudrate
     ls1c_spi_set_clock(spi_base, 100*1000);
     // 设置通信模式(时钟极性和相位)
-    ls1c_spi_set_mode(spi_base, SPI_CPOL_1, SPI_CPHA_1);
+    ls1c_spi_set_mode(spi_base, SPI_CPOL_0, SPI_CPHA_0);
     
     delay_us(1);
     for( i=0; i<16; i++)

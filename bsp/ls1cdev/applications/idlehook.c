@@ -98,7 +98,7 @@ static void thread_entry(void *parameter)
 
         /* 休眠50个OS Tick */
         /* 手动修改此处休眠 tick 时间，可以模拟实现不同的CPU使用率 */
-        rt_thread_delay(50);
+        rt_thread_delay(10);
     }
 }
 
