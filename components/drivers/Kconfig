@@ -256,7 +256,7 @@ config RT_USING_AUDIO
 config RT_USING_SENSOR
     bool "Using Sensor device drivers"
     select RT_USING_PIN
-    default n
+    default nRT_USING_PIN
 
 if RT_USING_SENSOR
     config RT_USING_SENSOR_CMD

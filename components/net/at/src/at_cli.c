@@ -41,7 +41,7 @@ static char console_getchar(void)
 
 static rt_err_t console_getchar_rx_ind(rt_device_t dev, rt_size_t size)
 {
-    uint8_t ch;
+    rt_uint8_t ch;
     rt_size_t i;
 
     for (i = 0; i < size; i++)
@@ -186,7 +186,7 @@ static void at_client_entry(void *param)
 
 static rt_err_t client_getchar_rx_ind(rt_device_t dev, rt_size_t size)
 {
-    uint8_t ch;
+    rt_uint8_t ch;
     rt_size_t i;
 
     for (i = 0; i < size; i++)
